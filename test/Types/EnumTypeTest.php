@@ -1,0 +1,152 @@
+<?php
+
+declare(strict_types=1);
+
+namespace DQ5Studios\TypeScript\Generator\Types;
+
+use DQ5Studios\TypeScript\Generator\Tokens\EnumMemberToken;
+use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
+use Exception;
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
+
+/**
+ * @covers \DQ5Studios\TypeScript\Generator\Types\EnumType
+ */
+class EnumTypeTest extends TestCase
+{
+    /**
+     * @covers \DQ5Studios\TypeScript\Generator\Types\ContainerType
+     */
+    public function testCreation(): void
+    {
+        try {
+            new EnumType();
+            $this->fail("Failed requiring name");
+        } catch (Exception $e) {
+            $this->assertInstanceOf(InvalidArgumentException::class, $e);
+        }
+
+        $actual = new EnumType("jellicle");
+        $this->assertSame("jellicle", (string) $actual->getName());
+
+        $actual = new EnumType(new NameToken("jellicle"));
+        $this->assertSame("jellicle", (string) $actual->getName());
+    }
+
+    /**
+     * @covers \DQ5Studios\TypeScript\Generator\Types\ContainerType
+     */
+    public function testSetGetName(): void
+    {
+        $actual = new EnumType("jellicle");
+        $actual->setName("pollicle");
+        $this->assertSame("pollicle", (string) $actual->getName());
+
+        $actual = new EnumType(new NameToken("jellicle"));
+        $actual->setName(NameToken::from("pollicle"));
+        $this->assertSame("pollicle", (string) $actual->getName());
+    }
+
+    public function testMemberActions(): void
+    {
+        $actual = new EnumType("jellicle");
+        $actual->addMember("skimbleshanks");
+        $actual->addMember(NameToken::from("grizabella"));
+        $members = $actual->getMembers();
+        $this->assertCount(2, $members);
+        $this->assertContainsOnlyInstancesOf(EnumMemberToken::class, $members);
+
+        $actual = new EnumType("jellicle");
+        $actual->setMembers($members);
+        $members = $actual->getMembers();
+        $this->assertCount(2, $members);
+        $this->assertContainsOnlyInstancesOf(EnumMemberToken::class, $members);
+    }
+
+    public function testMemberActionFailures(): void
+    {
+        $actual = new EnumType("jellicle");
+        try {
+            $actual->addMember("macavity", 1, 2);
+            $this->fail("Failed to catch spread operator abuse");
+        } catch (Exception $e) {
+            $this->assertInstanceOf(InvalidArgumentException::class, $e);
+        }
+
+        $actual = new EnumType("jellicle");
+        try {
+            $actual->addMember("macavity", "ginger");
+            $actual->addMember("growltiger");
+            $this->fail("Failed to require initializer");
+        } catch (Exception $e) {
+            $this->assertInstanceOf(InvalidArgumentException::class, $e);
+        }
+
+        $actual = new EnumType("jellicle");
+        try {
+            $actual->setMembers(["macavity", "ginger"]);
+            $this->fail("Failed to require initializer");
+        } catch (Exception $e) {
+            $this->assertInstanceOf(InvalidArgumentException::class, $e);
+        }
+    }
+
+    public function testToString(): void
+    {
+        $actual = new EnumType("jellicle");
+        $actual->addMember("skimbleshanks");
+        $actual->addMember("grizabella");
+        $actual->addMember("mungojerrie");
+
+        $expected = <<<'ENUM'
+enum jellicle {
+    skimbleshanks,
+    grizabella,
+    mungojerrie,
+}
+ENUM;
+        $this->assertSame($expected, (string) $actual);
+
+        $actual = new EnumType("jellicle");
+        $actual->addMember("grizabella", 5);
+        $actual->addMember("mungojerrie");
+        $actual->addMember("skimbleshanks", "railway cat");
+
+        $expected = <<<'ENUM'
+enum jellicle {
+    grizabella = 5,
+    mungojerrie,
+    skimbleshanks = "railway cat",
+}
+ENUM;
+        $this->assertSame($expected, (string) $actual);
+    }
+
+    public function testExport(): void
+    {
+        $actual = new EnumType("jellicle");
+        $actual->setExport(true);
+        $this->assertTrue($actual->isExport());
+        $actual->setExport(false);
+        $this->assertFalse($actual->isExport());
+    }
+
+    public function testAmbient(): void
+    {
+        $actual = new EnumType("jellicle");
+        $actual->setAmbient(true);
+        $this->assertTrue($actual->isAmbient());
+        $actual->setAmbient(false);
+        $this->assertFalse($actual->isAmbient());
+    }
+
+    public function testConst(): void
+    {
+        $actual = new EnumType("jellicle");
+        $actual->setConst(true);
+        $this->assertTrue($actual->isConst());
+        $actual->setConst(false);
+        $this->assertFalse($actual->isConst());
+    }
+}
