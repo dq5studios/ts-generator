@@ -62,6 +62,12 @@ class EnumTypeTest extends TestCase
         $members = $actual->getMembers();
         $this->assertCount(2, $members);
         $this->assertContainsOnlyInstancesOf(EnumMemberToken::class, $members);
+
+        $actual = new EnumType("jellicle");
+        $actual->setMembers(["skimbleshanks", "grizabella"]);
+        $members = $actual->getMembers();
+        $this->assertCount(2, $members);
+        $this->assertContainsOnlyInstancesOf(EnumMemberToken::class, $members);
     }
 
     public function testMemberActionFailures(): void
@@ -82,14 +88,6 @@ class EnumTypeTest extends TestCase
         } catch (Exception $e) {
             $this->assertInstanceOf(InvalidArgumentException::class, $e);
         }
-
-        $actual = new EnumType("jellicle");
-        try {
-            $actual->setMembers(["macavity", "ginger"]);
-            $this->fail("Failed to require initializer");
-        } catch (Exception $e) {
-            $this->assertInstanceOf(InvalidArgumentException::class, $e);
-        }
     }
 
     public function testToString(): void
@@ -98,9 +96,11 @@ class EnumTypeTest extends TestCase
         $actual->addMember("skimbleshanks");
         $actual->addMember("grizabella");
         $actual->addMember("mungojerrie");
+        $actual->setExport(true);
+        $actual->setConst(true);
 
         $expected = <<<'ENUM'
-enum jellicle {
+export const enum jellicle {
     skimbleshanks,
     grizabella,
     mungojerrie,
@@ -112,9 +112,10 @@ ENUM;
         $actual->addMember("grizabella", 5);
         $actual->addMember("mungojerrie");
         $actual->addMember("skimbleshanks", "railway cat");
+        $actual->setAmbient(true);
 
         $expected = <<<'ENUM'
-enum jellicle {
+declare enum jellicle {
     grizabella = 5,
     mungojerrie,
     skimbleshanks = "railway cat",

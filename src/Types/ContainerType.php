@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace DQ5Studios\TypeScript\Generator\Types;
 
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
+use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanComment;
+use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanName;
+use DQ5Studios\TypeScript\Generator\Types\Traits\HasComment;
+use DQ5Studios\TypeScript\Generator\Types\Traits\HasName;
 use InvalidArgumentException;
 
 /**
@@ -12,25 +16,13 @@ use InvalidArgumentException;
  *
  * @psalm-consistent-constructor
  */
-abstract class ContainerType extends Type
+abstract class ContainerType extends Type implements CanName, CanComment
 {
+    use HasName;
+    use HasComment;
+
     protected string $type = "";
-    protected NameToken $name;
 
-    public function getName(): NameToken
-    {
-        return $this->name;
-    }
-
-    public function setName(string | NameToken $name): static
-    {
-        if (is_string($name)) {
-            $name = new NameToken($name);
-        }
-        $this->name = $name;
-
-        return $this;
-    }
     /**
      * @throws InvalidArgumentException
      */
@@ -40,9 +32,7 @@ abstract class ContainerType extends Type
             throw new InvalidArgumentException("Name required");
         }
 
-        if (is_string($name)) {
-            $name = new NameToken($name);
-        }
+        $name = NameToken::from($name);
         $this->name = $name;
     }
 }

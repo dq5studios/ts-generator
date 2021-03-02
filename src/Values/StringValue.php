@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Generator\Values;
 
-use DQ5Studios\TypeScript\Generator\Types\LiteralType;
-use DQ5Studios\TypeScript\Generator\Types\LiteralTypeInterface;
+use DQ5Studios\TypeScript\Generator\Types\Interfaces\LiteralType;
+use DQ5Studios\TypeScript\Generator\Types\Traits\LiteralType as TraitLiteralType;
 use DQ5Studios\TypeScript\Generator\Types\StringType;
-use DQ5Studios\TypeScript\Generator\Types\Type;
 
 /**
  * A string value
@@ -15,8 +14,10 @@ use DQ5Studios\TypeScript\Generator\Types\Type;
  * @template T as StringType
  * @extends Value<T>
  */
-class StringValue extends Value implements LiteralTypeInterface
+class StringValue extends Value implements LiteralType
 {
+    use TraitLiteralType;
+
     /** @var class-string<T> */
     protected string $type = StringType::class;
 
@@ -33,11 +34,6 @@ class StringValue extends Value implements LiteralTypeInterface
     {
         $this->value = $value;
         return $this;
-    }
-
-    public function asLiteral(): Type
-    {
-        return LiteralType::from($this);
     }
 
     public function __toString(): string

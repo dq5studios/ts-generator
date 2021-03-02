@@ -4,31 +4,31 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Generator\Tokens;
 
-use DQ5Studios\TypeScript\Generator\Error\InvalidName;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Types\EnumType;
-use Error;
+use Exception;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \DQ5Studios\TypeScript\Generator\Tokens\NameToken
+ */
 class NameTokenTest extends TestCase
 {
-    /**
-     * @covers \DQ5Studios\TypeScript\Generator\Tokens\NameToken
-     */
     public function testCreation(): void
     {
         try {
             new NameToken("");
             $this->fail("Failed requiring name");
-        } catch (Error $e) {
-            $this->assertInstanceOf(InvalidName::class, $e);
+        } catch (Exception $e) {
+            $this->assertInstanceOf(InvalidArgumentException::class, $e);
         }
 
         try {
             new EnumType("--invalid");
             $this->fail("Failed validating name");
-        } catch (Error $e) {
-            $this->assertInstanceOf(InvalidName::class, $e);
+        } catch (Exception $e) {
+            $this->assertInstanceOf(InvalidArgumentException::class, $e);
         }
 
         $actual = NameToken::from("pollicle");

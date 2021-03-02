@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Generator\Tokens;
 
-use DQ5Studios\TypeScript\Generator\Error\InvalidName;
+use InvalidArgumentException;
 
 /**
  * The name of a thing
@@ -12,12 +12,12 @@ use DQ5Studios\TypeScript\Generator\Error\InvalidName;
 class NameToken
 {
     /**
-     * @throws InvalidName
+     * @throws InvalidArgumentException
      */
-    public function __construct(protected string $name)
+    final public function __construct(protected string $name)
     {
         if (!preg_match("/^[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*$/", $name)) {
-            throw new InvalidName();
+            throw new InvalidArgumentException("{$name} is an invalid name");
         }
     }
 

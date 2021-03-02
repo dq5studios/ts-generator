@@ -2,29 +2,29 @@
 
 declare(strict_types=1);
 
-namespace DQ5Studios\TypeScript\Generator\Tokens;
+namespace DQ5Studios\TypeScript\Generator\Types\Traits;
 
-use DQ5Studios\TypeScript\Generator\Tokens\CommentTokenTrait;
+use DQ5Studios\TypeScript\Generator\Types\Traits\HasComment;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \DQ5Studios\TypeScript\Generator\Tokens\CommentTokenTrait
+ * @covers \DQ5Studios\TypeScript\Generator\Types\Traits\HasComment
  */
-class CommentTokenTraitTest extends TestCase
+class HasCommentTest extends TestCase
 {
     public function testMethods(): void
     {
-        /** @var CommentTokenTrait */
-        $mock = $this->getMockForTrait(CommentTokenTrait::class);
+        /** @var HasComment */
+        $mock = $this->getMockForTrait(HasComment::class);
         $this->assertSame("", (string) $mock->getComment());
 
-        /** @var CommentTokenTrait */
-        $mock = $this->getMockForTrait(CommentTokenTrait::class);
+        /** @var HasComment */
+        $mock = $this->getMockForTrait(HasComment::class);
         $mock->setComment("mungojerrie");
         $this->assertSame("/** mungojerrie */", (string) $mock->getComment());
 
-        /** @var CommentTokenTrait */
-        $mock = $this->getMockForTrait(CommentTokenTrait::class);
+        /** @var HasComment */
+        $mock = $this->getMockForTrait(HasComment::class);
         $mock->addComment("rumpelteazer");
         $mock->setComment("mungojerrie");
         $this->assertSame("/** mungojerrie */", (string) $mock->getComment());
@@ -36,14 +36,14 @@ class CommentTokenTraitTest extends TestCase
  */
 comment;
 
-        /** @var CommentTokenTrait */
-        $mock = $this->getMockForTrait(CommentTokenTrait::class);
+        /** @var HasComment */
+        $mock = $this->getMockForTrait(HasComment::class);
         $mock->setComment("mungojerrie");
         $mock->addComment("rumpelteazer");
         $this->assertSame($expected, (string) $mock->getComment());
 
-        /** @var CommentTokenTrait */
-        $mock = $this->getMockForTrait(CommentTokenTrait::class);
+        /** @var HasComment */
+        $mock = $this->getMockForTrait(HasComment::class);
         $mock->addComment("mungojerrie\nrumpelteazer");
         $this->assertSame($expected, (string) $mock->getComment());
     }

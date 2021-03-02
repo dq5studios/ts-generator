@@ -9,22 +9,22 @@ namespace DQ5Studios\TypeScript\Generator\Tokens;
  */
 class CommentToken
 {
-    public function __construct(protected string $comment)
+    public function __construct(protected string $comment = "")
     {
     }
 
-    public function addComment(string $comment): self
+    public function expand(string $comment): self
     {
-        $this->comment .= "\n" . $comment;
+        $this->comment .= "\n{$comment}";
         return $this;
     }
 
-    public function getComment(): string
+    public function get(): string
     {
         return $this->comment;
     }
 
-    public function setComment(string $comment): self
+    public function set(string $comment): self
     {
         $this->comment = $comment;
         return $this;
@@ -40,6 +40,7 @@ class CommentToken
             return "/** {$comments} */";
         }
         $comments = preg_replace("/\n/", "\n * ", $comments);
+        $comments = preg_replace('/^ \* $/m', ' *', $comments);
         return "/**\n * {$comments}\n */";
     }
 }

@@ -6,7 +6,6 @@ namespace DQ5Studios\TypeScript\Generator\Types;
 
 use DQ5Studios\TypeScript\Generator\Tokens\FunctionParameterToken;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
-use UnexpectedValueException;
 
 /**
  * The function type, equivalent to PHP callable
@@ -15,57 +14,56 @@ class FunctionType extends ComplexType
 {
     protected string $type = "Function";
 
-    protected string $signature = "";
-    /** @var list<FunctionParameterToken> */
-    protected array $parameters = [];
+    /** @var array<string,FunctionParameterToken> */
+    protected array | null $parameters = null;
     /** @var Type|null */
     protected Type | null $return = null;
 
-    public function setSignature(string $signature): self
-    {
-        $this->signature = $signature;
-        return $this;
-    }
-
     public function getSignature(): string
     {
-        return $this->signature;
+        $signature = "";
+        if (!is_null($this->parameters) || !is_null($this->return)) {
+            $signature = "("
+                . implode(", ", $this->parameters ?? [])
+                . ")";
+            $signature .= " => ";
+            $signature .= (string) ($this->return ?? new VoidType());
+        }
+        return $signature;
     }
 
     /**
-     * @param Type|class-string<Type> $type
+     * @param class-string<Type>|Type|Type::* $type
      */
-    public function addParameter(string | Type $type, string | NameToken $name = null): self
+    public function addParameter(string | Type $type, string | NameToken $name = null): FunctionParameterToken
     {
-        // TODO: Spread operator
-
+        if (is_null($this->parameters)) {
+            $this->parameters = [];
+        }
         if (empty($name)) {
             $name = "arg_" . count($this->parameters);
         }
         $member = FunctionParameterToken::from($name, $type);
-        $this->parameters[] = $member;
-        $this->refreshSignature();
-        return $this;
+        return $this->parameters[(string) $member->getName()] = $member;
     }
 
     /**
-     * @return list<FunctionParameterToken>
+     * @return array<string,FunctionParameterToken>
      */
     public function getParameters(): array
     {
-        return $this->parameters;
+        return $this->parameters ?? [];
     }
 
     /**
-     * @param list<Type|class-string<Type>> $parameters
+     * @param list<class-string<Type>|Type|Type::*> $parameters
      */
-    public function setParameters(string | Type ...$parameters): self
+    public function setParameters(array $parameters): self
     {
         $this->parameters = [];
         foreach ($parameters as $parameter) {
             $this->addParameter($parameter);
         }
-        $this->refreshSignature();
         return $this;
     }
 
@@ -75,38 +73,20 @@ class FunctionType extends ComplexType
     }
 
     /**
-     * @param Type|class-string<Type> $return
-     * @throws UnexpectedValueException
+     * @param class-string<Type>|Type|Type::* $return
      */
     public function setReturn(string | Type $return): self
     {
-        if ($return instanceof Type) {
-            $this->return = $return;
-        } else {
-            if (!is_subclass_of($return, Type::class)) {
-                throw new UnexpectedValueException();
-            }
-            $this->return = new $return();
-        }
-        $this->refreshSignature();
+        $this->return = Type::from($return);
         return $this;
-    }
-
-    private function refreshSignature(): void
-    {
-        $parameters = [];
-        foreach ($this->parameters as $parameter) {
-            $parameters[] = "{$parameter->getName()}: {$parameter->getType()}";
-        }
-        $this->signature = "(" . implode(", ", $parameters) . ") => " . (string) ($this->return ?? new VoidType());
     }
 
     public function __toString(): string
     {
-        if (empty($this->signature)) {
+        if (empty($this->getSignature())) {
             return parent::__toString();
         }
 
-        return $this->signature;
+        return $this->getSignature();
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Generator\Tokens;
 
-use DQ5Studios\TypeScript\Generator\Types\NoneType;
 use DQ5Studios\TypeScript\Generator\Values\NoneValue;
 use DQ5Studios\TypeScript\Generator\Values\NumberValue;
 use DQ5Studios\TypeScript\Generator\Values\StringValue;
@@ -25,9 +24,7 @@ class EnumMemberToken extends MemberToken
             throw new InvalidArgumentException("No more that one value can be assigned at a time");
         }
 
-        if (is_string($name)) {
-            $name = new NameToken($name);
-        }
+        $name = NameToken::from($name);
 
         $typed_value = match (true) {
             empty($value) => new NoneValue(),
@@ -38,6 +35,6 @@ class EnumMemberToken extends MemberToken
             ($value[0] instanceof NoneValue) => $value[0],
             default => throw new InvalidArgumentException("Computed members not supported yet")
         };
-        return new self($name, (new NoneType()), $typed_value);
+        return new self(value: $typed_value, name: $name);
     }
 }

@@ -6,9 +6,9 @@ namespace DQ5Studios\TypeScript\Generator\Tokens;
 
 use DQ5Studios\TypeScript\Generator\Tokens\MemberToken;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
+use DQ5Studios\TypeScript\Generator\Types\EnumType;
 use DQ5Studios\TypeScript\Generator\Types\NoneType;
 use DQ5Studios\TypeScript\Generator\Types\StringType;
-use DQ5Studios\TypeScript\Generator\Values\NoneValue;
 use DQ5Studios\TypeScript\Generator\Values\StringValue;
 use PHPUnit\Framework\TestCase;
 
@@ -31,7 +31,7 @@ class MemberTokenTest extends TestCase
 
     public function testSet(): void
     {
-        $actual = new MemberToken(NameToken::from("_"), new NoneType(), new NoneValue());
+        $actual = new MemberToken(NameToken::from("_"));
         $name = new NameToken("skimbleshanks");
         $is = $actual->setName($name);
         $this->assertInstanceOf(MemberToken::class, $is);
@@ -49,19 +49,27 @@ class MemberTokenTest extends TestCase
 
     public function testToString(): void
     {
-        $actual = new MemberToken(NameToken::from("skimbleshanks"), new NoneType(), new NoneValue());
+        $actual = new MemberToken(NameToken::from("skimbleshanks"));
         $this->assertSame("skimbleshanks", (string) $actual);
 
+        $type = new EnumType("jellicles");
+        $actual->setType($type);
+        $this->assertSame("skimbleshanks: jellicles", (string) $actual);
+
         $type = new StringType();
-        $is = $actual->setType($type);
+        $actual->setType($type);
         $this->assertSame("skimbleshanks: string", (string) $actual);
 
         $value = new StringValue("railway cat");
-        $is = $actual->setValue($value);
+        $actual->setValue($value);
         $this->assertSame("skimbleshanks: string = \"railway cat\"", (string) $actual);
 
         $type = new NoneType();
-        $is = $actual->setType($type);
+        $actual->setType($type);
+        $this->assertSame("skimbleshanks = \"railway cat\"", (string) $actual);
+
+        $type = new NoneType();
+        $actual->setType($type);
         $this->assertSame("skimbleshanks = \"railway cat\"", (string) $actual);
     }
 }

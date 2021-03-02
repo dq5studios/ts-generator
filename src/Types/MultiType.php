@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Generator\Types;
 
-use UnexpectedValueException;
-
 /**
  * The base code for union and intersection types
  */
@@ -24,30 +22,21 @@ abstract class MultiType extends Type
     }
 
     /**
-     * @param list<Type|class-string<Type>> $types
+     * @param class-string<Type>|Type|Type::* $types
      */
-    public static function from(string | Type ...$types): static
+    public static function of(string | Type ...$types): self
     {
         $new = new static();
-        $new->contains(...$types);
-        return $new;
+        return $new->contains(...$types);
     }
 
     /**
-     * @param list<Type|class-string<Type>> $types
-     * @throws UnexpectedValueException
+     * @param class-string<Type>|Type|Type::* $types
      */
     public function contains(string | Type ...$types): self
     {
         foreach ($types as $type) {
-            if ($type instanceof Type) {
-                $this->is[] = $type;
-            } else {
-                if (!is_subclass_of($type, Type::class)) {
-                    throw new UnexpectedValueException();
-                }
-                $this->is[] = new $type();
-            }
+            $this->is[] = Type::from($type);
         }
         return $this;
     }

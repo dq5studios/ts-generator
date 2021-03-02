@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DQ5Studios\TypeScript\Generator\Values;
 
 use DQ5Studios\TypeScript\Generator\Types\BooleanType;
-use DQ5Studios\TypeScript\Generator\Types\LiteralTypeInterface;
+use DQ5Studios\TypeScript\Generator\Types\Interfaces\LiteralType;
 use DQ5Studios\TypeScript\Generator\Types\NoneType;
 use DQ5Studios\TypeScript\Generator\Types\NullType;
 use DQ5Studios\TypeScript\Generator\Types\NumberType;
@@ -32,15 +32,15 @@ class ValueTest extends TestCase
      * @covers \DQ5Studios\TypeScript\Generator\Values\NumberValue
      * @covers \DQ5Studios\TypeScript\Generator\Values\StringValue
      * @covers \DQ5Studios\TypeScript\Generator\Values\UndefinedValue
-     * @covers \DQ5Studios\TypeScript\Generator\Types\LiteralType
      * @dataProvider literalList
      * @param class-string<Value> $class
      */
     public function testToLiteralType(string $class, mixed $initial, string $expected): void
     {
+        /** @psalm-suppress UnsafeInstantiation */
         $value = new $class($initial);
         $this->assertInstanceOf(Value::class, $value);
-        $this->assertInstanceOf(LiteralTypeInterface::class, $value);
+        $this->assertInstanceOf(LiteralType::class, $value);
         $type = $value->asLiteral();
         $this->assertInstanceOf(Type::class, $type);
         $this->assertSame($expected, (string) $type);
@@ -68,6 +68,7 @@ class ValueTest extends TestCase
      */
     public function testToString(string $class, mixed $initial, string $expected): void
     {
+        /** @psalm-suppress UnsafeInstantiation */
         $value = new $class($initial);
         $this->assertInstanceOf(Value::class, $value);
         $this->assertSame($expected, (string) $value);
@@ -96,6 +97,7 @@ class ValueTest extends TestCase
      */
     public function testGetType(string $class, mixed $initial, string $expected): void
     {
+        /** @psalm-suppress UnsafeInstantiation */
         $value = new $class($initial);
         $this->assertInstanceOf(Value::class, $value);
         $this->assertSame($expected, $value->getType());
@@ -113,14 +115,17 @@ class ValueTest extends TestCase
      * @covers \DQ5Studios\TypeScript\Generator\Values\NumberValue
      * @covers \DQ5Studios\TypeScript\Generator\Values\StringValue
      * @dataProvider getSetList
-     * @param class-string<Value> $class
+     * @param class-string<BooleanValue>|class-string<NumberValue>|class-string<StringValue> $class
      */
-    public function testGetSet(string $class, mixed $initial, mixed $expected): void
+    public function testGetSet(string $class, bool | int | string $initial, bool | int | string $expected): void
     {
+        /** @psalm-suppress UnsafeInstantiation */
         $value = new $class($initial);
         $this->assertInstanceOf(Value::class, $value);
+        $this->assertInstanceOf($class, $value);
         $value = $value->setValue($expected);
         $this->assertInstanceOf(Value::class, $value);
+        $this->assertInstanceOf($class, $value);
         $this->assertSame($expected, $value->getValue());
     }
 }

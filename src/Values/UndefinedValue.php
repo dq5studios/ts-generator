@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Generator\Values;
 
-use DQ5Studios\TypeScript\Generator\Types\LiteralType;
-use DQ5Studios\TypeScript\Generator\Types\LiteralTypeInterface;
-use DQ5Studios\TypeScript\Generator\Types\Type;
+use DQ5Studios\TypeScript\Generator\Types\Interfaces\LiteralType;
+use DQ5Studios\TypeScript\Generator\Types\Traits\LiteralType as TraitLiteralType;
 use DQ5Studios\TypeScript\Generator\Types\UndefinedType;
 
 /**
@@ -15,15 +14,12 @@ use DQ5Studios\TypeScript\Generator\Types\UndefinedType;
  * @template T as UndefinedType
  * @extends Value<T>
  */
-class UndefinedValue extends Value implements LiteralTypeInterface
+class UndefinedValue extends Value implements LiteralType
 {
+    use TraitLiteralType;
+
     /** @var class-string<T> */
     protected string $type = UndefinedType::class;
-
-    public function asLiteral(): Type
-    {
-        return LiteralType::from($this);
-    }
 
     public function __toString(): string
     {

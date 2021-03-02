@@ -15,15 +15,15 @@ class CommentTokenTest extends TestCase
     public function testMethods(): void
     {
         $actual = new CommentToken("mungojerrie");
-        $comment = $actual->getComment();
+        $comment = $actual->get();
         $this->assertSame("mungojerrie", $comment);
 
         $actual = new CommentToken("mungojerrie");
-        $actual->setComment("rumpelteazer");
+        $actual->set("rumpelteazer");
         $this->assertSame("/** rumpelteazer */", (string) $actual);
 
         $actual = new CommentToken("mungojerrie");
-        $actual->addComment("rumpelteazer");
+        $actual->expand("rumpelteazer");
         $expected = <<<'comment'
 /**
  * mungojerrie

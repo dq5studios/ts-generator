@@ -2,29 +2,31 @@
 
 declare(strict_types=1);
 
-namespace DQ5Studios\TypeScript\Generator\Tokens;
+namespace DQ5Studios\TypeScript\Generator\Types\Traits;
+
+use DQ5Studios\TypeScript\Generator\Tokens\CommentToken;
 
 /**
  * Attaches a comment
  */
-trait CommentTokenTrait
+trait HasComment
 {
-    private CommentToken $comment;
+    protected CommentToken | null $comment = null;
 
-    public function addComment(string $comment): self
+    public function addComment(string $comment): CommentToken
     {
         if (!isset($this->comment)) {
             $this->comment = new CommentToken($comment);
         } else {
-            $this->comment->addComment($comment);
+            $this->comment->expand($comment);
         }
-        return $this;
+        return $this->comment;
     }
 
     public function getComment(): CommentToken
     {
-        if (!isset($this->comment)) {
-            $this->comment = new CommentToken("");
+        if (is_null($this->comment)) {
+            $this->comment = new CommentToken();
         }
         return $this->comment;
     }
@@ -34,7 +36,7 @@ trait CommentTokenTrait
         if (!isset($this->comment)) {
             $this->comment = new CommentToken($comment);
         } else {
-            $this->comment->setComment($comment);
+            $this->comment->set($comment);
         }
         return $this;
     }

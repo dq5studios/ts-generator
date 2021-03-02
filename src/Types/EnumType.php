@@ -17,8 +17,7 @@ use InvalidArgumentException;
 class EnumType extends ContainerType
 {
     protected string $type = "enum";
-    protected NameToken $name;
-    /** @var list<EnumMemberToken> */
+    /** @var array<string,EnumMemberToken> */
     protected array $members = [];
     protected bool $const = false;
     protected bool $export = false;
@@ -29,7 +28,7 @@ class EnumType extends ContainerType
     /**
      * @throws InvalidArgumentException
      */
-    public function addMember(string | NameToken $name, int | float | string | Value ...$value): self
+    public function addMember(string | NameToken $name, int | float | string | Value ...$value): EnumMemberToken
     {
         if (count($value) > 1) {
             throw new InvalidArgumentException("No more that one value can be assigned at a time");
@@ -44,14 +43,12 @@ class EnumType extends ContainerType
             $member = EnumMemberToken::from($name, $value[0]);
         }
         // TODO: Error if const & computed value
-        $this->members[] = $member;
         $this->can_auto = ($member->getValue() instanceof NumberValue) || ($member->getValue() instanceof NoneValue);
-
-        return $this;
+        return $this->members[(string) $member->getName()] = $member;
     }
 
     /**
-     * @return list<EnumMemberToken>
+     * @return array<string,EnumMemberToken>
      */
     public function getMembers(): array
     {
@@ -59,17 +56,17 @@ class EnumType extends ContainerType
     }
 
     /**
-     * @param list<EnumMemberToken> $members
+     * @param array<array-key,string|EnumMemberToken> $members
      */
     public function setMembers(array $members): self
     {
         $this->members = [];
         foreach ($members as $member) {
-            /** @psalm-suppress DocblockTypeContradiction */
-            if (!($member instanceof EnumMemberToken)) {
-                throw new InvalidArgumentException();
+            if ($member instanceof EnumMemberToken) {
+                $this->addMember($member->getName(), $member->getValue());
+            } else {
+                $this->addMember($member);
             }
-            $this->addMember($member->getName(), $member->getValue());
         }
         return $this;
     }
@@ -111,10 +108,14 @@ class EnumType extends ContainerType
 
     public function __toString(): string
     {
-        $output = ($this->const) ? "const " : "";
+        $comment = (string) $this->getComment();
+        $output = !empty($comment) ? "{$comment}\n" : "";
+        $output .= $this->export ? "export " : "";
+        $output .= $this->ambient ? "declare " : "";
+        $output .= $this->const ? "const " : "";
         $output .= "enum {$this->name} {\n";
         foreach ($this->members as $value) {
-            $output .= "    {$value},\n";
+            $output .= preg_replace("/^(.*)$/m", "    $1", (string) $value) . ",\n";
         }
         $output .= "}";
         return $output;
