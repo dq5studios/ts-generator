@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Generator\Types;
 
-use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Tokens\EnumMemberToken;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanAmbient;
@@ -82,7 +81,7 @@ class EnumType extends ContainerType implements CanExport, CanAmbient
         return $this->const;
     }
 
-    public function setConst(bool $const = true): self
+    public function hasConst(bool $const = true): self
     {
         // TODO: Error if any computed values
         $this->const = $const;

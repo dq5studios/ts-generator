@@ -10,5 +10,5 @@ namespace DQ5Studios\TypeScript\Generator\Types\Interfaces;
 interface CanOptional
 {
     public function isOptional(): bool;
-    public function setOptional(bool $optional): self;
+    public function hasOptional(bool $optional = true): self;
 }

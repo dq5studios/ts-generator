@@ -10,5 +10,5 @@ namespace DQ5Studios\TypeScript\Generator\Types\Interfaces;
 interface CanExport
 {
     public function isExport(): bool;
-    public function setExport(bool $enable): self;
+    public function hasExport(bool $enable = true): self;
 }

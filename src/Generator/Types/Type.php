@@ -23,6 +23,7 @@ abstract class Type
     public const NEVER = "never";
     public const NULL = "null";
     public const NUMBER = "number";
+    public const OBJECT = "object";
     public const STRING = "string";
     public const SYMBOL = "symbol";
     public const TUPLE = "tuple";
@@ -54,6 +55,7 @@ abstract class Type
         Type::NEVER => NeverType::class,
         Type::NULL => NullType::class,
         Type::NUMBER => NumberType::class,
+        Type::OBJECT => ObjectType::class,
         Type::STRING => StringType::class,
         Type::SYMBOL => SymbolType::class,
         Type::TUPLE => TupleType::class,

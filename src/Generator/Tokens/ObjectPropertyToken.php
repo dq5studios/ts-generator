@@ -30,6 +30,6 @@ class ObjectPropertyToken extends MemberToken implements CanOptional
         $name = NameToken::from($name);
         $type = Type::from($type);
 
-        return (new self(type: $type, name: $name))->setOptional($optional);
+        return (new self(type: $type, name: $name))->hasOptional($optional);
     }
 }

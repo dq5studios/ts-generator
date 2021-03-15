@@ -10,5 +10,5 @@ namespace DQ5Studios\TypeScript\Generator\Types\Interfaces;
 interface CanAmbient
 {
     public function isAmbient(): bool;
-    public function setAmbient(bool $enable): self;
+    public function hasAmbient(bool $enable = true): self;
 }

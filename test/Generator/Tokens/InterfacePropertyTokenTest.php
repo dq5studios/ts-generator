@@ -22,7 +22,7 @@ class InterfacePropertyTokenTest extends TestCase
         $actual = InterfacePropertyToken::from(NameToken::from("skimbleshanks"), StringType::class);
         $this->assertSame("skimbleshanks: string", (string) $actual);
 
-        $actual = InterfacePropertyToken::from(NameToken::from("skimbleshanks"), new StringType())->setReadonly(true);
+        $actual = InterfacePropertyToken::from(NameToken::from("skimbleshanks"), new StringType())->hasReadonly(true);
         $this->assertSame("readonly skimbleshanks: string", (string) $actual);
         $this->assertTrue($actual->isReadonly());
 

@@ -16,7 +16,7 @@ trait HasAmbient
         return $this->ambient;
     }
 
-    public function setAmbient(bool $enable): self
+    public function hasAmbient(bool $enable = true): self
     {
         $this->ambient = $enable;
         return $this;

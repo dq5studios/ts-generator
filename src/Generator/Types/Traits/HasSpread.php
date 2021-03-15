@@ -16,7 +16,7 @@ trait HasSpread
         return $this->spread;
     }
 
-    public function setSpread(bool $spread): self
+    public function hasSpread(bool $spread = true): self
     {
         $this->spread = $spread;
         return $this;

@@ -6,7 +6,9 @@ namespace DQ5Studios\TypeScript\Generator\Types\Traits;
 
 use DQ5Studios\TypeScript\Generator\Tokens\FunctionSignatureToken;
 use DQ5Studios\TypeScript\Generator\Tokens\MemberToken;
+use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Types\Type;
+use DQ5Studios\TypeScript\Generator\Types\VoidType;
 
 /**
  * Function signature
@@ -18,8 +20,12 @@ trait HasFunctionSignature
      */
     public function addCallableSignature(string | Type ...$types): MemberToken
     {
-        $type = array_pop($types);
-        $name = FunctionSignatureToken::of(...$types);
+        if (empty($types)) {
+            $type = new VoidType();
+        } else {
+            $type = array_pop($types);
+        }
+        $name = FunctionSignatureToken::of("callable", ...$types)->hasCallable(true);
         return $this->addProperty($name, $type);
     }
 
@@ -28,9 +34,27 @@ trait HasFunctionSignature
      */
     public function addConstructorSignature(string | Type ...$types): MemberToken
     {
-        // TODO: No property named 'this'
-        $type = array_pop($types);
-        $name = FunctionSignatureToken::of(...$types)->setConstructor(true);
+        // TODO: Make sure no property named 'this'
+        if (empty($types)) {
+            $type = new VoidType();
+        } else {
+            $type = array_pop($types);
+        }
+        $name = FunctionSignatureToken::of("constructor", ...$types)->hasConstructor(true);
+        return $this->addProperty($name, $type);
+    }
+
+    /**
+     * @param class-string<Type>|Type|Type::* $types
+     */
+    public function addMethodSignature(string | NameToken $label, string | Type ...$types): MemberToken
+    {
+        if (empty($types)) {
+            $type = new VoidType();
+        } else {
+            $type = array_pop($types);
+        }
+        $name = FunctionSignatureToken::of($label, ...$types)->hasMethod(true);
         return $this->addProperty($name, $type);
     }
 }

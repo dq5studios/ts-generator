@@ -16,7 +16,7 @@ trait HasExport
         return $this->export;
     }
 
-    public function setExport(bool $enable): self
+    public function hasExport(bool $enable = true): self
     {
         $this->export = $enable;
         return $this;

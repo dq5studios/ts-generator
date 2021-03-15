@@ -96,8 +96,8 @@ class EnumTypeTest extends TestCase
         $actual->addMember("skimbleshanks");
         $actual->addMember("grizabella");
         $actual->addMember("mungojerrie");
-        $actual->setExport(true);
-        $actual->setConst(true);
+        $actual->hasExport(true);
+        $actual->hasConst(true);
 
         $expected = <<<'ENUM'
 export const enum jellicle {
@@ -112,7 +112,7 @@ ENUM;
         $actual->addMember("grizabella", 5);
         $actual->addMember("mungojerrie");
         $actual->addMember("skimbleshanks", "railway cat");
-        $actual->setAmbient(true);
+        $actual->hasAmbient(true);
 
         $expected = <<<'ENUM'
 declare enum jellicle {
@@ -127,27 +127,27 @@ ENUM;
     public function testExport(): void
     {
         $actual = new EnumType("jellicle");
-        $actual->setExport(true);
+        $actual->hasExport(true);
         $this->assertTrue($actual->isExport());
-        $actual->setExport(false);
+        $actual->hasExport(false);
         $this->assertFalse($actual->isExport());
     }
 
     public function testAmbient(): void
     {
         $actual = new EnumType("jellicle");
-        $actual->setAmbient(true);
+        $actual->hasAmbient(true);
         $this->assertTrue($actual->isAmbient());
-        $actual->setAmbient(false);
+        $actual->hasAmbient(false);
         $this->assertFalse($actual->isAmbient());
     }
 
     public function testConst(): void
     {
         $actual = new EnumType("jellicle");
-        $actual->setConst(true);
+        $actual->hasConst(true);
         $this->assertTrue($actual->isConst());
-        $actual->setConst(false);
+        $actual->hasConst(false);
         $this->assertFalse($actual->isConst());
     }
 }

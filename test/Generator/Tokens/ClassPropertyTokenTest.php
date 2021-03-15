@@ -22,7 +22,7 @@ class ClassPropertyTokenTest extends TestCase
         $actual = ClassPropertyToken::from(NameToken::from("skimbleshanks"), StringType::class, "the railway cat");
         $this->assertSame("skimbleshanks: string = \"the railway cat\"", (string) $actual);
 
-        $actual = ClassPropertyToken::from(NameToken::from("skimbleshanks"), new StringType())->setReadonly(true);
+        $actual = ClassPropertyToken::from(NameToken::from("skimbleshanks"), new StringType())->hasReadonly(true);
         $this->assertSame("readonly skimbleshanks: string", (string) $actual);
         $this->assertTrue($actual->isReadonly());
 

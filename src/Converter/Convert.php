@@ -147,7 +147,7 @@ class Convert
                 $p->addComment($prop["comment"]);
             }
             if (isset($prop["readonly"])) {
-                $p->setReadonly($prop["readonly"]);
+                $p->hasReadonly($prop["readonly"]);
             }
         }
         return $class;
@@ -166,7 +166,7 @@ class Convert
                 $p->addComment($prop["comment"]);
             }
             if (isset($prop["readonly"])) {
-                $p->setReadonly($prop["readonly"]);
+                $p->hasReadonly($prop["readonly"]);
             }
         }
         return $interface;

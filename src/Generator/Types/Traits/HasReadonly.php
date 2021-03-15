@@ -16,7 +16,7 @@ trait HasReadonly
         return $this->readonly;
     }
 
-    public function setReadonly(bool $readonly): self
+    public function hasReadonly(bool $readonly = true): self
     {
         $this->readonly = $readonly;
         return $this;

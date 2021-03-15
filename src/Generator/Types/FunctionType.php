@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Generator\Types;
 
-use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanParameters;
 use DQ5Studios\TypeScript\Generator\Types\Traits\HasParameters;
 
@@ -16,7 +15,6 @@ class FunctionType extends ComplexType implements CanParameters
     use HasParameters;
 
     protected string $type = "Function";
-    protected bool $has_sig = false;
 
     /** @var Type|null */
     protected Type | null $return = null;

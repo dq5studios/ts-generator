@@ -10,5 +10,5 @@ namespace DQ5Studios\TypeScript\Generator\Types\Interfaces;
 interface CanSpread
 {
     public function isSpread(): bool;
-    public function setSpread(bool $spread): self;
+    public function hasSpread(bool $spread = true): self;
 }

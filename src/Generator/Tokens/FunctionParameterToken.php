@@ -40,6 +40,6 @@ class FunctionParameterToken extends MemberToken implements CanOptional, CanSpre
         }
         $name = NameToken::from($name);
 
-        return (new self(type: $type, name: $name))->setOptional($optional)->setSpread($spread);
+        return (new self(type: $type, name: $name))->hasOptional($optional)->hasSpread($spread);
     }
 }

@@ -6,7 +6,6 @@ namespace DQ5Studios\TypeScript\Generator\Types\Traits;
 
 use DQ5Studios\TypeScript\Generator\Types\ClassType;
 use DQ5Studios\TypeScript\Generator\Types\InterfaceType;
-use InvalidArgumentException;
 
 /**
  * Extendable

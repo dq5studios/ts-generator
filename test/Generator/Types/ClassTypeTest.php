@@ -81,7 +81,7 @@ class ClassTypeTest extends TestCase
     public function testToString(): void
     {
         $actual = new ClassType("jellicle");
-        $actual->setAmbient(true);
+        $actual->hasAmbient(true);
         $actual->addProperty("skimbleshanks", NumberType::class, 19);
         $actual->addProperty("grizabella", new StringType(), "glamour cat");
         $actual->addProperty(
@@ -126,7 +126,7 @@ ENUM;
         $subtype = new ClassType("cat");
         $subtype->addProperty("mungojerrie", NumberType::class, 18);
         $actual->addProperty("rumpelteazer", $subtype, new NoneValue());
-        $actual->setExport(true);
+        $actual->hasExport(true);
         $extend = new ClassType("jellylorum");
         $actual->addExtend($extend);
 
@@ -141,18 +141,18 @@ ENUM;
     public function testExport(): void
     {
         $actual = new ClassType("jellicle");
-        $actual->setExport(true);
+        $actual->hasExport(true);
         $this->assertTrue($actual->isExport());
-        $actual->setExport(false);
+        $actual->hasExport(false);
         $this->assertFalse($actual->isExport());
     }
 
     public function testAmbient(): void
     {
         $actual = new ClassType("jellicle");
-        $actual->setAmbient(true);
+        $actual->hasAmbient(true);
         $this->assertTrue($actual->isAmbient());
-        $actual->setAmbient(false);
+        $actual->hasAmbient(false);
         $this->assertFalse($actual->isAmbient());
     }
 
@@ -181,16 +181,12 @@ ENUM;
         $actual = new ClassType("jellicle");
         $actual->addIndexSignature(Type::STRING, Type::NUMBER);
         $actual->addIndexSignature(Type::NUMBER, Type::STRING);
-        $actual->addCallableSignature(Type::STRING, Type::STRING, Type::VOID);
-        $actual->addConstructorSignature(Type::NUMBER, Type::VOID);
         $actual->addProperty("skimbleshanks", "string", "the railway cat");
 
         $expected = <<<'ENUM'
 class jellicle {
     [index: string]: number;
     [index: number]: string;
-    (arg_0: string, arg_1: string): void;
-    new(arg_0: number): void;
     skimbleshanks: string = "the railway cat";
 }
 ENUM;

@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Generator\Types;
 
-use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Tokens\ClassPropertyToken;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanAmbient;
 use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanExport;
 use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanExtend;
-use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanFunctionSignature;
+use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanImplement;
 use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanIndexSignature;
 use DQ5Studios\TypeScript\Generator\Types\Traits\HasAmbient;
 use DQ5Studios\TypeScript\Generator\Types\Traits\HasExport;
 use DQ5Studios\TypeScript\Generator\Types\Traits\HasExtend;
-use DQ5Studios\TypeScript\Generator\Types\Traits\HasFunctionSignature;
+use DQ5Studios\TypeScript\Generator\Types\Traits\HasImplement;
 use DQ5Studios\TypeScript\Generator\Types\Traits\HasIndexSignature;
 use DQ5Studios\TypeScript\Generator\Values\NoneValue;
 use InvalidArgumentException;
@@ -23,15 +22,14 @@ use InvalidArgumentException;
 /**
  * The class type, equivalent to PHP class
  */
-class ClassType extends ContainerType implements CanExtend, CanExport, CanAmbient, CanIndexSignature, CanFunctionSignature
+class ClassType extends ContainerType implements CanExtend, CanImplement, CanExport, CanAmbient, CanIndexSignature
 {
     use HasExtend;
+    use HasImplement;
     use HasExport;
     use HasAmbient;
     use HasIndexSignature;
-    use HasFunctionSignature;
 
-    // TODO: Add Implements
     protected string $type = "class";
     /** @var array<string,ClassPropertyToken> */
     protected array $properties = [];
@@ -41,7 +39,7 @@ class ClassType extends ContainerType implements CanExtend, CanExport, CanAmbien
      */
     public function addProperty(string | NameToken $name, string | Type $type, mixed $value = null): ClassPropertyToken
     {
-        // TODO: Use spread operator
+        // TODO: Use spread operator since value isn't required
         if (is_null($value)) {
             $value = new NoneValue();
         }

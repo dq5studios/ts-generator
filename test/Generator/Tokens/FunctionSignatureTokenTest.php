@@ -23,8 +23,8 @@ class FunctionSignatureTokenTest extends TestCase
     public function testSetConstructor(): void
     {
         $actual = FunctionSignatureToken::of("string", "string");
-        $actual->setConstructor(true);
-        $this->assertSame("new(arg_0: string, arg_1: string)", (string) $actual);
+        $actual->hasConstructor(true);
+        $this->assertSame("new (arg_0: string, arg_1: string)", (string) $actual);
         $this->assertTrue($actual->isConstructor());
     }
 

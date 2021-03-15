@@ -79,6 +79,13 @@ class Printer
             );
             $output .= " extends " . implode(", ", $extends);
         }
+        if (!empty($class->getImplement())) {
+            $implements = array_map(
+                fn(CanName $type): string => $this->printName($type->getName()),
+                $class->getImplement(),
+            );
+            $output .= " implements " . implode(", ", $implements);
+        }
         $output .= $this->open_bracket . "\n";
         foreach ($class->getProperties() as $prop) {
             $output .= preg_replace("/^(.*)$/m", $this->indent . "$1", $this->printMemberToken($prop));
@@ -146,7 +153,8 @@ class Printer
 
     public function printFunctionSignature(FunctionSignatureToken $func): string
     {
-        $output = ($func->isConstructor() ? "new" : "");
+        $output = ($func->isConstructor() ? "new " : "");
+        $output .= ($func->isMethod() ? $func->getName() : "");
         $callback = [$this, "printMemberToken"];
         /** @var array<string,string> */
         $param = array_map($callback, $func->getParameters());

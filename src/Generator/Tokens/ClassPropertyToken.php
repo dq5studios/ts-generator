@@ -20,12 +20,19 @@ class ClassPropertyToken extends MemberToken implements CanOptional, CanReadonly
     use HasOptional;
     use HasReadonly;
 
+    public const VISIBILITY = [
+        "public" => 1,
+        "protected" => 2,
+        "private" => 3,
+    ];
+
+
     /**
      * @param class-string<Type>|Type|Type::* $type
      */
     public static function from(string | NameToken $name, string | Type $type, mixed $value = null): self
     {
-        // TODO: Use spread operator
+        // TODO: Use spread operator since value is option
         if (is_null($value)) {
             $value = new NoneValue();
         }
@@ -40,10 +47,11 @@ class ClassPropertyToken extends MemberToken implements CanOptional, CanReadonly
         $type = Type::from($type);
         $value = Value::from($value);
 
-        return (new self(type: $type, name: $name, value: $value))->setOptional($optional);
+        return (new self(type: $type, name: $name, value: $value))->hasOptional($optional);
     }
 
     // TODO: Set visibility
     // TODO: Set get/set
     // TODO: construtor
+    // TODO: static
 }

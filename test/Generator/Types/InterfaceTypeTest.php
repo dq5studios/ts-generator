@@ -80,7 +80,7 @@ class InterfaceTypeTest extends TestCase
     public function testToString(): void
     {
         $actual = new InterfaceType("jellicle");
-        $actual->setAmbient(true);
+        $actual->hasAmbient(true);
         $actual->addProperty("skimbleshanks", NumberType::class);
         $actual->addProperty("grizabella", new StringType());
         $actual->addProperty(
@@ -124,7 +124,7 @@ ENUM;
         $subtype = new InterfaceType("cat");
         $subtype->addProperty("mungojerrie", NumberType::class);
         $actual->addProperty("rumpelteazer", $subtype);
-        $actual->setExport(true);
+        $actual->hasExport(true);
         $extend = new InterfaceType("jellylorum");
         $actual->addExtend($extend);
 
@@ -139,18 +139,18 @@ ENUM;
     public function testExport(): void
     {
         $actual = new InterfaceType("jellicle");
-        $actual->setExport(true);
+        $actual->hasExport(true);
         $this->assertTrue($actual->isExport());
-        $actual->setExport(false);
+        $actual->hasExport(false);
         $this->assertFalse($actual->isExport());
     }
 
     public function testAmbient(): void
     {
         $actual = new InterfaceType("jellicle");
-        $actual->setAmbient(true);
+        $actual->hasAmbient(true);
         $this->assertTrue($actual->isAmbient());
-        $actual->setAmbient(false);
+        $actual->hasAmbient(false);
         $this->assertFalse($actual->isAmbient());
     }
 
@@ -188,7 +188,7 @@ interface jellicle {
     [index: string]: number;
     [index: number]: string;
     (arg_0: string, arg_1: string): void;
-    new(arg_0: number): void;
+    new (arg_0: number): void;
     skimbleshanks: string;
 }
 ENUM;

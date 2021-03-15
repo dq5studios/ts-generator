@@ -62,7 +62,7 @@ class FunctionTypeTest extends TestCase
         $this->assertSame("(skimbleshanks: string) => void", (string) $function);
         $param = $function->addParameter(new NumberType());
         $this->assertSame("(skimbleshanks: string, arg_1: number) => void", (string) $function);
-        $param->setOptional(true);
+        $param->hasOptional(true);
         $param->setName("rumtumtugger");
         $this->assertSame("(skimbleshanks: string, rumtumtugger?: number) => void", (string) $function);
     }

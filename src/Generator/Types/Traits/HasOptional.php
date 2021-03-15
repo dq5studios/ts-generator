@@ -16,7 +16,7 @@ trait HasOptional
         return $this->optional;
     }
 
-    public function setOptional(bool $optional): self
+    public function hasOptional(bool $optional = true): self
     {
         $this->optional = $optional;
         return $this;
