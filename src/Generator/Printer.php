@@ -155,6 +155,7 @@ class Printer
     {
         $output = ($func->isConstructor() ? "new " : "");
         $output .= ($func->isMethod() ? $func->getName() : "");
+        // $output .= ((!$func->isCallable() && !$func->isConstructor() && $func->getName()) ? $func->getName() : "");
         $callback = [$this, "printMemberToken"];
         /** @var array<string,string> */
         $param = array_map($callback, $func->getParameters());
@@ -236,7 +237,9 @@ class Printer
         if (count($types) > 1) {
             $output .= "(";
         }
-        $output .= join($type->getSeperator(), array_map($callback, $type->getContents()));
+        /** @var list<string> */
+        $mapping = array_map($callback, $type->getContents());
+        $output .= join($type->getSeperator(), $mapping);
         if (count($types) > 1) {
             $output .= ")";
         }
@@ -248,10 +251,8 @@ class Printer
         switch (true) {
             case $name instanceof IndexSignatureToken:
                 return $this->printIndexSignature($name);
-                break;
             case $name instanceof FunctionSignatureToken:
                 return $this->printFunctionSignature($name);
-                break;
         }
         return $name->getName();
     }
@@ -310,7 +311,9 @@ class Printer
     public function printTuple(TupleType $tuple): string
     {
         $callback = [$this, "printType"];
-        return "[" . join($tuple->getSeperator(), array_map($callback, $tuple->getContents())) . "]";
+        /** @var list<string> */
+        $mapping = array_map($callback, $tuple->getContents());
+        return "[" . join($tuple->getSeperator(), $mapping) . "]";
     }
 
     public function printType(Type $type): string
@@ -318,28 +321,20 @@ class Printer
         switch (true) {
             case $type instanceof ArrayType:
                 return $this->printArray($type);
-                break;
             case $type instanceof ClassType:
                 return $this->printClass($type);
-                break;
             case $type instanceof EnumType:
                 return $this->printEnum($type);
-                break;
             case $type instanceof FunctionType:
                 return $this->printFunction($type);
-                break;
             case $type instanceof InterfaceType:
                 return $this->printInterface($type);
-                break;
             case $type instanceof ObjectType:
                 return $this->printObject($type);
-                break;
             case $type instanceof TupleType:
                 return $this->printTuple($type);
-                break;
             case $type instanceof MultiType:
                 return $this->printMultiType($type);
-                break;
         }
         return $type->getType();
     }
@@ -349,28 +344,20 @@ class Printer
         switch (true) {
             case $value instanceof ArrayValue:
                 return $this->printArrayValue($value);
-                break;
             case $value instanceof BooleanValue:
                 return ($value->getValue() ? "true" : "false");
-                break;
             case $value instanceof NoneValue:
                 return "";
-                break;
             case $value instanceof NullValue:
                 return "null";
-                break;
             case $value instanceof NumberValue:
                 return (string) $value->getValue();
-                break;
             case $value instanceof ObjectValue:
                 return $this->printObjectValue($value);
-                break;
             case $value instanceof StringValue:
                 return "\"{$value->getValue()}\"";
-                break;
             case $value instanceof UndefinedValue:
                 return "undefined";
-                break;
         }
         return (string) $value;
     }
