@@ -20,7 +20,7 @@ class FunctionSignatureToken extends NameToken implements CanParameters
     protected bool $method = false;
 
     /**
-     * @param class-string<Type>|Type|Type::* $types
+     * @param class-string<Type>|Type|Type::* ...$types
      */
     public static function of(string | NameToken $label, string | Type ...$types): self
     {

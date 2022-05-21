@@ -40,7 +40,7 @@ trait HasParameters
     }
 
     /**
-     * @param list<class-string<Type>|Type|Type::*> $parameters
+     * @param array<array-key,class-string<Type>|Type|Type::*> $parameters
      */
     public function setParameters(array $parameters): self
     {
