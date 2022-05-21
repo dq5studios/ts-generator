@@ -1,0 +1,59 @@
+{
+    "name": "dq5studios/ts-generator",
+    "description": "Generate TypeScript files",
+    "type": "project",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Ben Dusinberre",
+            "email": "ben@dq5studios.com"
+        }
+    ],
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "require": {
+        "php": ">=8.0",
+        "symfony/polyfill-php81": "^1.22",
+        "symfony/property-info": "^6.0"
+    },
+    "replace": {
+        "dq5studios/ts-generator": "~1.0"
+    },
+    "require-dev": {
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
+        "mikey179/vfsstream": "^1.6",
+        "nette/php-generator": "^4.0",
+        "nikic/php-parser": "^4.10",
+        "phpcompatibility/php-compatibility": "^9.3",
+        "phpunit/php-code-coverage": "^9.2",
+        "phpunit/phpunit": "^9.5",
+        "psalm/attributes": "*",
+        "squizlabs/php_codesniffer": "^3.5",
+        "symfony/console": "^6.0",
+        "vimeo/psalm": "^4.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "DQ5Studios\\TypeScript\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "DQ5Studios\\TypeScript\\": "test"
+        }
+    },
+    "scripts": {
+        "check": "phpcs -pns --colors --parallel=2 --standard=PSR12 src/ --exclude=Generic.WhiteSpace.ScopeIndent,Squiz.WhiteSpace.ScopeClosingBrace,Squiz.WhiteSpace.ScopeKeywordSpacing",
+        "analyze": "psalm --threads=2 --no-diff --stats",
+        "tests": "phpunit --testdox --coverage-text",
+        "all-tests": [
+            "@check",
+            "@analyze",
+            "@tests"
+        ]
+    }
+}
