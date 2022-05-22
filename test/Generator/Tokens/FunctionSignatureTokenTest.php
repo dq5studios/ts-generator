@@ -16,13 +16,13 @@ class FunctionSignatureTokenTest extends TestCase
 {
     public function testOf(): void
     {
-        $actual = FunctionSignatureToken::of("string", "string");
+        $actual = FunctionSignatureToken::of("fn", "string", "string");
         $this->assertSame("(arg_0: string, arg_1: string)", (string) $actual);
     }
 
     public function testSetConstructor(): void
     {
-        $actual = FunctionSignatureToken::of("string", "string");
+        $actual = FunctionSignatureToken::of("fn", "string", "string");
         $actual->hasConstructor(true);
         $this->assertSame("new (arg_0: string, arg_1: string)", (string) $actual);
         $this->assertTrue($actual->isConstructor());

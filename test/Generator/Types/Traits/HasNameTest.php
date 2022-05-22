@@ -6,7 +6,6 @@ namespace DQ5Studios\TypeScript\Generator\Types\Traits;
 
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Types\Traits\HasName;
-use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -21,7 +20,7 @@ class HasNameTest extends TestCase
         $mock = $this->getMockForTrait(HasName::class);
         try {
             (string) $mock->getName();
-        } catch (Exception $e) {
+        } catch (InvalidArgumentException $e) {
             $this->assertInstanceOf(InvalidArgumentException::class, $e);
         }
 

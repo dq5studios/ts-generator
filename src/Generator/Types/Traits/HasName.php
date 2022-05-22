@@ -22,7 +22,7 @@ trait HasName
 
     public function getName(): NameToken
     {
-        if (is_null($this->name)) {
+        if (!isset($this->name)) {
             throw new InvalidArgumentException("Name has not been set yet");
         }
         return $this->name;
