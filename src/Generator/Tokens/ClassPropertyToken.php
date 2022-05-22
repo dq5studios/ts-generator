@@ -26,7 +26,6 @@ class ClassPropertyToken extends MemberToken implements CanOptional, CanReadonly
         "private" => 3,
     ];
 
-
     /**
      * @param class-string<Type>|Type|Type::* $type
      */
@@ -50,6 +49,7 @@ class ClassPropertyToken extends MemberToken implements CanOptional, CanReadonly
         return (new self(type: $type, name: $name, value: $value))->hasOptional($optional);
     }
 
+    // TODO: Set readonly
     // TODO: Set visibility
     // TODO: Set get/set
     // TODO: construtor

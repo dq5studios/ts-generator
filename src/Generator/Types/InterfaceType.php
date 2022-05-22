@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Generator\Types;
 
+use Attribute;
 use DQ5Studios\TypeScript\Generator\Tokens\InterfacePropertyToken;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanAmbient;
@@ -21,6 +22,7 @@ use InvalidArgumentException;
 /**
  * The interface type, no PHP equivalent
  */
+#[Attribute(Attribute::TARGET_CLASS)]
 class InterfaceType extends ContainerType implements CanExtend, CanExport, CanAmbient, CanIndexSignature, CanFunctionSignature
 {
     use HasExtend;

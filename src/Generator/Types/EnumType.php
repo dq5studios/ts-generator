@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Generator\Types;
 
+use Attribute;
 use DQ5Studios\TypeScript\Generator\Tokens\EnumMemberToken;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanAmbient;
@@ -18,6 +19,7 @@ use InvalidArgumentException;
 /**
  * The enum type, equivalent to PHP enum
  */
+#[Attribute(Attribute::TARGET_CLASS)]
 class EnumType extends ContainerType implements CanExport, CanAmbient
 {
     use HasExport;
