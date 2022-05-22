@@ -18,8 +18,10 @@ use DQ5Studios\TypeScript\Generator\Types\UnknownType;
 use DQ5Studios\TypeScript\Generator\Types\VoidType;
 use DQ5Studios\TypeScript\Generator\Values\NoneValue;
 use InvalidArgumentException;
+use ReflectionAttribute;
 use ReflectionClass;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
+use Symfony\Component\PropertyInfo\Extractor\PhpStanExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\PropertyInfo\Type as SymfonyType;
@@ -43,6 +45,8 @@ class Convert
         private array $implements = [],
         /** @var list<memberParts> */
         private array $members = [],
+        /** @var ReflectionAttribute[] */
+        private array $attributes = [],
     ) {
     }
 
@@ -50,7 +54,7 @@ class Convert
      * @param class-string|object $class
      * @throws InvalidArgumentException
      */
-    public static function fromPHP(string | object $class): self
+    public static function fromPHP(string | object $class): Type
     {
         if (is_string($class)) {
             if (!class_exists($class)) {
@@ -78,10 +82,13 @@ class Convert
 
         $php_doc = new PhpDocExtractor();
         $ref = new ReflectionExtractor();
+        // $stan = new PhpStanExtractor();
         $info = new PropertyInfoExtractor(
-            [$ref, $php_doc],
+            [$ref],
             [$php_doc, $ref],
             [$php_doc],
+            [$ref],
+            [$ref],
         );
 
         $members = [];
@@ -124,7 +131,26 @@ class Convert
             $members[] = $m;
         }
 
-        return new self($class_name, $extends, $implements, $members);
+        // echo $reflection->getDocComment();
+        // print_r($info->getProperties($class));
+        // $info->getTypes();
+
+        $attributes = $reflection->getAttributes();
+
+        $type = new self($class_name, $extends, $implements, $members, $attributes);
+
+        foreach ($type->attributes as $attr) {
+            if (EnumType::class === $attr->getName()) {
+                return $type->toEnum();
+            }
+            if (InterfaceType::class === $attr->getName()) {
+                return $type->toInterface();
+            }
+            if (ClassType::class === $attr->getName()) {
+                return $type->toClass();
+            }
+        }
+        return $type->toClass();
     }
 
     public function toClass(): ClassType
@@ -137,7 +163,6 @@ class Convert
         // if (!empty($this->implements)) {
         //     $class->addImplement(new ClassType($this->implements));
         // }
-        /** @var memberParts */
         foreach ($this->members as $prop) {
             if (!isset($prop["value"])) {
                 $prop["value"] = new NoneValue();
@@ -159,7 +184,6 @@ class Convert
         if (!is_null($this->extends)) {
             $interface->addExtend(new InterfaceType($this->extends));
         }
-        /** @var memberParts */
         foreach ($this->members as $prop) {
             $p = $interface->addProperty($prop["name"], $prop["type"]);
             if (isset($prop["comment"])) {
@@ -175,7 +199,6 @@ class Convert
     public function toEnum(): EnumType
     {
         $enum = new EnumType($this->name);
-        /** @var memberParts */
         foreach ($this->members as $prop) {
             if (isset($prop["value"]) && (is_numeric($prop["value"]) || is_string($prop["value"]))) {
                 $p = $enum->addMember($prop["name"], $prop["value"]);
@@ -246,15 +269,15 @@ class Convert
                 continue;
             }
             if ($type->isCollection()) {
-                $key = $type->getCollectionKeyType();
+                $key = $type->getCollectionKeyTypes();
                 $typed_key = Type::from(Type::NUMBER);
-                if (!is_null($key)) {
-                    $typed_key = Convert::typeResolve([$key]);
+                if (!empty($key)) {
+                    $typed_key = Convert::typeResolve($key);
                 }
-                $value = $type->getCollectionValueType();
+                $value = $type->getCollectionValueTypes();
                 $typed_value = new UnknownType();
-                if (!is_null($value)) {
-                    $typed_value = Convert::typeResolve([$value]);
+                if (!empty($value)) {
+                    $typed_value = Convert::typeResolve($value);
                 }
                 if ($typed_key instanceof NumberType) {
                     $type_list[] = ArrayType::of($typed_value);
@@ -268,7 +291,7 @@ class Convert
             $type_list[] = new UnknownType();
         }
         if (!empty($type_list)) {
-            if (count($type_list) === 1) {
+            if (1 === count($type_list)) {
                 return $type_list[0];
             }
             return UnionType::of(...$type_list);
