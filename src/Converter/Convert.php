@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace DQ5Studios\TypeScript\Converter;
 
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
+use DQ5Studios\TypeScript\Generator\Tokens\VisibilityToken;
+use DQ5Studios\TypeScript\Generator\Tokens\VisiblityToken;
 use DQ5Studios\TypeScript\Generator\Types\ArrayType;
 use DQ5Studios\TypeScript\Generator\Types\ClassType;
 use DQ5Studios\TypeScript\Generator\Types\EnumType;
@@ -30,6 +32,7 @@ use Symfony\Component\PropertyInfo\Type as SymfonyType;
  * @psalm-type memberParts = array{
  *      name:NameToken,
  *      type:Type,
+ *      visibility:VisibilityToken::PUBLIC|VisibilityToken::PROTECTED|VisibilityToken::PRIVATE,
  *      value?:mixed,
  *      comment?:string,
  *      readonly?:boolean
@@ -101,9 +104,15 @@ class Convert
             } else {
                 $type = Convert::typeResolve($type_detail);
             }
+            $visibility = match (true) {
+                $prop->isPublic() => VisibilityToken::PUBLIC,
+                $prop->isProtected() => VisibilityToken::PROTECTED,
+                $prop->isPrivate() => VisibilityToken::PRIVATE,
+            };
             $m = [
                 "name" => $p_name,
                 "type" => $type,
+                "visibility" => $visibility,
             ];
             if ($prop->hasDefaultValue()) {
                 /** @var mixed */
@@ -174,6 +183,7 @@ class Convert
             if (isset($prop["readonly"])) {
                 $p->hasReadonly($prop["readonly"]);
             }
+            $p->setVisibility($prop["visibility"]);
         }
         return $class;
     }

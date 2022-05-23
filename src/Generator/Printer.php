@@ -9,6 +9,7 @@ use DQ5Studios\TypeScript\Generator\Tokens\FunctionSignatureToken;
 use DQ5Studios\TypeScript\Generator\Tokens\IndexSignatureToken;
 use DQ5Studios\TypeScript\Generator\Tokens\MemberToken;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
+use DQ5Studios\TypeScript\Generator\Tokens\VisibilityToken;
 use DQ5Studios\TypeScript\Generator\Types\ArrayType;
 use DQ5Studios\TypeScript\Generator\Types\ClassType;
 use DQ5Studios\TypeScript\Generator\Types\EnumType;
@@ -17,6 +18,8 @@ use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanName;
 use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanOptional;
 use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanReadonly;
 use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanSpread;
+use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanStatic;
+use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanVisibility;
 use DQ5Studios\TypeScript\Generator\Types\InterfaceType;
 use DQ5Studios\TypeScript\Generator\Types\MultiType;
 use DQ5Studios\TypeScript\Generator\Types\NoneType;
@@ -200,8 +203,25 @@ class Printer
         $value = $token->getValue();
         $type = $token->getType();
         if ($token instanceof CanReadonly) {
+            // TODO: Check type is not fn
+            // TODO: Confirm class/interface
             if ($token->isReadonly()) {
                 $output .= "readonly ";
+            }
+        }
+        if ($token instanceof CanStatic) {
+            // TODO: Confirm class/interface
+            if ($token->isStatic()) {
+                $output .= "static ";
+            }
+        }
+        if ($token instanceof CanVisibility) {
+            if ($visibility = $token->getVisibility()) {
+                $output .= match ($visibility->get()) {
+                    VisibilityToken::PUBLIC => "public ",
+                    VisibilityToken::PROTECTED => "protected ",
+                    VisibilityToken::PRIVATE => "private ",
+                };
             }
         }
         if ($value instanceof NoneValue) {
