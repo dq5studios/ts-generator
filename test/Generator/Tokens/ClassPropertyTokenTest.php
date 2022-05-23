@@ -26,8 +26,24 @@ class ClassPropertyTokenTest extends TestCase
         $this->assertSame("readonly skimbleshanks: string", (string) $actual);
         $this->assertTrue($actual->isReadonly());
 
+        $actual = ClassPropertyToken::from("skimbleshanks", new StringType(), readonly: true);
+        $this->assertSame("readonly skimbleshanks: string", (string) $actual);
+        $this->assertTrue($actual->isReadonly());
+
+        $actual = ClassPropertyToken::from(NameToken::from("skimbleshanks"), new StringType())->hasStatic(true);
+        $this->assertSame("static skimbleshanks: string", (string) $actual);
+        $this->assertTrue($actual->isStatic());
+
+        $actual = ClassPropertyToken::from("skimbleshanks", new StringType(), static: true);
+        $this->assertSame("static skimbleshanks: string", (string) $actual);
+        $this->assertTrue($actual->isStatic());
+
         $actual = ClassPropertyToken::from("skimbleshanks", (new StringValue("railway cat"))->asLiteral());
         $this->assertSame("skimbleshanks: \"railway cat\"", (string) $actual);
+
+        $actual = ClassPropertyToken::from("skimbleshanks", new StringType(), optional: true);
+        $this->assertSame("skimbleshanks?: string", (string) $actual);
+        $this->assertTrue($actual->isOptional());
 
         $actual = ClassPropertyToken::from("skimbleshanks?", (new StringValue("railway cat"))->asLiteral());
         $this->assertSame("skimbleshanks?: \"railway cat\"", (string) $actual);

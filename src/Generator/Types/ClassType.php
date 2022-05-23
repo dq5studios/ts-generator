@@ -41,7 +41,6 @@ class ClassType extends ContainerType implements CanExtend, CanImplement, CanExp
      */
     public function addProperty(string | NameToken $name, string | Type $type, mixed $value = null): ClassPropertyToken
     {
-        // TODO: Use spread operator since value isn't required
         if (is_null($value)) {
             $value = new NoneValue();
         }
