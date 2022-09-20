@@ -25,6 +25,7 @@
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
+        "friendsofphp/php-cs-fixer": "^3.11",
         "mikey179/vfsstream": "^1.6",
         "nette/php-generator": "^4.0",
         "nikic/php-parser": "^4.10",
