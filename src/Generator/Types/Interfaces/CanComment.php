@@ -12,6 +12,8 @@ use DQ5Studios\TypeScript\Generator\Tokens\CommentToken;
 interface CanComment
 {
     public function addComment(string $comment): CommentToken;
+
     public function getComment(): CommentToken;
+
     public function setComment(string $comment): self;
 }

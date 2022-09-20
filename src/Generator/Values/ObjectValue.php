@@ -10,13 +10,14 @@ use DQ5Studios\TypeScript\Generator\Types\ObjectType;
  * A string value
  *
  * @template T as ObjectType
+ *
  * @extends Value<T>
  */
 class ObjectValue extends Value
 {
     /** @var class-string<T> */
     protected string $type = ObjectType::class;
-    /** @var array<string,Value> $value */
+    /** @var array<string,Value> */
     protected array $value = [];
 
     /** @param array<string,scalar|null> $values */

@@ -14,10 +14,11 @@ trait LiteralType
 {
     public function asLiteral(): Type
     {
-        $type = new class extends PrimitiveType {
+        $type = new class() extends PrimitiveType {
             protected string $type = "";
         };
         $type->setType((string) $this);
+
         return $type;
     }
 }

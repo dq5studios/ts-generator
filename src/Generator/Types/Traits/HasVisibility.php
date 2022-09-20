@@ -11,8 +11,8 @@ use DQ5Studios\TypeScript\Generator\Tokens\VisibilityToken;
  */
 trait HasVisibility
 {
-    /** @var VisibilityToken $visibility */
-    protected VisibilityToken | null $visibility = null;
+    /** @var VisibilityToken */
+    protected VisibilityToken|null $visibility = null;
 
     /** @return VisibilityToken */
     public function getVisibility(): ?VisibilityToken
@@ -21,7 +21,7 @@ trait HasVisibility
     }
 
     /** @param VisibilityToken::PUBLIC|VisibilityToken::PROTECTED|VisibilityToken::PRIVATE|VisibilityToken $visibility */
-    public function setVisibility(int | VisibilityToken $visibility): self
+    public function setVisibility(int|VisibilityToken $visibility): self
     {
         if ($visibility instanceof VisibilityToken) {
             $this->visibility = $visibility;
@@ -30,6 +30,7 @@ trait HasVisibility
         } else {
             $this->visibility->set($visibility);
         }
+
         return $this;
     }
 }

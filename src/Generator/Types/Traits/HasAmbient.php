@@ -19,6 +19,7 @@ trait HasAmbient
     public function hasAmbient(bool $enable = true): self
     {
         $this->ambient = $enable;
+
         return $this;
     }
 }

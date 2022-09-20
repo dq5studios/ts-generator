@@ -75,33 +75,37 @@ abstract class Type
     public function setType(string $type): self
     {
         $this->type = $type;
+
         return $this;
     }
 
     /**
      * @param class-string<Type>|Type|Type::* $type
      */
-    public static function from(string | Type $type): Type
+    public static function from(string|Type $type): Type
     {
         if ($type instanceof Type) {
             return $type;
         }
-        if (substr($type, -2) === "[]") {
+        if ("[]" === substr($type, -2)) {
             $type = trim($type, "[]()");
             /** @var list<Type> */
             $parts = explode("|", $type);
-            return ArrayType::of(... $parts);
+
+            return ArrayType::of(...$parts);
         }
-        if (strpos($type, "|") !== false) {
+        if (false !== strpos($type, "|")) {
             $type = trim($type, "()");
             /** @var list<Type> */
             $parts = explode("|", $type);
+
             return UnionType::of(...$parts);
         }
-        if (strpos($type, "&") !== false) {
+        if (false !== strpos($type, "&")) {
             $type = trim($type, "()");
             /** @var list<Type> */
             $parts = explode("&", $type);
+
             return IntersectionType::of(...$parts);
         }
         // Check if they passed in a PHP type by mistake
@@ -114,6 +118,7 @@ abstract class Type
         if (!is_subclass_of($type, Type::class)) {
             throw new InvalidArgumentException("Unknown type");
         }
+
         return new $type();
     }
 

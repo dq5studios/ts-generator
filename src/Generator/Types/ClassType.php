@@ -39,12 +39,13 @@ class ClassType extends ContainerType implements CanExtend, CanImplement, CanExp
     /**
      * @param class-string<Type>|Type|Type::* $type
      */
-    public function addProperty(string | NameToken $name, string | Type $type, mixed $value = null): ClassPropertyToken
+    public function addProperty(string|NameToken $name, string|Type $type, mixed $value = null): ClassPropertyToken
     {
         if (is_null($value)) {
             $value = new NoneValue();
         }
         $member = ClassPropertyToken::from($name, $type, $value);
+
         return $this->properties[(string) $member->getName()] = $member;
     }
 
@@ -58,18 +59,19 @@ class ClassType extends ContainerType implements CanExtend, CanImplement, CanExp
 
     /**
      * @param list<ClassPropertyToken> $properties
+     *
      * @throws InvalidArgumentException
      */
     public function setProperties(array $properties): self
     {
         $this->properties = [];
         foreach ($properties as $property) {
-            /** @psalm-suppress DocblockTypeContradiction */
             if (!($property instanceof ClassPropertyToken)) {
                 throw new InvalidArgumentException();
             }
             $this->addProperty($property->getName(), $property->getType(), $property->getValue());
         }
+
         return $this;
     }
 }

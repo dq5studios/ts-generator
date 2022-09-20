@@ -19,6 +19,7 @@ trait HasOptional
     public function hasOptional(bool $optional = true): self
     {
         $this->optional = $optional;
+
         return $this;
     }
 }

@@ -13,9 +13,11 @@ use DQ5Studios\TypeScript\Generator\Types\InterfaceType;
 interface CanExtend
 {
     /** @param InterfaceType|ClassType $extend */
-    public function addExtend(InterfaceType | ClassType $extend): InterfaceType | ClassType;
+    public function addExtend(InterfaceType|ClassType $extend): InterfaceType|ClassType;
+
     /** @return list<InterfaceType|ClassType> */
     public function getExtend(): array;
+
     /** @param list<InterfaceType|ClassType> $extend */
     public function setExtend(array $extend): self;
 }

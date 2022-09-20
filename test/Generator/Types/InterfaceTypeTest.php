@@ -69,7 +69,6 @@ class InterfaceTypeTest extends TestCase
     {
         $actual = new InterfaceType("jellicle");
         try {
-            /** @psalm-suppress InvalidArgument */
             $actual->setProperties(["macavity", "ginger"]);
             $this->fail("Failed to validate property");
         } catch (Exception $e) {

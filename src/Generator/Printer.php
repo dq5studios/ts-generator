@@ -54,6 +54,7 @@ class Printer
             1 => $is[0],
             default => "(" . join($array->getSeperator(), $is) . ")",
         };
+
         return $types . "[]";
     }
 
@@ -65,6 +66,7 @@ class Printer
         if (empty($is)) {
             return "[]";
         }
+
         return "[" . implode(", ", $is) . "]";
     }
 
@@ -77,14 +79,14 @@ class Printer
         $output .= "class " . $this->printName($class->getName());
         if (!empty($class->getExtend())) {
             $extends = array_map(
-                fn(CanName $type): string => $this->printName($type->getName()),
+                fn (CanName $type): string => $this->printName($type->getName()),
                 $class->getExtend(),
             );
             $output .= " extends " . implode(", ", $extends);
         }
         if (!empty($class->getImplement())) {
             $implements = array_map(
-                fn(CanName $type): string => $this->printName($type->getName()),
+                fn (CanName $type): string => $this->printName($type->getName()),
                 $class->getImplement(),
             );
             $output .= " implements " . implode(", ", $implements);
@@ -95,6 +97,7 @@ class Printer
             $output .= $this->member_sep . "\n";
         }
         $output .= $this->close_bracket;
+
         return $output;
     }
 
@@ -109,6 +112,7 @@ class Printer
         }
         $comments = preg_replace("/\n/", "\n * ", $comments);
         $comments = preg_replace('/^ \* $/m', ' *', $comments);
+
         return "/**\n * {$comments}\n */";
     }
 
@@ -125,6 +129,7 @@ class Printer
             $output .= $this->property_sep . "\n";
         }
         $output .= $this->close_bracket;
+
         return $output;
     }
 
@@ -134,6 +139,7 @@ class Printer
         foreach ($file->getContents() as $type) {
             $output .= $this->printType($type) . "\n\n";
         }
+
         return $output;
     }
 
@@ -151,6 +157,7 @@ class Printer
         $output = "(" . implode(", ", $param) . ")";
         $output .= " => ";
         $output .= $this->printType($func->getReturn());
+
         return $output;
     }
 
@@ -165,6 +172,7 @@ class Printer
         $param = $this->shakeParameterThis($param);
 
         $output .= "(" . implode(", ", $param) . ")";
+
         return $output;
     }
 
@@ -182,7 +190,7 @@ class Printer
         $output .= "interface " . $this->printName($interface->getName());
         if (!empty($interface->getExtend())) {
             $extends = array_map(
-                fn(CanName $type): string => $this->printName($type->getName()),
+                fn (CanName $type): string => $this->printName($type->getName()),
                 $interface->getExtend(),
             );
             $output .= " extends " . implode(", ", $extends);
@@ -193,6 +201,7 @@ class Printer
             $output .= $this->member_sep . "\n";
         }
         $output .= $this->close_bracket;
+
         return $output;
     }
 
@@ -246,6 +255,7 @@ class Printer
         if (!($value instanceof NoneValue)) {
             $output .= " = " . (string) $token->getValue();
         }
+
         return $output;
     }
 
@@ -263,6 +273,7 @@ class Printer
         if (count($types) > 1) {
             $output .= ")";
         }
+
         return $output;
     }
 
@@ -274,6 +285,7 @@ class Printer
             case $name instanceof FunctionSignatureToken:
                 return $this->printFunctionSignature($name);
         }
+
         return $name->getName();
     }
 
@@ -284,7 +296,7 @@ class Printer
         if (empty($object->getProperties())) {
             return $output . $object->getType();
         }
-        if (count($object->getProperties()) === 1) {
+        if (1 === count($object->getProperties())) {
             return $this->printObjectSingleLine($object);
         }
         $output .= "{\n";
@@ -293,6 +305,7 @@ class Printer
             $output .= $this->property_sep . "\n";
         }
         $output .= $this->close_bracket;
+
         return $output;
     }
 
@@ -308,6 +321,7 @@ class Printer
         }
         $output = rtrim($output, $this->property_sep . " ");
         $output .= " " . $this->close_bracket;
+
         return $output;
     }
 
@@ -333,6 +347,7 @@ class Printer
         $callback = [$this, "printType"];
         /** @var list<string> */
         $mapping = array_map($callback, $tuple->getContents());
+
         return "[" . join($tuple->getSeperator(), $mapping) . "]";
     }
 
@@ -356,6 +371,7 @@ class Printer
             case $type instanceof MultiType:
                 return $this->printMultiType($type);
         }
+
         return $type->getType();
     }
 
@@ -365,7 +381,7 @@ class Printer
             case $value instanceof ArrayValue:
                 return $this->printArrayValue($value);
             case $value instanceof BooleanValue:
-                return ($value->getValue() ? "true" : "false");
+                return $value->getValue() ? "true" : "false";
             case $value instanceof NoneValue:
                 return "";
             case $value instanceof NullValue:
@@ -379,6 +395,7 @@ class Printer
             case $value instanceof UndefinedValue:
                 return "undefined";
         }
+
         return (string) $value;
     }
 
@@ -396,6 +413,7 @@ class Printer
             unset($list["this"]);
             array_unshift($list, $move);
         }
+
         return $list;
     }
 }

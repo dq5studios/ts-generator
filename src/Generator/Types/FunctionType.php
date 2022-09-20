@@ -16,12 +16,11 @@ class FunctionType extends ComplexType implements CanParameters
 
     protected string $type = "Function";
 
-    /** @var Type|null */
-    protected Type | null $return = null;
+    protected Type|null $return = null;
 
     public function isSignature(): bool
     {
-        return (!is_null($this->parameters) || !is_null($this->return));
+        return !is_null($this->parameters) || !is_null($this->return);
     }
 
     public function getReturn(): Type
@@ -32,9 +31,10 @@ class FunctionType extends ComplexType implements CanParameters
     /**
      * @param class-string<Type>|Type|Type::* $return
      */
-    public function setReturn(string | Type $return): self
+    public function setReturn(string|Type $return): self
     {
         $this->return = Type::from($return);
+
         return $this;
     }
 }

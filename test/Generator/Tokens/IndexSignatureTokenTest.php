@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Generator\Tokens;
 
-use DQ5Studios\TypeScript\Generator\Tokens\IndexSignatureToken;
 use DQ5Studios\TypeScript\Generator\Types\NumberType;
 use DQ5Studios\TypeScript\Generator\Types\Type;
 use Exception;

@@ -29,11 +29,13 @@ class ObjectType extends ComplexType implements CanComment, CanIndexSignature, C
 
     /**
      * @param class-string<Type>|Type|Type::* $type
+     *
      * @throws InvalidArgumentException
      */
-    public function addProperty(string | NameToken $name, string | Type $type): ObjectPropertyToken
+    public function addProperty(string|NameToken $name, string|Type $type): ObjectPropertyToken
     {
         $member = ObjectPropertyToken::from($name, $type);
+
         return $this->properties[(string) $member->getName()] = $member;
     }
 
@@ -47,18 +49,19 @@ class ObjectType extends ComplexType implements CanComment, CanIndexSignature, C
 
     /**
      * @param list<ObjectPropertyToken> $properties
+     *
      * @throws InvalidArgumentException
      */
     public function setProperties(array $properties): self
     {
         $this->properties = [];
         foreach ($properties as $property) {
-            /** @psalm-suppress DocblockTypeContradiction */
             if (!($property instanceof ObjectPropertyToken)) {
                 throw new InvalidArgumentException();
             }
             $this->addProperty($property->getName(), $property->getType());
         }
+
         return $this;
     }
 }

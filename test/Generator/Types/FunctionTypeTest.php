@@ -47,7 +47,6 @@ class FunctionTypeTest extends TestCase
 
         $function = new FunctionType();
         try {
-            /** @psalm-suppress ArgumentTypeCoercion */
             $function->setReturn("Not a valid type");
             $this->fail("Accepted bad data");
         } catch (Exception $e) {

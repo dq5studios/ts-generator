@@ -19,6 +19,7 @@ trait HasExport
     public function hasExport(bool $enable = true): self
     {
         $this->export = $enable;
+
         return $this;
     }
 }

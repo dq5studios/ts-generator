@@ -15,7 +15,7 @@ class TypeTest extends TestCase
 {
     public function testToString(): void
     {
-        $type = new class extends Type {
+        $type = new class() extends Type {
             protected string $type = "jellicle";
         };
         $this->assertInstanceOf(Type::class, $type);

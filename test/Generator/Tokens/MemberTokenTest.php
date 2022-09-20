@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Generator\Tokens;
 
-use DQ5Studios\TypeScript\Generator\Tokens\MemberToken;
-use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Types\EnumType;
 use DQ5Studios\TypeScript\Generator\Types\NoneType;
 use DQ5Studios\TypeScript\Generator\Types\StringType;

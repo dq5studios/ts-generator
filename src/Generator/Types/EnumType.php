@@ -35,7 +35,7 @@ class EnumType extends ContainerType implements CanExport, CanAmbient
     /**
      * @throws InvalidArgumentException
      */
-    public function addMember(string | NameToken $name, int | float | string | Value ...$value): EnumMemberToken
+    public function addMember(string|NameToken $name, int|float|string|Value ...$value): EnumMemberToken
     {
         if (count($value) > 1) {
             throw new InvalidArgumentException("No more that one value can be assigned at a time");
@@ -51,6 +51,7 @@ class EnumType extends ContainerType implements CanExport, CanAmbient
         }
         // TODO: Error if const & computed value
         $this->can_auto = ($member->getValue() instanceof NumberValue) || ($member->getValue() instanceof NoneValue);
+
         return $this->members[(string) $member->getName()] = $member;
     }
 
@@ -75,6 +76,7 @@ class EnumType extends ContainerType implements CanExport, CanAmbient
                 $this->addMember($member);
             }
         }
+
         return $this;
     }
 
@@ -87,6 +89,7 @@ class EnumType extends ContainerType implements CanExport, CanAmbient
     {
         // TODO: Error if any computed values
         $this->const = $const;
+
         return $this;
     }
 }

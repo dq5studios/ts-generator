@@ -28,6 +28,7 @@ class VisibilityToken
     public function set(int $visibility): self
     {
         $this->visibility = $visibility;
+
         return $this;
     }
 }

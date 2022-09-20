@@ -14,12 +14,12 @@ use DQ5Studios\TypeScript\Generator\Types\Type;
 trait HasParameters
 {
     /** @var array<string,FunctionParameterToken> */
-    protected array | null $parameters = null;
+    protected array|null $parameters = null;
 
     /**
      * @param class-string<Type>|Type|Type::* $type
      */
-    public function addParameter(string | Type $type, string | NameToken $name = null): FunctionParameterToken
+    public function addParameter(string|Type $type, string|NameToken $name = null): FunctionParameterToken
     {
         if (is_null($this->parameters)) {
             $this->parameters = [];
@@ -28,6 +28,7 @@ trait HasParameters
             $name = "arg_" . count($this->parameters);
         }
         $member = FunctionParameterToken::from($name, $type);
+
         return $this->parameters[(string) $member->getName()] = $member;
     }
 
@@ -48,6 +49,7 @@ trait HasParameters
         foreach ($parameters as $parameter) {
             $this->addParameter($parameter);
         }
+
         return $this;
     }
 }

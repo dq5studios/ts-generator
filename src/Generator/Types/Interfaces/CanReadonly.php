@@ -10,5 +10,6 @@ namespace DQ5Studios\TypeScript\Generator\Types\Interfaces;
 interface CanReadonly
 {
     public function isReadonly(): bool;
+
     public function hasReadonly(bool $readonly = true): self;
 }

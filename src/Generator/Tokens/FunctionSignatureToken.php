@@ -22,10 +22,11 @@ class FunctionSignatureToken extends NameToken implements CanParameters
     /**
      * @param class-string<Type>|Type|Type::* ...$types
      */
-    public static function of(string | NameToken $label, string | Type ...$types): self
+    public static function of(string|NameToken $label, string|Type ...$types): self
     {
         $fn = new self((string) $label);
         $fn->setParameters($types);
+
         return $fn;
     }
 
@@ -37,6 +38,7 @@ class FunctionSignatureToken extends NameToken implements CanParameters
     public function hasCallable(bool $callable = true): self
     {
         $this->callable = $callable;
+
         return $this;
     }
 
@@ -48,6 +50,7 @@ class FunctionSignatureToken extends NameToken implements CanParameters
     public function hasConstructor(bool $constructor = true): self
     {
         $this->constructor = $constructor;
+
         return $this;
     }
 
@@ -59,6 +62,7 @@ class FunctionSignatureToken extends NameToken implements CanParameters
     public function hasMethod(bool $method = true): self
     {
         $this->method = $method;
+
         return $this;
     }
 }

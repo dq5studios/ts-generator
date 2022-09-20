@@ -17,10 +17,10 @@ class ClassTestClass
 {
     public string $key = "name";
     /** @var (string|int)[] All the names */
-    public string | array $list = ["name", "scram"];
+    public string|array $list = ["name", "scram"];
     /** @var int Special value */
     protected $value = 42;
-    public PhpDocExtractor | null $ex = null;
+    public PhpDocExtractor|null $ex = null;
     /** @var array<string,string|int> */
     private array $surprise = ["a1" => 1, "b2" => 2, "c3" => 3];
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Generator\Tokens;
 
-use DQ5Studios\TypeScript\Generator\Tokens\FunctionSignatureToken;
 use DQ5Studios\TypeScript\Generator\Types\ArrayType;
 use DQ5Studios\TypeScript\Generator\Types\Type;
 use PHPUnit\Framework\TestCase;

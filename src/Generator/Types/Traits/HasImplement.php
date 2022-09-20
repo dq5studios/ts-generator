@@ -16,9 +16,10 @@ trait HasImplement
     protected array $implement = [];
 
     /** @param InterfaceType|ClassType $implement */
-    public function addImplement(InterfaceType | ClassType $implement): InterfaceType | ClassType
+    public function addImplement(InterfaceType|ClassType $implement): InterfaceType|ClassType
     {
         $this->implement[] = $implement;
+
         return $implement;
     }
 
@@ -35,6 +36,7 @@ trait HasImplement
         foreach ($implement as $ext) {
             $this->addImplement($ext);
         }
+
         return $this;
     }
 }

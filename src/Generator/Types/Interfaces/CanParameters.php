@@ -14,8 +14,10 @@ use DQ5Studios\TypeScript\Generator\Types\Type;
 interface CanParameters
 {
     /** @param class-string<Type>|Type|Type::* $type */
-    public function addParameter(string | Type $type, string | NameToken $name = null): FunctionParameterToken;
+    public function addParameter(string|Type $type, string|NameToken $name = null): FunctionParameterToken;
+
     public function getParameters(): array;
+
     /** @param list<class-string<Type>|Type|Type::*> $parameters */
     public function setParameters(array $parameters): self;
 }

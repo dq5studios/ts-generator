@@ -13,9 +13,11 @@ use DQ5Studios\TypeScript\Generator\Types\InterfaceType;
 interface CanImplement
 {
     /** @param InterfaceType $implement */
-    public function addImplement(InterfaceType $implement): InterfaceType | ClassType;
+    public function addImplement(InterfaceType $implement): InterfaceType|ClassType;
+
     /** @return list<InterfaceType|ClassType> */
     public function getImplement(): array;
+
     /** @param list<InterfaceType|ClassType> $implement */
     public function setImplement(array $implement): self;
 }

@@ -26,7 +26,7 @@ abstract class ContainerType extends Type implements CanName, CanComment
     /**
      * @throws InvalidArgumentException
      */
-    final public function __construct(string | NameToken $name = null)
+    final public function __construct(string|NameToken $name = null)
     {
         if (is_null($name)) {
             throw new InvalidArgumentException("Name required");

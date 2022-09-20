@@ -10,5 +10,6 @@ namespace DQ5Studios\TypeScript\Generator\Types\Interfaces;
 interface CanStatic
 {
     public function isStatic(): bool;
+
     public function hasStatic(bool $static = true): self;
 }

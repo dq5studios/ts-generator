@@ -12,6 +12,7 @@ use DQ5Studios\TypeScript\Generator\Types\UndefinedType;
  * An undefined value
  *
  * @template T as UndefinedType
+ *
  * @extends Value<T>
  */
 class UndefinedValue extends Value implements LiteralType

@@ -15,9 +15,10 @@ interface CanFunctionSignature
     /**
      * @param class-string<Type>|Type|Type::* $types
      */
-    public function addCallableSignature(string | Type ...$types): MemberToken;
+    public function addCallableSignature(string|Type ...$types): MemberToken;
+
     /**
      * @param class-string<Type>|Type|Type::* $types
      */
-    public function addConstructorSignature(string | Type ...$types): MemberToken;
+    public function addConstructorSignature(string|Type ...$types): MemberToken;
 }

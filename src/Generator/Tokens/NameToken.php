@@ -22,11 +22,12 @@ class NameToken
         }
     }
 
-    public static function from(string | NameToken $name): self
+    public static function from(string|NameToken $name): self
     {
         if ($name instanceof NameToken) {
             return $name;
         }
+
         return new self($name);
     }
 

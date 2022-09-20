@@ -12,11 +12,12 @@ use InvalidArgumentException;
  */
 trait HasName
 {
-    protected NameToken | null $name = null;
+    protected NameToken|null $name = null;
 
-    public function addName(string | NameToken $name): NameToken
+    public function addName(string|NameToken $name): NameToken
     {
         $this->name = NameToken::from($name);
+
         return $this->name;
     }
 
@@ -25,12 +26,14 @@ trait HasName
         if (!isset($this->name)) {
             throw new InvalidArgumentException("Name has not been set yet");
         }
+
         return $this->name;
     }
 
-    public function setName(string | NameToken $name): self
+    public function setName(string|NameToken $name): self
     {
         $this->name = NameToken::from($name);
+
         return $this;
     }
 }

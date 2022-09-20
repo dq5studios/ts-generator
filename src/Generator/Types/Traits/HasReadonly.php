@@ -19,6 +19,7 @@ trait HasReadonly
     public function hasReadonly(bool $readonly = true): self
     {
         $this->readonly = $readonly;
+
         return $this;
     }
 }

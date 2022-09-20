@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Generator\Types\Traits;
 
-use DQ5Studios\TypeScript\Generator\Types\Traits\HasComment;
 use PHPUnit\Framework\TestCase;
 
 /**

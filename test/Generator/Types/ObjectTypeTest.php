@@ -36,7 +36,6 @@ class ObjectTypeTest extends TestCase
     {
         $actual = new ObjectType();
         try {
-            /** @psalm-suppress InvalidArgument */
             $actual->setProperties(["macavity", "ginger"]);
             $this->fail("Failed to validate property");
         } catch (Exception $e) {

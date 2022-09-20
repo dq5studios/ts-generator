@@ -18,6 +18,7 @@ class CommentToken
     public function expand(string $comment): self
     {
         $this->comment .= "\n{$comment}";
+
         return $this;
     }
 
@@ -29,6 +30,7 @@ class CommentToken
     public function set(string $comment): self
     {
         $this->comment = $comment;
+
         return $this;
     }
 

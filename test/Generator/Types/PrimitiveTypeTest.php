@@ -37,7 +37,9 @@ class PrimitiveTypeTest extends TestCase
      * @covers \DQ5Studios\TypeScript\Generator\Types\UndefinedType
      * @covers \DQ5Studios\TypeScript\Generator\Types\UnknownType
      * @covers \DQ5Studios\TypeScript\Generator\Types\VoidType
+     *
      * @dataProvider typeList
+     *
      * @param class-string<Type> $class
      */
     public function testToString(string $class, string $as_string, string $expected): void

@@ -19,7 +19,6 @@ use DQ5Studios\TypeScript\Generator\Types\TupleType;
 use DQ5Studios\TypeScript\Generator\Types\Type;
 use DQ5Studios\TypeScript\Generator\Values\NoneValue;
 use DQ5Studios\TypeScript\Generator\Values\Value;
-use InvalidArgumentException;
 
 /**
  * A class property
@@ -32,14 +31,14 @@ class ClassPropertyToken extends MemberToken implements CanOptional, CanReadonly
     use HasVisibility;
 
     /**
-     * @param class-string<Type>|Type|Type::* $type
+     * @param class-string<Type>|Type|Type::*                                                             $type
      * @param VisibilityToken::PUBLIC|VisibilityToken::PROTECTED|VisibilityToken::PRIVATE|VisibilityToken $visibility
      */
     public static function from(
-        string | NameToken $name,
-        string | Type $type,
+        string|NameToken $name,
+        string|Type $type,
         mixed $value = null,
-        int | VisibilityToken $visibility = null,
+        int|VisibilityToken $visibility = null,
         bool $readonly = false,
         bool $optional = false,
         bool $static = false,
@@ -48,7 +47,7 @@ class ClassPropertyToken extends MemberToken implements CanOptional, CanReadonly
             $value = new NoneValue();
         }
         if (is_string($name)) {
-            if (substr($name, -1) === "?") {
+            if ("?" === substr($name, -1)) {
                 $optional = true;
                 $name = rtrim($name, "?");
             }
@@ -72,6 +71,7 @@ class ClassPropertyToken extends MemberToken implements CanOptional, CanReadonly
             // TODO: check if static, name isn't name, length, call
             $class->hasReadonly($readonly);
         }
+
         return $class;
     }
 

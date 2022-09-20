@@ -42,6 +42,7 @@ class File implements CanComment
     public function append(Type $type): self
     {
         $this->contents[] = $type;
+
         return $this;
     }
 

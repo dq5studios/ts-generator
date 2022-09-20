@@ -38,9 +38,10 @@ class InterfaceType extends ContainerType implements CanExtend, CanExport, CanAm
     /**
      * @param class-string<Type>|Type|Type::* $type
      */
-    public function addProperty(string | NameToken $name, string | Type $type): InterfacePropertyToken
+    public function addProperty(string|NameToken $name, string|Type $type): InterfacePropertyToken
     {
         $member = InterfacePropertyToken::from($name, $type);
+
         return $this->properties[(string) $member->getName()] = $member;
     }
 
@@ -54,18 +55,19 @@ class InterfaceType extends ContainerType implements CanExtend, CanExport, CanAm
 
     /**
      * @param list<InterfacePropertyToken> $properties
+     *
      * @throws InvalidArgumentException
      */
     public function setProperties(array $properties): self
     {
         $this->properties = [];
         foreach ($properties as $property) {
-            /** @psalm-suppress DocblockTypeContradiction */
             if (!($property instanceof InterfacePropertyToken)) {
                 throw new InvalidArgumentException();
             }
             $this->addProperty($property->getName(), $property->getType());
         }
+
         return $this;
     }
 }

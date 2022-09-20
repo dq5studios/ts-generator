@@ -19,6 +19,7 @@ trait HasSpread
     public function hasSpread(bool $spread = true): self
     {
         $this->spread = $spread;
+
         return $this;
     }
 }

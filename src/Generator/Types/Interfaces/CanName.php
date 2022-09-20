@@ -11,7 +11,9 @@ use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
  */
 interface CanName
 {
-    public function addName(string | NameToken $name): NameToken;
+    public function addName(string|NameToken $name): NameToken;
+
     public function getName(): NameToken;
-    public function setName(string | NameToken $name): self;
+
+    public function setName(string|NameToken $name): self;
 }

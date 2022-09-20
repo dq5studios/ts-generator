@@ -23,17 +23,17 @@ class FunctionParameterToken extends MemberToken implements CanOptional, CanSpre
     /**
      * @param class-string<Type>|Type|Type::* $type
      */
-    public static function from(string | NameToken $name, string | Type $type): self
+    public static function from(string|NameToken $name, string|Type $type): self
     {
         $type = Type::from($type);
         $spread = false;
         $optional = false;
         if (is_string($name)) {
-            if (($type instanceof ArrayType || $type instanceof TupleType) && substr($name, 0, 3) === "...") {
+            if (($type instanceof ArrayType || $type instanceof TupleType) && "..." === substr($name, 0, 3)) {
                 $spread = true;
                 $name = ltrim($name, ".");
             }
-            if (substr($name, -1) === "?") {
+            if ("?" === substr($name, -1)) {
                 $optional = true;
                 $name = rtrim($name, "?");
             }

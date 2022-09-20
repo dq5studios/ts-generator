@@ -35,7 +35,9 @@ class ValueTest extends TestCase
      * @covers \DQ5Studios\TypeScript\Generator\Values\NumberValue
      * @covers \DQ5Studios\TypeScript\Generator\Values\StringValue
      * @covers \DQ5Studios\TypeScript\Generator\Values\UndefinedValue
+     *
      * @dataProvider literalList
+     *
      * @param class-string<Value> $class
      */
     public function testToLiteralType(string $class, mixed $initial, string $expected): void
@@ -61,7 +63,9 @@ class ValueTest extends TestCase
 
     /**
      * @covers \DQ5Studios\TypeScript\Generator\Values\Value
+     *
      * @dataProvider valueList
+     *
      * @param class-string<Value> $class
      */
     public function testToString(string $class, mixed $initial, string $expected): void
@@ -89,7 +93,9 @@ class ValueTest extends TestCase
      * @covers \DQ5Studios\TypeScript\Generator\Values\NumberValue
      * @covers \DQ5Studios\TypeScript\Generator\Values\StringValue
      * @covers \DQ5Studios\TypeScript\Generator\Values\UndefinedValue
+     *
      * @dataProvider typeList
+     *
      * @param class-string<Value> $class
      */
     public function testGetType(string $class, mixed $initial, string $expected): void
@@ -111,9 +117,11 @@ class ValueTest extends TestCase
 
     /**
      * @covers \DQ5Studios\TypeScript\Generator\Values\Value
+     *
      * @dataProvider fromList
+     *
      * @param class-string<Value> $class
-     * @param class-string<Type> $type
+     * @param class-string<Type>  $type
      */
     public function testFrom(mixed $initial, string $class, string $type): void
     {
@@ -139,9 +147,11 @@ class ValueTest extends TestCase
 
     /**
      * @covers \DQ5Studios\TypeScript\Generator\Values\Value
+     *
      * @dataProvider fromAdvancedList
+     *
      * @param class-string<Value> $class
-     * @param class-string<Type> $type
+     * @param class-string<Type>  $type
      */
     public function testAdvancedFrom(mixed $initial, string $class, string $type): void
     {
@@ -165,10 +175,12 @@ class ValueTest extends TestCase
      * @covers \DQ5Studios\TypeScript\Generator\Values\BooleanValue
      * @covers \DQ5Studios\TypeScript\Generator\Values\NumberValue
      * @covers \DQ5Studios\TypeScript\Generator\Values\StringValue
+     *
      * @dataProvider getSetList
+     *
      * @param class-string<BooleanValue>|class-string<NumberValue>|class-string<StringValue> $class
      */
-    public function testGetSet(string $class, bool | int | string $initial, bool | int | string $expected): void
+    public function testGetSet(string $class, bool|int|string $initial, bool|int|string $expected): void
     {
         /** @psalm-suppress UnsafeInstantiation */
         $value = new $class($initial);

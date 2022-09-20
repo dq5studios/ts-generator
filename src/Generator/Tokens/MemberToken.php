@@ -25,7 +25,7 @@ class MemberToken implements CanName, CanComment
     protected Type $type;
     protected Value $value;
 
-    public function __construct(NameToken | null $name = null, Type | null $type = null, Value | null $value = null)
+    public function __construct(NameToken|null $name = null, Type|null $type = null, Value|null $value = null)
     {
         $this->name = $name;
         if (is_null($type)) {
@@ -46,6 +46,7 @@ class MemberToken implements CanName, CanComment
     public function setType(Type $type): self
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -57,6 +58,7 @@ class MemberToken implements CanName, CanComment
     public function setValue(Value $value): self
     {
         $this->value = $value;
+
         return $this;
     }
 

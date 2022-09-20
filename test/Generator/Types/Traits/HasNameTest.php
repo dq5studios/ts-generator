@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace DQ5Studios\TypeScript\Generator\Types\Traits;
 
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
-use DQ5Studios\TypeScript\Generator\Types\Traits\HasName;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 

@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace DQ5Studios\TypeScript\Generator\Values;
 
 use DQ5Studios\TypeScript\Generator\Types\Interfaces\LiteralType;
-use DQ5Studios\TypeScript\Generator\Types\Traits\LiteralType as TraitLiteralType;
 use DQ5Studios\TypeScript\Generator\Types\StringType;
+use DQ5Studios\TypeScript\Generator\Types\Traits\LiteralType as TraitLiteralType;
 
 /**
  * A string value
  *
  * @template T as StringType
+ *
  * @extends Value<T>
  */
 class StringValue extends Value implements LiteralType
@@ -33,6 +34,7 @@ class StringValue extends Value implements LiteralType
     public function setValue(string $value): self
     {
         $this->value = $value;
+
         return $this;
     }
 }

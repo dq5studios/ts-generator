@@ -16,9 +16,10 @@ trait HasExtend
     protected array $extend = [];
 
     /** @param InterfaceType|ClassType $extend */
-    public function addExtend(InterfaceType | ClassType $extend): InterfaceType | ClassType
+    public function addExtend(InterfaceType|ClassType $extend): InterfaceType|ClassType
     {
         $this->extend[] = $extend;
+
         return $extend;
     }
 
@@ -35,6 +36,7 @@ trait HasExtend
         foreach ($extend as $ext) {
             $this->addExtend($ext);
         }
+
         return $this;
     }
 }

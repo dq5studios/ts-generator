@@ -70,7 +70,6 @@ class ClassTypeTest extends TestCase
     {
         $actual = new ClassType("jellicle");
         try {
-            /** @psalm-suppress InvalidArgument */
             $actual->setProperties(["macavity", "ginger"]);
             $this->fail("Failed to validate property");
         } catch (Exception $e) {

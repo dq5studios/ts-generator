@@ -19,6 +19,7 @@ trait HasStatic
     public function hasStatic(bool $static = true): self
     {
         $this->static = $static;
+
         return $this;
     }
 }

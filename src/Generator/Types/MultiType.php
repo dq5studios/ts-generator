@@ -23,26 +23,29 @@ abstract class MultiType extends Type
     public function setSeperator(string $seperator): self
     {
         $this->sep = $seperator;
+
         return $this;
     }
 
     /**
      * @param class-string<Type>|Type|Type::* $types
      */
-    public static function of(string | Type ...$types): self
+    public static function of(string|Type ...$types): self
     {
         $new = new static();
+
         return $new->contains(...$types);
     }
 
     /**
      * @param class-string<Type>|Type|Type::* $types
      */
-    public function contains(string | Type ...$types): self
+    public function contains(string|Type ...$types): self
     {
         foreach ($types as $type) {
             $this->is[] = Type::from($type);
         }
+
         return $this;
     }
 

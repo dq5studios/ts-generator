@@ -7,6 +7,9 @@ $finder = PhpCsFixer\Finder::create()
 $config = new PhpCsFixer\Config();
 return $config->setRules([
         "@Symfony" => true,
+        "concat_space" => ["spacing" => "one"],
+        "phpdoc_summary" => false,
+        "phpdoc_to_comment" => ["ignored_tags" => ["var"]],
         "single_quote" => false,
     ])
     ->setFinder($finder)

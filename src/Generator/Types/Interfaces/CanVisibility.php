@@ -12,5 +12,6 @@ use DQ5Studios\TypeScript\Generator\Tokens\VisibilityToken;
 interface CanVisibility
 {
     public function getVisibility(): ?VisibilityToken;
+
     public function setVisibility(int $visibility): self;
 }

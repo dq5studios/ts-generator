@@ -6,7 +6,6 @@ namespace DQ5Studios\TypeScript\Generator\Values;
 
 use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Types\UndefinedType;
-use Symfony\Polyfill\Php81\Php81;
 
 /**
  * This is a value
@@ -20,8 +19,7 @@ abstract class Value
 
     private static function whichArrayObject(array $value): Value
     {
-        /** @psalm-suppress InternalClass,InternalMethod */
-        if (Php81::array_is_list($value)) {
+        if (array_is_list($value)) {
             /** @var list<scalar|null> $value */
             return new ArrayValue($value);
         }

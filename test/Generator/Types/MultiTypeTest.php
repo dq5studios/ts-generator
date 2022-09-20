@@ -28,7 +28,9 @@ class MultiTypeTest extends TestCase
      * @covers \DQ5Studios\TypeScript\Generator\Types\TupleType
      * @covers \DQ5Studios\TypeScript\Generator\Types\Type
      * @covers \DQ5Studios\TypeScript\Generator\Types\UnionType
+     *
      * @dataProvider typeList
+     *
      * @param class-string<Type> $class
      */
     public function testToString(string $class, string $as_string, string $expected): void
@@ -57,8 +59,10 @@ class MultiTypeTest extends TestCase
      * @covers \DQ5Studios\TypeScript\Generator\Types\IntersectionType
      * @covers \DQ5Studios\TypeScript\Generator\Types\TupleType
      * @covers \DQ5Studios\TypeScript\Generator\Types\UnionType
+     *
      * @dataProvider singleTypeList
-     * @param class-string<Type> $class
+     *
+     * @param class-string<Type>       $class
      * @param list<class-string<Type>> $contains
      */
     public function testSingleTypeToString(string $class, array $contains, string $expected): void
@@ -84,8 +88,10 @@ class MultiTypeTest extends TestCase
      * @covers \DQ5Studios\TypeScript\Generator\Types\IntersectionType
      * @covers \DQ5Studios\TypeScript\Generator\Types\TupleType
      * @covers \DQ5Studios\TypeScript\Generator\Types\UnionType
+     *
      * @dataProvider multiTypeList
-     * @param class-string<Type> $class
+     *
+     * @param class-string<Type>       $class
      * @param list<class-string<Type>> $contains
      */
     public function testMultiTypeToString(string $class, array $contains, string $expected): void
@@ -108,7 +114,6 @@ class MultiTypeTest extends TestCase
     {
         $type = new ArrayType();
         try {
-            /** @psalm-suprress ArgumentTypeCoercion */
             $type->contains("Not a valid type");
             $this->fail("Accepted bad data");
         } catch (Exception $e) {
@@ -118,7 +123,7 @@ class MultiTypeTest extends TestCase
 
     public function testSeperator(): void
     {
-        $type = new class extends MultiType{
+        $type = new class() extends MultiType {
         };
         $contains = [NumberType::class, new StringType()];
         $type->contains(...$contains);

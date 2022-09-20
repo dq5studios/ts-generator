@@ -10,6 +10,7 @@ use DQ5Studios\TypeScript\Generator\Types\NoneType;
  * A meta value to indicate one hasn't been assigned
  *
  * @template T as NoneType
+ *
  * @extends Value<T>
  *
  * @internal

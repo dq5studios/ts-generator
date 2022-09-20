@@ -18,7 +18,7 @@ trait HasFunctionSignature
     /**
      * @param class-string<Type>|Type|Type::* $types
      */
-    public function addCallableSignature(string | Type ...$types): MemberToken
+    public function addCallableSignature(string|Type ...$types): MemberToken
     {
         if (empty($types)) {
             $type = new VoidType();
@@ -26,13 +26,14 @@ trait HasFunctionSignature
             $type = array_pop($types);
         }
         $name = FunctionSignatureToken::of("callable", ...$types)->hasCallable(true);
+
         return $this->addProperty($name, $type);
     }
 
     /**
      * @param class-string<Type>|Type|Type::* $types
      */
-    public function addConstructorSignature(string | Type ...$types): MemberToken
+    public function addConstructorSignature(string|Type ...$types): MemberToken
     {
         // TODO: Make sure no property named 'this'
         if (empty($types)) {
@@ -41,13 +42,14 @@ trait HasFunctionSignature
             $type = array_pop($types);
         }
         $name = FunctionSignatureToken::of("constructor", ...$types)->hasConstructor(true);
+
         return $this->addProperty($name, $type);
     }
 
     /**
      * @param class-string<Type>|Type|Type::* $types
      */
-    public function addMethodSignature(string | NameToken $label, string | Type ...$types): MemberToken
+    public function addMethodSignature(string|NameToken $label, string|Type ...$types): MemberToken
     {
         if (empty($types)) {
             $type = new VoidType();
@@ -55,6 +57,7 @@ trait HasFunctionSignature
             $type = array_pop($types);
         }
         $name = FunctionSignatureToken::of($label, ...$types)->hasMethod(true);
+
         return $this->addProperty($name, $type);
     }
 }

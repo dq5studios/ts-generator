@@ -7,8 +7,6 @@ namespace DQ5Studios\TypeScript\Converter;
 use DQ5Studios\TypeScript\ClassTestClass;
 use DQ5Studios\TypeScript\ClassTestEnum;
 use DQ5Studios\TypeScript\ClassTestInterface;
-use DQ5Studios\TypeScript\ExampleClass;
-use DQ5Studios\TypeScript\Generator\File;
 use PHPUnit\Framework\TestCase;
 
 /**

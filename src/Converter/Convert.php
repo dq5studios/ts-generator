@@ -6,7 +6,6 @@ namespace DQ5Studios\TypeScript\Converter;
 
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Tokens\VisibilityToken;
-use DQ5Studios\TypeScript\Generator\Tokens\VisiblityToken;
 use DQ5Studios\TypeScript\Generator\Types\ArrayType;
 use DQ5Studios\TypeScript\Generator\Types\ClassType;
 use DQ5Studios\TypeScript\Generator\Types\EnumType;
@@ -38,12 +37,11 @@ use Symfony\Component\PropertyInfo\Type as SymfonyType;
  *      readonly?:boolean
  * }
  */
-
 class Convert
 {
     final private function __construct(
         private NameToken $name,
-        private NameToken | null $extends,
+        private NameToken|null $extends,
         /** @var NameToken[] */
         private array $implements = [],
         /** @var list<memberParts> */
@@ -55,9 +53,10 @@ class Convert
 
     /**
      * @param class-string|object $class
+     *
      * @throws InvalidArgumentException
      */
-    public static function fromPHP(string | object $class): Type
+    public static function fromPHP(string|object $class): Type
     {
         if (is_string($class)) {
             if (!class_exists($class)) {
@@ -112,6 +111,7 @@ class Convert
             $m = [
                 "name" => $p_name,
                 "type" => $type,
+                "readonly" => false, // TODO: Look up readonly status
                 "visibility" => $visibility,
             ];
             if ($prop->hasDefaultValue()) {
@@ -132,6 +132,7 @@ class Convert
                 "type" => Type::from(Type::$php_type_map[gettype($value)]),
                 "value" => $value,
                 "readonly" => true,
+                "visibility" => VisibilityToken::PUBLIC, // TODO: Look up visibility
             ];
             $type_comment = $const->getDocComment();
             if (!empty($type_comment)) {
@@ -149,6 +150,7 @@ class Convert
         $type = new self($class_name, $extends, $implements, $members, $attributes);
 
         foreach ($type->attributes as $attr) {
+            // TODO: Check if implements BackedEnum or UnitEnum
             if (EnumType::class === $attr->getName()) {
                 return $type->toEnum();
             }
@@ -159,6 +161,7 @@ class Convert
                 return $type->toClass();
             }
         }
+
         return $type->toClass();
     }
 
@@ -185,6 +188,7 @@ class Convert
             }
             $p->setVisibility($prop["visibility"]);
         }
+
         return $class;
     }
 
@@ -203,6 +207,7 @@ class Convert
                 $p->hasReadonly($prop["readonly"]);
             }
         }
+
         return $interface;
     }
 
@@ -219,6 +224,7 @@ class Convert
                 $p->addComment($prop["comment"]);
             }
         }
+
         return $enum;
     }
 
@@ -228,6 +234,7 @@ class Convert
         $name = array_pop($parts);
         $name = preg_replace("/[^a-zA-Z0-9_\x80-\xff]/", "_", $name);
         $name[0] = preg_replace("/[^a-zA-Z_\x80-\xff]/", "_", $name[0]);
+
         return $name;
     }
 
@@ -236,6 +243,7 @@ class Convert
         $comment = preg_replace("/\/\*\*(.*)\*\//ms", "$1", $comment);
         $comment = str_replace([" *", "\n"], "", $comment);
         $comment = trim($comment);
+
         return $comment;
     }
 
@@ -253,13 +261,13 @@ class Convert
                 $type_list[] = new NullType();
             }
             $basic = $type->getBuiltinType();
-            if (!$type->isCollection() && $basic !== "object") {
+            if (!$type->isCollection() && "object" !== $basic) {
                 if (array_key_exists($basic, Type::$php_type_map)) {
                     $type_list[] = Type::from(Type::$php_type_map[$basic]);
                     continue;
                 }
             }
-            if ($basic === "object") {
+            if ("object" === $basic) {
                 $class = $type->getClassName();
                 if (is_null($class)) {
                     $type_list[] = new ObjectType();
@@ -271,7 +279,7 @@ class Convert
                     /** @psalm-suppress ArgumentTypeCoercion We're not sure if it's a valid type */
                     $class_type = Type::from($class);
                 } catch (InvalidArgumentException) {
-                    $class_type = (new class extends Type {
+                    $class_type = (new class() extends Type {
                         protected string $type = "";
                     })->setType($class);
                 }
@@ -304,8 +312,10 @@ class Convert
             if (1 === count($type_list)) {
                 return $type_list[0];
             }
+
             return UnionType::of(...$type_list);
         }
+
         return new UnknownType();
     }
 }

@@ -15,12 +15,12 @@ use InvalidArgumentException;
  */
 class IndexSignatureToken extends NameToken
 {
-    protected Type | null $type = null;
+    protected Type|null $type = null;
 
     /**
      * @param class-string<Type>|Type|Type::* $type
      */
-    public static function of(string | Type $type): self
+    public static function of(string|Type $type): self
     {
         return (new self("index"))->setType($type);
     }
@@ -33,13 +33,14 @@ class IndexSignatureToken extends NameToken
     /**
      * @param class-string<Type>|Type|Type::* $type
      */
-    public function setType(string | Type $type): self
+    public function setType(string|Type $type): self
     {
         $type = Type::from($type);
         if (!($type instanceof NumberType) && !($type instanceof StringType)) {
             throw new InvalidArgumentException("Only string and number types can be index types");
         }
         $this->type = $type;
+
         return $this;
     }
 }

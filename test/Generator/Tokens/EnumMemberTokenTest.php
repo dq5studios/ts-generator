@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Generator\Tokens;
 
-use DQ5Studios\TypeScript\Generator\Tokens\EnumMemberToken;
-use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Values\NoneValue;
 use DQ5Studios\TypeScript\Generator\Values\NullValue;
 use DQ5Studios\TypeScript\Generator\Values\NumberValue;

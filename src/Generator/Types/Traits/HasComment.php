@@ -11,7 +11,7 @@ use DQ5Studios\TypeScript\Generator\Tokens\CommentToken;
  */
 trait HasComment
 {
-    protected CommentToken | null $comment = null;
+    protected CommentToken|null $comment = null;
 
     public function addComment(string $comment): CommentToken
     {
@@ -20,6 +20,7 @@ trait HasComment
         } else {
             $this->comment->expand($comment);
         }
+
         return $this->comment;
     }
 
@@ -28,6 +29,7 @@ trait HasComment
         if (is_null($this->comment)) {
             $this->comment = new CommentToken();
         }
+
         return $this->comment;
     }
 
@@ -38,6 +40,7 @@ trait HasComment
         } else {
             $this->comment->set($comment);
         }
+
         return $this;
     }
 }
