@@ -11,6 +11,7 @@ return $config->setRules([
         "phpdoc_summary" => false,
         "phpdoc_to_comment" => ["ignored_tags" => ["var"]],
         "single_quote" => false,
+        "class_definition" => ["space_before_parenthesis" => true],
     ])
     ->setFinder($finder)
 ;

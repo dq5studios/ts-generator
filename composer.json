@@ -48,11 +48,13 @@
         }
     },
     "scripts": {
-        "check": "phpcs -pns --colors --parallel=2 --standard=PSR12 src/ --exclude=Generic.WhiteSpace.ScopeIndent,Squiz.WhiteSpace.ScopeClosingBrace,Squiz.WhiteSpace.ScopeKeywordSpacing",
+        "check": "phpcs -pns --colors --parallel=2 --standard=PSR12 src/",
+        "fixer": "php-cs-fixer fix --show-progress=dots --verbose --dry-run",
         "analyze": "psalm --threads=2 --no-diff --stats",
         "tests": "phpunit --testdox --coverage-text",
         "all-tests": [
             "@check",
+            "@fixer",
             "@analyze",
             "@tests"
         ]

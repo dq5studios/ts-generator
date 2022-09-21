@@ -279,7 +279,7 @@ class Convert
                     /** @psalm-suppress ArgumentTypeCoercion We're not sure if it's a valid type */
                     $class_type = Type::from($class);
                 } catch (InvalidArgumentException) {
-                    $class_type = (new class() extends Type {
+                    $class_type = (new class () extends Type {
                         protected string $type = "";
                     })->setType($class);
                 }

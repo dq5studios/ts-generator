@@ -123,7 +123,7 @@ class MultiTypeTest extends TestCase
 
     public function testSeperator(): void
     {
-        $type = new class() extends MultiType {
+        $type = new class () extends MultiType {
         };
         $contains = [NumberType::class, new StringType()];
         $type->contains(...$contains);
