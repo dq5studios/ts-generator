@@ -13,5 +13,6 @@ interface CanVisibility
 {
     public function getVisibility(): ?VisibilityToken;
 
-    public function setVisibility(int $visibility): self;
+    /** @param VisibilityToken::PUBLIC|VisibilityToken::PROTECTED|VisibilityToken::PRIVATE|VisibilityToken $visibility */
+    public function setVisibility(int|VisibilityToken $visibility): self;
 }
