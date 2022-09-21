@@ -15,7 +15,6 @@ trait HasExtend
     /** @var list<InterfaceType|ClassType> */
     protected array $extend = [];
 
-    /** @param InterfaceType|ClassType $extend */
     public function addExtend(InterfaceType|ClassType $extend): InterfaceType|ClassType
     {
         $this->extend[] = $extend;

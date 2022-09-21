@@ -13,8 +13,6 @@ use InvalidArgumentException;
 
 /**
  * This is a named type that contains other types
- *
- * @psalm-consistent-constructor
  */
 abstract class ContainerType extends Type implements CanName, CanComment
 {

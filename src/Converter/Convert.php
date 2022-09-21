@@ -27,16 +27,6 @@ use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\PropertyInfo\Type as SymfonyType;
 
-/**
- * @psalm-type memberParts = array{
- *      name:NameToken,
- *      type:Type,
- *      visibility:VisibilityToken::PUBLIC|VisibilityToken::PROTECTED|VisibilityToken::PRIVATE,
- *      value?:mixed,
- *      comment?:string,
- *      readonly?:boolean
- * }
- */
 class Convert
 {
     final private function __construct(
@@ -44,7 +34,7 @@ class Convert
         private NameToken|null $extends,
         /** @var NameToken[] */
         private array $implements = [],
-        /** @var list<memberParts> */
+        /** @var list<Member> */
         private array $members = [],
         /** @var ReflectionAttribute[] */
         private array $attributes = [],
@@ -108,35 +98,34 @@ class Convert
                 $prop->isProtected() => VisibilityToken::PROTECTED,
                 $prop->isPrivate() => VisibilityToken::PRIVATE,
             };
-            $m = [
-                "name" => $p_name,
-                "type" => $type,
-                "readonly" => false, // TODO: Look up readonly status
-                "visibility" => $visibility,
-            ];
+            $m = new Member(
+                name: $p_name,
+                type: $type,
+                readonly: false, // TODO: Look up readonly status
+                visibility: $visibility,
+            );
             if ($prop->hasDefaultValue()) {
-                /** @var mixed */
-                $m["value"] = $prop->getDefaultValue();
+                $m->value = $prop->getDefaultValue();
             }
             $type_comment = $info->getShortDescription($class, $prop->getName());
             if (!empty($type_comment)) {
-                $m["comment"] = $type_comment;
+                $m->comment = $type_comment;
             }
             $members[] = $m;
         }
         $consts = $reflection->getReflectionConstants();
         foreach ($consts as $const) {
             $value = $const->getValue();
-            $m = [
-                "name" => new NameToken(Convert::nameSafe($const->getName())),
-                "type" => Type::from(Type::$php_type_map[gettype($value)]),
-                "value" => $value,
-                "readonly" => true,
-                "visibility" => VisibilityToken::PUBLIC, // TODO: Look up visibility
-            ];
+            $m = new Member(
+                name: new NameToken(Convert::nameSafe($const->getName())),
+                type: Type::from(Type::$php_type_map[gettype($value)]),
+                value: $value,
+                readonly: true,
+                visibility: VisibilityToken::PUBLIC, // TODO: Look up visibility
+            );
             $type_comment = $const->getDocComment();
             if (!empty($type_comment)) {
-                $m["comment"] = Convert::parseComment($type_comment);
+                $m->comment = Convert::parseComment($type_comment);
             }
             $members[] = $m;
         }
@@ -176,17 +165,17 @@ class Convert
         //     $class->addImplement(new ClassType($this->implements));
         // }
         foreach ($this->members as $prop) {
-            if (!isset($prop["value"])) {
-                $prop["value"] = new NoneValue();
+            if (!isset($prop->value)) {
+                $prop->value = new NoneValue();
             }
-            $p = $class->addProperty($prop["name"], $prop["type"], $prop["value"]);
-            if (isset($prop["comment"])) {
-                $p->addComment($prop["comment"]);
+            $p = $class->addProperty($prop->name, $prop->type, $prop->value);
+            if (isset($prop->comment)) {
+                $p->addComment($prop->comment);
             }
-            if (isset($prop["readonly"])) {
-                $p->hasReadonly($prop["readonly"]);
+            if (isset($prop->readonly)) {
+                $p->hasReadonly($prop->readonly);
             }
-            $p->setVisibility($prop["visibility"]);
+            $p->setVisibility($prop->visibility);
         }
 
         return $class;
@@ -199,12 +188,12 @@ class Convert
             $interface->addExtend(new InterfaceType($this->extends));
         }
         foreach ($this->members as $prop) {
-            $p = $interface->addProperty($prop["name"], $prop["type"]);
-            if (isset($prop["comment"])) {
-                $p->addComment($prop["comment"]);
+            $p = $interface->addProperty($prop->name, $prop->type);
+            if (isset($prop->comment)) {
+                $p->addComment($prop->comment);
             }
-            if (isset($prop["readonly"])) {
-                $p->hasReadonly($prop["readonly"]);
+            if (isset($prop->readonly)) {
+                $p->hasReadonly($prop->readonly);
             }
         }
 
@@ -215,13 +204,13 @@ class Convert
     {
         $enum = new EnumType($this->name);
         foreach ($this->members as $prop) {
-            if (isset($prop["value"]) && (is_numeric($prop["value"]) || is_string($prop["value"]))) {
-                $p = $enum->addMember($prop["name"], $prop["value"]);
+            if (isset($prop->value) && (is_numeric($prop->value) || is_string($prop->value))) {
+                $p = $enum->addMember($prop->name, $prop->value);
             } else {
-                $p = $enum->addMember($prop["name"]);
+                $p = $enum->addMember($prop->name);
             }
-            if (isset($prop["comment"])) {
-                $p->addComment($prop["comment"]);
+            if (isset($prop->comment)) {
+                $p->addComment($prop->comment);
             }
         }
 
@@ -276,7 +265,6 @@ class Convert
                 $class = explode("\\", $class);
                 $class = array_pop($class);
                 try {
-                    /** @psalm-suppress ArgumentTypeCoercion We're not sure if it's a valid type */
                     $class_type = Type::from($class);
                 } catch (InvalidArgumentException) {
                     $class_type = (new class () extends Type {

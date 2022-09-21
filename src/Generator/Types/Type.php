@@ -80,28 +80,28 @@ abstract class Type
     }
 
     /**
-     * @param class-string<Type>|Type|Type::* $type
+     * @param class-string<Type>|Type|Type::*|string $type
      */
     public static function from(string|Type $type): Type
     {
         if ($type instanceof Type) {
             return $type;
         }
-        if ("[]" === substr($type, -2)) {
+        if (str_ends_with($type, "[]")) {
             $type = trim($type, "[]()");
             /** @var list<Type> */
             $parts = explode("|", $type);
 
             return ArrayType::of(...$parts);
         }
-        if (false !== strpos($type, "|")) {
+        if (str_contains($type, "|")) {
             $type = trim($type, "()");
             /** @var list<Type> */
             $parts = explode("|", $type);
 
             return UnionType::of(...$parts);
         }
-        if (false !== strpos($type, "&")) {
+        if (str_contains($type, "&")) {
             $type = trim($type, "()");
             /** @var list<Type> */
             $parts = explode("&", $type);

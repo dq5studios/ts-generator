@@ -15,7 +15,6 @@ trait HasImplement
     /** @var list<InterfaceType|ClassType> */
     protected array $implement = [];
 
-    /** @param InterfaceType|ClassType $implement */
     public function addImplement(InterfaceType|ClassType $implement): InterfaceType|ClassType
     {
         $this->implement[] = $implement;

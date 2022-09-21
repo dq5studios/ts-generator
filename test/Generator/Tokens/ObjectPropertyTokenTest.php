@@ -28,8 +28,7 @@ class ObjectPropertyTokenTest extends TestCase
         $this->assertSame("skimbleshanks: string", (string) $actual);
 
         try {
-            /** @psalm-suppress ArgumentTypeCoercion */
-            $actual = ObjectPropertyToken::from("macavity", "invalid");
+            ObjectPropertyToken::from("macavity", "invalid");
             $this->fail("Failed to reject invalid type");
         } catch (Exception $e) {
             $this->assertInstanceOf(InvalidArgumentException::class, $e);

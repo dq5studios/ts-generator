@@ -11,7 +11,6 @@ use DQ5Studios\TypeScript\Generator\Tokens\VisibilityToken;
  */
 trait HasVisibility
 {
-    /** @var VisibilityToken */
     protected VisibilityToken|null $visibility = null;
 
     /** @return VisibilityToken */

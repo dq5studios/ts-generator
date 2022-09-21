@@ -12,7 +12,6 @@ use DQ5Studios\TypeScript\Generator\Types\InterfaceType;
  */
 interface CanImplement
 {
-    /** @param InterfaceType $implement */
     public function addImplement(InterfaceType $implement): InterfaceType|ClassType;
 
     /** @return list<InterfaceType|ClassType> */

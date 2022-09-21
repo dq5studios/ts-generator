@@ -35,8 +35,7 @@ class FunctionParameterTokenTest extends TestCase
         $this->assertSame("skimbleshanks: string", (string) $actual);
 
         try {
-            /** @psalm-suppress ArgumentTypeCoercion */
-            $actual = FunctionParameterToken::from("macavity", "invalid");
+            FunctionParameterToken::from("macavity", "invalid");
             $this->fail("Failed to reject invalid type");
         } catch (Exception $e) {
             $this->assertInstanceOf(InvalidArgumentException::class, $e);

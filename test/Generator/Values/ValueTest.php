@@ -42,7 +42,6 @@ class ValueTest extends TestCase
      */
     public function testToLiteralType(string $class, mixed $initial, string $expected): void
     {
-        /** @psalm-suppress UnsafeInstantiation */
         $value = new $class($initial);
         $this->assertInstanceOf(Value::class, $value);
         $this->assertInstanceOf(LiteralType::class, $value);
@@ -70,7 +69,6 @@ class ValueTest extends TestCase
      */
     public function testToString(string $class, mixed $initial, string $expected): void
     {
-        /** @psalm-suppress UnsafeInstantiation */
         $value = new $class($initial);
         $this->assertInstanceOf(Value::class, $value);
         $this->assertSame($expected, (string) $value);
@@ -100,7 +98,6 @@ class ValueTest extends TestCase
      */
     public function testGetType(string $class, mixed $initial, string $expected): void
     {
-        /** @psalm-suppress UnsafeInstantiation */
         $value = new $class($initial);
         $this->assertInstanceOf(Value::class, $value);
         $this->assertSame($expected, $value->getType());
@@ -182,7 +179,6 @@ class ValueTest extends TestCase
      */
     public function testGetSet(string $class, bool|int|string $initial, bool|int|string $expected): void
     {
-        /** @psalm-suppress UnsafeInstantiation */
         $value = new $class($initial);
         $this->assertInstanceOf(Value::class, $value);
         $this->assertInstanceOf($class, $value);
