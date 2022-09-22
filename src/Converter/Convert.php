@@ -21,6 +21,10 @@ use DQ5Studios\TypeScript\Generator\Values\NoneValue;
 use InvalidArgumentException;
 use ReflectionAttribute;
 use ReflectionClass;
+use ReflectionEnum;
+use ReflectionEnumBackedCase;
+use ReflectionException;
+use ReflectionNamedType;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\PhpStanExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
@@ -48,15 +52,17 @@ class Convert
      */
     public static function fromPHP(string|object $class): Type
     {
-        if (is_string($class)) {
-            if (!class_exists($class)) {
-                throw new InvalidArgumentException("Class does not exist");
-            }
-        } else {
-            $class = get_class($class);
-        }
+        try {
+            $reflection = new ReflectionClass($class);
 
-        $reflection = new ReflectionClass($class);
+            if (PHP_VERSION_ID >= 80100 && $reflection->isEnum()) {
+                $reflection = new ReflectionEnum($class);
+            }
+        } catch (ReflectionException) {
+            throw new InvalidArgumentException("Class does not exist");
+        }
+        $class = $reflection->getName();
+
         $class_name = Convert::nameSafe($reflection->getName());
         $class_name = new NameToken($class_name);
 
@@ -87,6 +93,12 @@ class Convert
         $props = $reflection->getProperties();
         foreach ($props as $prop) {
             $p_name = new NameToken(Convert::nameSafe($prop->getName()));
+
+            // Skip built ins
+            if (PHP_VERSION_ID >= 80100 && $reflection->isEnum() && in_array($p_name, ["name", "value"])) {
+                continue;
+            }
+
             $type_detail = $info->getTypes($class, $prop->getName());
             if (is_null($type_detail)) {
                 $type = new UnknownType();
@@ -113,8 +125,40 @@ class Convert
             }
             $members[] = $m;
         }
+
+        if (PHP_VERSION_ID >= 80100 && $reflection instanceof ReflectionEnum) {
+            $backing_type = $reflection->getBackingType();
+            $cases = $reflection->getCases();
+            foreach ($cases as $case) {
+                $m = new Member(
+                    name: new NameToken(Convert::nameSafe($case->getName())),
+                    type: new UnknownType(),
+                    readonly: true,
+                    visibility: VisibilityToken::PUBLIC, // TODO: Look up visibility
+                );
+
+                if (is_a($backing_type, ReflectionNamedType::class)) {
+                    $m->type = Type::from(Type::$php_type_map[$backing_type->getName()]);
+                }
+                if ($case instanceof ReflectionEnumBackedCase) {
+                    $m->value = $case->getBackingValue();
+                }
+
+                $type_comment = $case->getDocComment();
+                if (!empty($type_comment)) {
+                    $m->comment = Convert::parseComment($type_comment);
+                }
+                $members[] = $m;
+            }
+        }
+
         $consts = $reflection->getReflectionConstants();
         foreach ($consts as $const) {
+            // Handled by getCases()
+            if (PHP_VERSION_ID >= 80100 && $const->isEnumCase()) {
+                continue;
+            }
+
             $value = $const->getValue();
             $m = new Member(
                 name: new NameToken(Convert::nameSafe($const->getName())),
@@ -139,7 +183,6 @@ class Convert
         $type = new self($class_name, $extends, $implements, $members, $attributes);
 
         foreach ($type->attributes as $attr) {
-            // TODO: Check if implements BackedEnum or UnitEnum
             if (EnumType::class === $attr->getName()) {
                 return $type->toEnum();
             }
@@ -149,6 +192,10 @@ class Convert
             if (ClassType::class === $attr->getName()) {
                 return $type->toClass();
             }
+        }
+
+        if (PHP_VERSION_ID >= 80100 && $reflection->isEnum()) {
+            return $type->toEnum();
         }
 
         return $type->toClass();

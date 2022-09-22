@@ -7,6 +7,8 @@ namespace DQ5Studios\TypeScript\Converter;
 use DQ5Studios\TypeScript\ClassTestClass;
 use DQ5Studios\TypeScript\ClassTestEnum;
 use DQ5Studios\TypeScript\ClassTestInterface;
+use DQ5Studios\TypeScript\ClassTestNativeBackedEnum;
+use DQ5Studios\TypeScript\ClassTestNativeEnum;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -72,6 +74,56 @@ enum ClassTestEnum {
 HEREDOC;
 
         $enum = Convert::fromPHP(ClassTestEnum::class);
+
+        $output = (string) $enum;
+
+        $this->assertSame($expected, $output);
+    }
+
+    /**
+     * @requires PHP >= 8.1
+     */
+    public function testNativeEnumConversion(): void
+    {
+        $expected = <<<HEREDOC
+enum ClassTestNativeEnum {
+    /** @var int Unknown */
+    unknown,
+    /** @var int Pending */
+    pending,
+    /** @var int Approved */
+    approved,
+    /** @var int Removed */
+    removed,
+}
+HEREDOC;
+
+        $enum = Convert::fromPHP(ClassTestNativeEnum::class);
+
+        $output = (string) $enum;
+
+        $this->assertSame($expected, $output);
+    }
+
+    /**
+     * @requires PHP >= 8.1
+     */
+    public function testNativeBackedEnumConversion(): void
+    {
+        $expected = <<<HEREDOC
+enum ClassTestNativeBackedEnum {
+    /** @var int Unknown */
+    unknown = 0,
+    /** @var int Pending */
+    pending = 1,
+    /** @var int Approved */
+    approved = 2,
+    /** @var int Removed */
+    removed = 3,
+}
+HEREDOC;
+
+        $enum = Convert::fromPHP(ClassTestNativeBackedEnum::class);
 
         $output = (string) $enum;
 

@@ -42,6 +42,7 @@ abstract class Type
         "int" => NumberType::class,
         "integer" => NumberType::class,
         "string" => StringType::class,
+        "object" => ObjectType::class,
     ];
 
     /** @var array<Type::*,class-string<Type>> */
