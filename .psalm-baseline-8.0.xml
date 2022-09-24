@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="4.27.0@faf106e717c37b8c81721845dba9de3d8deed8ff">
+  <file src="src/Converter/Convert.php">
+    <MixedArgument occurrences="8">
+      <code>$class</code>
+      <code>$extends-&gt;getName()</code>
+      <code>$interf-&gt;getName()</code>
+      <code>$prop-&gt;getName()</code>
+      <code>$prop-&gt;getName()</code>
+      <code>$prop-&gt;getName()</code>
+      <code>$reflection</code>
+      <code>$reflection-&gt;getName()</code>
+    </MixedArgument>
+    <MixedAssignment occurrences="7">
+      <code>$class</code>
+      <code>$extends</code>
+      <code>$interf</code>
+      <code>$interfaces</code>
+      <code>$prop</code>
+      <code>$props</code>
+      <code>$reflection</code>
+    </MixedAssignment>
+    <MixedInferredReturnType occurrences="1">
+      <code>Type</code>
+    </MixedInferredReturnType>
+    <MixedMethodCall occurrences="15">
+      <code>getDefaultValue</code>
+      <code>getInterfaces</code>
+      <code>getName</code>
+      <code>getName</code>
+      <code>getName</code>
+      <code>getName</code>
+      <code>getName</code>
+      <code>getName</code>
+      <code>getName</code>
+      <code>getParentClass</code>
+      <code>getProperties</code>
+      <code>hasDefaultValue</code>
+      <code>isPrivate</code>
+      <code>isProtected</code>
+      <code>isPublic</code>
+    </MixedMethodCall>
+    <UndefinedClass occurrences="2">
+      <code>ReflectionEnum</code>
+      <code>ReflectionEnum</code>
+    </UndefinedClass>
+    <UndefinedMethod occurrences="1">
+      <code>isEnum</code>
+    </UndefinedMethod>
+  </file>
+</files>
