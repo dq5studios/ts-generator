@@ -95,7 +95,8 @@ class Convert
             $p_name = new NameToken(Convert::nameSafe($prop->getName()));
 
             // Skip built ins
-            if (PHP_VERSION_ID >= 80100
+            if (
+                PHP_VERSION_ID >= 80100
                 && method_exists($reflection, "isEnum")
                 && $reflection->isEnum()
                 && in_array($p_name, ["name", "value"])
@@ -159,7 +160,8 @@ class Convert
         $consts = $reflection->getReflectionConstants();
         foreach ($consts as $const) {
             // Handled by getCases()
-            if (PHP_VERSION_ID >= 80100
+            if (
+                PHP_VERSION_ID >= 80100
                 && method_exists($const, "isEnumCase")
                 && $const->isEnumCase()
             ) {
@@ -201,7 +203,8 @@ class Convert
             }
         }
 
-        if (PHP_VERSION_ID >= 80100
+        if (
+            PHP_VERSION_ID >= 80100
             && method_exists($reflection, "isEnum")
             && $reflection->isEnum()
         ) {
