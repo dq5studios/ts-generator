@@ -44,10 +44,10 @@ jobs:
         restore-keys: ${{ runner.os }}-composer-
 
     - name: Install dependencies
-      run: composer install --no-progress
+      run: composer install --no-progress --optimize-autoloader
 
     - name: Run Psalm
       run: psalm --shepherd --output-format=github --php-version=${{ matrix.php-versions }}
 
     - name: Run PHPUnit
-      run: phpunit --coverage-clover=coverage.xml
+      run: vendor/bin/phpunit --coverage-text
