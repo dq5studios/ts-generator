@@ -1,6 +1,6 @@
 {
     "name": "dq5studios/ts-generator",
-    "description": "Generate TypeScript files",
+    "description": "Generate TypeScript files from PHP structures",
     "type": "project",
     "license": "BSD-3-Clause",
     "authors": [
@@ -19,9 +19,6 @@
         "php": ">=8.0",
         "symfony/polyfill-php81": "^1.22",
         "symfony/property-info": "^6.0"
-    },
-    "replace": {
-        "dq5studios/ts-generator": "~1.0"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
@@ -52,6 +49,12 @@
         "fixer": "php-cs-fixer fix --show-progress=dots --verbose --dry-run",
         "analyze": "psalm --threads=2 --no-diff --stats",
         "tests": "phpunit --testdox --coverage-text",
+        "ci-analyze": "psalm --shepherd",
+        "ci-test": "phpunit --coverage-clover=coverage.xml",
+        "all-ci": [
+            "@ci-analyze",
+            "@ci-test"
+        ],
         "all-tests": [
             "@check",
             "@fixer",
