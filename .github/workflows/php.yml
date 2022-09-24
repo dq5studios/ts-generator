@@ -47,7 +47,7 @@ jobs:
         coverage: xdebug
 
     - name: Run Psalm
-      run: psalm --output-format=github
+      run: psalm --output-format=github --php-version=${{ matrix.php-versions }}
 
     - name: Run PHPUnit
       run: phpunit --coverage-clover=coverage.xml
