@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace DQ5Studios\TypeScript\Generator\Tokens;
+namespace DQ5Studios\TypeScript\Tests\Generator\Tokens;
 
+use DQ5Studios\TypeScript\Generator\Tokens\ClassPropertyToken;
+use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Types\StringType;
 use DQ5Studios\TypeScript\Generator\Types\UnionType;
 use DQ5Studios\TypeScript\Generator\Values\StringValue;

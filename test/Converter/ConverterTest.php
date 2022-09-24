@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace DQ5Studios\TypeScript\Converter;
+namespace DQ5Studios\TypeScript\Tests\Converter;
 
-use DQ5Studios\TypeScript\ClassTestClass;
-use DQ5Studios\TypeScript\ClassTestEnum;
-use DQ5Studios\TypeScript\ClassTestInterface;
-use DQ5Studios\TypeScript\ClassTestNativeBackedEnum;
-use DQ5Studios\TypeScript\ClassTestNativeEnum;
+use DQ5Studios\TypeScript\Converter\Convert;
+use DQ5Studios\TypeScript\Tests\ClassTestClass;
+use DQ5Studios\TypeScript\Tests\ClassTestEnum;
+use DQ5Studios\TypeScript\Tests\ClassTestInterface;
+use DQ5Studios\TypeScript\Tests\ClassTestNativeBackedEnum;
+use DQ5Studios\TypeScript\Tests\ClassTestNativeEnum;
 use PHPUnit\Framework\TestCase;
 
 /**

@@ -2,8 +2,21 @@
 
 declare(strict_types=1);
 
-namespace DQ5Studios\TypeScript\Generator\Types;
+namespace DQ5Studios\TypeScript\Tests\Generator\Types;
 
+use DQ5Studios\TypeScript\Generator\Types\AnyType;
+use DQ5Studios\TypeScript\Generator\Types\BigIntType;
+use DQ5Studios\TypeScript\Generator\Types\BooleanType;
+use DQ5Studios\TypeScript\Generator\Types\NeverType;
+use DQ5Studios\TypeScript\Generator\Types\NullType;
+use DQ5Studios\TypeScript\Generator\Types\NumberType;
+use DQ5Studios\TypeScript\Generator\Types\PrimitiveType;
+use DQ5Studios\TypeScript\Generator\Types\StringType;
+use DQ5Studios\TypeScript\Generator\Types\SymbolType;
+use DQ5Studios\TypeScript\Generator\Types\Type;
+use DQ5Studios\TypeScript\Generator\Types\UndefinedType;
+use DQ5Studios\TypeScript\Generator\Types\UnknownType;
+use DQ5Studios\TypeScript\Generator\Types\VoidType;
 use Generator;
 use PHPUnit\Framework\TestCase;
 

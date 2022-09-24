@@ -41,7 +41,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "DQ5Studios\\TypeScript\\": "test"
+            "DQ5Studios\\TypeScript\\Tests\\": "test"
         }
     },
     "scripts": {

@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace DQ5Studios\TypeScript\Generator\Values;
+namespace DQ5Studios\TypeScript\Tests\Generator\Values;
 
 use DQ5Studios\TypeScript\Generator\Types\ObjectType;
+use DQ5Studios\TypeScript\Generator\Values\ObjectValue;
 use PHPUnit\Framework\TestCase;
 
 /**

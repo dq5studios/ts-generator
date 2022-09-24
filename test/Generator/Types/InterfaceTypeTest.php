@@ -2,10 +2,15 @@
 
 declare(strict_types=1);
 
-namespace DQ5Studios\TypeScript\Generator\Types;
+namespace DQ5Studios\TypeScript\Tests\Generator\Types;
 
 use DQ5Studios\TypeScript\Generator\Tokens\InterfacePropertyToken;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
+use DQ5Studios\TypeScript\Generator\Types\InterfaceType;
+use DQ5Studios\TypeScript\Generator\Types\NumberType;
+use DQ5Studios\TypeScript\Generator\Types\StringType;
+use DQ5Studios\TypeScript\Generator\Types\Type;
+use DQ5Studios\TypeScript\Generator\Types\UnionType;
 use DQ5Studios\TypeScript\Generator\Values\StringValue;
 use Exception;
 use InvalidArgumentException;

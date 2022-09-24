@@ -2,9 +2,14 @@
 
 declare(strict_types=1);
 
-namespace DQ5Studios\TypeScript\Generator\Types;
+namespace DQ5Studios\TypeScript\Tests\Generator\Types;
 
 use DQ5Studios\TypeScript\Generator\Tokens\FunctionParameterToken;
+use DQ5Studios\TypeScript\Generator\Types\FunctionType;
+use DQ5Studios\TypeScript\Generator\Types\NumberType;
+use DQ5Studios\TypeScript\Generator\Types\StringType;
+use DQ5Studios\TypeScript\Generator\Types\UnionType;
+use DQ5Studios\TypeScript\Generator\Types\VoidType;
 use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;

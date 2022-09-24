@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DQ5Studios\TypeScript\Generator\Tokens;
+namespace DQ5Studios\TypeScript\Tests\Generator\Tokens;
 
+use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Types\EnumType;
 use Exception;
 use InvalidArgumentException;

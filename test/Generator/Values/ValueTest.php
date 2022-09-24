@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DQ5Studios\TypeScript\Generator\Values;
+namespace DQ5Studios\TypeScript\Tests\Generator\Values;
 
 use DQ5Studios\TypeScript\Generator\Types\ArrayType;
 use DQ5Studios\TypeScript\Generator\Types\BooleanType;
@@ -14,6 +14,15 @@ use DQ5Studios\TypeScript\Generator\Types\ObjectType;
 use DQ5Studios\TypeScript\Generator\Types\StringType;
 use DQ5Studios\TypeScript\Generator\Types\Type;
 use DQ5Studios\TypeScript\Generator\Types\UndefinedType;
+use DQ5Studios\TypeScript\Generator\Values\ArrayValue;
+use DQ5Studios\TypeScript\Generator\Values\BooleanValue;
+use DQ5Studios\TypeScript\Generator\Values\NoneValue;
+use DQ5Studios\TypeScript\Generator\Values\NullValue;
+use DQ5Studios\TypeScript\Generator\Values\NumberValue;
+use DQ5Studios\TypeScript\Generator\Values\ObjectValue;
+use DQ5Studios\TypeScript\Generator\Values\StringValue;
+use DQ5Studios\TypeScript\Generator\Values\UndefinedValue;
+use DQ5Studios\TypeScript\Generator\Values\Value;
 use Generator;
 use PHPUnit\Framework\TestCase;
 use stdClass;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DQ5Studios\TypeScript;
+namespace DQ5Studios\TypeScript\Tests;
 
 if (PHP_VERSION_ID < 80100) {
     return;

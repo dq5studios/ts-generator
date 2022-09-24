@@ -2,8 +2,13 @@
 
 declare(strict_types=1);
 
-namespace DQ5Studios\TypeScript\Generator\Types;
+namespace DQ5Studios\TypeScript\Tests\Generator\Types;
 
+use DQ5Studios\TypeScript\Generator\Types\ArrayType;
+use DQ5Studios\TypeScript\Generator\Types\IntersectionType;
+use DQ5Studios\TypeScript\Generator\Types\NumberType;
+use DQ5Studios\TypeScript\Generator\Types\Type;
+use DQ5Studios\TypeScript\Generator\Types\UnionType;
 use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
