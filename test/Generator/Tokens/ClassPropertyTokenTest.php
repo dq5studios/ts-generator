@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests\Generator\Tokens;
 
+use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Tokens\ClassPropertyToken;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Types\StringType;
@@ -20,41 +21,41 @@ class ClassPropertyTokenTest extends TestCase
     public function testToString(): void
     {
         $actual = ClassPropertyToken::from(NameToken::from("skimbleshanks"), StringType::class, "the railway cat");
-        $this->assertSame("skimbleshanks: string = \"the railway cat\"", (string) $actual);
+        $this->assertSame("skimbleshanks: string = \"the railway cat\"", Printer::print($actual));
 
         $actual = ClassPropertyToken::from(NameToken::from("skimbleshanks"), new StringType())->hasReadonly(true);
-        $this->assertSame("readonly skimbleshanks: string", (string) $actual);
+        $this->assertSame("readonly skimbleshanks: string", Printer::print($actual));
         $this->assertTrue($actual->isReadonly());
 
         $actual = ClassPropertyToken::from("skimbleshanks", new StringType(), readonly: true);
-        $this->assertSame("readonly skimbleshanks: string", (string) $actual);
+        $this->assertSame("readonly skimbleshanks: string", Printer::print($actual));
         $this->assertTrue($actual->isReadonly());
 
         $actual = ClassPropertyToken::from(NameToken::from("skimbleshanks"), new StringType())->hasStatic(true);
-        $this->assertSame("static skimbleshanks: string", (string) $actual);
+        $this->assertSame("static skimbleshanks: string", Printer::print($actual));
         $this->assertTrue($actual->isStatic());
 
         $actual = ClassPropertyToken::from("skimbleshanks", new StringType(), static: true);
-        $this->assertSame("static skimbleshanks: string", (string) $actual);
+        $this->assertSame("static skimbleshanks: string", Printer::print($actual));
         $this->assertTrue($actual->isStatic());
 
         $actual = ClassPropertyToken::from("skimbleshanks", (new StringValue("railway cat"))->asLiteral());
-        $this->assertSame("skimbleshanks: \"railway cat\"", (string) $actual);
+        $this->assertSame("skimbleshanks: \"railway cat\"", Printer::print($actual));
 
         $actual = ClassPropertyToken::from("skimbleshanks", new StringType(), optional: true);
-        $this->assertSame("skimbleshanks?: string", (string) $actual);
+        $this->assertSame("skimbleshanks?: string", Printer::print($actual));
         $this->assertTrue($actual->isOptional());
 
         $actual = ClassPropertyToken::from("skimbleshanks?", (new StringValue("railway cat"))->asLiteral());
-        $this->assertSame("skimbleshanks?: \"railway cat\"", (string) $actual);
+        $this->assertSame("skimbleshanks?: \"railway cat\"", Printer::print($actual));
         $this->assertTrue($actual->isOptional());
 
         $types = UnionType::of(
             (new StringValue("the railway cat"))->asLiteral(),
             (new StringValue("the cat of the railway"))->asLiteral()
         );
-        $this->assertSame("(\"the railway cat\" | \"the cat of the railway\")", (string) $types);
+        $this->assertSame("(\"the railway cat\" | \"the cat of the railway\")", Printer::print($types));
         $actual = ClassPropertyToken::from("skimbleshanks", $types);
-        $this->assertSame("skimbleshanks: (\"the railway cat\" | \"the cat of the railway\")", (string) $actual);
+        $this->assertSame("skimbleshanks: (\"the railway cat\" | \"the cat of the railway\")", Printer::print($actual));
     }
 }

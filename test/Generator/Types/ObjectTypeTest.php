@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests\Generator\Types;
 
+use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Tokens\ObjectPropertyToken;
 use DQ5Studios\TypeScript\Generator\Types\NumberType;
@@ -50,7 +51,7 @@ class ObjectTypeTest extends TestCase
     public function testToString(): void
     {
         $actual = new ObjectType();
-        $this->assertSame("object", (string) $actual);
+        $this->assertSame("object", Printer::print($actual));
 
         $actual = new ObjectType();
         $actual->addProperty("skimbleshanks", NumberType::class);
@@ -70,7 +71,7 @@ class ObjectTypeTest extends TestCase
     growltiger: ("mungojerrie" | "rumpelteazer"),
 }
 ENUM;
-        $this->assertSame($expected, (string) $actual);
+        $this->assertSame($expected, Printer::print($actual));
 
         $actual = new ObjectType();
         $actual->addProperty("grizabella", StringType::class);
@@ -90,7 +91,7 @@ ENUM;
     skimbleshanks: (string | number),
 }
 ENUM;
-        $this->assertSame($expected, (string) $actual);
+        $this->assertSame($expected, Printer::print($actual));
 
         $actual = new ObjectType();
         $subtype = new ObjectType();
@@ -100,6 +101,6 @@ ENUM;
         $expected = <<<'ENUM'
 { rumpelteazer: { mungojerrie: number } }
 ENUM;
-        $this->assertSame($expected, (string) $actual);
+        $this->assertSame($expected, Printer::print($actual));
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests\Generator\Types;
 
+use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Types\ArrayType;
 use DQ5Studios\TypeScript\Generator\Types\IntersectionType;
 use DQ5Studios\TypeScript\Generator\Types\NumberType;
@@ -24,7 +25,7 @@ class TypeTest extends TestCase
             protected string $type = "jellicle";
         };
         $this->assertInstanceOf(Type::class, $type);
-        $this->assertSame("jellicle", (string) $type);
+        $this->assertSame("jellicle", Printer::print($type));
     }
 
     public function testFromWithString(): void
@@ -55,19 +56,19 @@ class TypeTest extends TestCase
     {
         $actual = Type::from("number|string");
         $this->assertInstanceOf(UnionType::class, $actual);
-        $this->assertSame("(number | string)", (string) $actual);
+        $this->assertSame("(number | string)", Printer::print($actual));
 
         $actual = Type::from("number&string");
         $this->assertInstanceOf(IntersectionType::class, $actual);
-        $this->assertSame("(number & string)", (string) $actual);
+        $this->assertSame("(number & string)", Printer::print($actual));
 
         $actual = Type::from("(number|string)[]");
         $this->assertInstanceOf(ArrayType::class, $actual);
-        $this->assertSame("(number|string)[]", (string) $actual);
+        $this->assertSame("(number|string)[]", Printer::print($actual));
 
         $actual = Type::from("number[]");
         $this->assertInstanceOf(ArrayType::class, $actual);
-        $this->assertSame("number[]", (string) $actual);
+        $this->assertSame("number[]", Printer::print($actual));
     }
 
     public function testGetSet(): void
@@ -75,7 +76,7 @@ class TypeTest extends TestCase
         $actual = $this->getMockForAbstractClass(Type::class);
         $actual->setType("jellicle");
         $this->assertInstanceOf(Type::class, $actual);
-        $this->assertSame("jellicle", (string) $actual);
+        $this->assertSame("jellicle", Printer::print($actual));
         $this->assertSame("jellicle", $actual->getType());
     }
 }

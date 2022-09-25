@@ -51,9 +51,4 @@ class File implements CanComment
     {
         return $this->contents;
     }
-
-    public function __toString(): string
-    {
-        return (new Printer())->printFile($this);
-    }
 }

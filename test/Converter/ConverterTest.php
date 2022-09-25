@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DQ5Studios\TypeScript\Tests\Converter;
 
 use DQ5Studios\TypeScript\Converter\Convert;
+use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Tests\ClassTestClass;
 use DQ5Studios\TypeScript\Tests\ClassTestEnum;
 use DQ5Studios\TypeScript\Tests\ClassTestInterface;
@@ -33,7 +34,7 @@ HEREDOC;
 
         $interface = Convert::fromPHP(ClassTestInterface::class);
 
-        $output = (string) $interface;
+        $output = Printer::print($interface);
 
         $this->assertSame($expected, $output);
     }
@@ -54,7 +55,7 @@ HEREDOC;
 
         $class = Convert::fromPHP(ClassTestClass::class);
 
-        $output = (string) $class;
+        $output = Printer::print($class);
 
         $this->assertSame($expected, $output);
     }
@@ -76,7 +77,7 @@ HEREDOC;
 
         $enum = Convert::fromPHP(ClassTestEnum::class);
 
-        $output = (string) $enum;
+        $output = Printer::print($enum);
 
         $this->assertSame($expected, $output);
     }
@@ -101,7 +102,7 @@ HEREDOC;
 
         $enum = Convert::fromPHP(ClassTestNativeEnum::class);
 
-        $output = (string) $enum;
+        $output = Printer::print($enum);
 
         $this->assertSame($expected, $output);
     }
@@ -126,7 +127,7 @@ HEREDOC;
 
         $enum = Convert::fromPHP(ClassTestNativeBackedEnum::class);
 
-        $output = (string) $enum;
+        $output = Printer::print($enum);
 
         $this->assertSame($expected, $output);
     }

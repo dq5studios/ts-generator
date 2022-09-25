@@ -99,7 +99,7 @@ class Convert
                 PHP_VERSION_ID >= 80100
                 && method_exists($reflection, "isEnum")
                 && $reflection->isEnum()
-                && in_array($p_name, ["name", "value"])
+                && in_array($p_name->getName(), ["name", "value"])
             ) {
                 continue;
             }

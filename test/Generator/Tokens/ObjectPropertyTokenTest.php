@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests\Generator\Tokens;
 
+use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Tokens\ObjectPropertyToken;
 use DQ5Studios\TypeScript\Generator\Types\StringType;
@@ -20,14 +21,14 @@ class ObjectPropertyTokenTest extends TestCase
     public function testToString(): void
     {
         $actual = ObjectPropertyToken::from("skimbleshanks", new StringType());
-        $this->assertSame("skimbleshanks: string", (string) $actual);
+        $this->assertSame("skimbleshanks: string", Printer::print($actual));
 
         $actual = ObjectPropertyToken::from("skimbleshanks?", new StringType());
-        $this->assertSame("skimbleshanks?: string", (string) $actual);
+        $this->assertSame("skimbleshanks?: string", Printer::print($actual));
         $this->assertTrue($actual->isOptional());
 
         $actual = ObjectPropertyToken::from(NameToken::from("skimbleshanks"), StringType::class);
-        $this->assertSame("skimbleshanks: string", (string) $actual);
+        $this->assertSame("skimbleshanks: string", Printer::print($actual));
 
         try {
             ObjectPropertyToken::from("macavity", "invalid");

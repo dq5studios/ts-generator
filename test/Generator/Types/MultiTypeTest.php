@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests\Generator\Types;
 
+use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Types\ArrayType;
 use DQ5Studios\TypeScript\Generator\Types\IntersectionType;
 use DQ5Studios\TypeScript\Generator\Types\MultiType;
@@ -46,11 +47,11 @@ class MultiTypeTest extends TestCase
         $type = new $class();
         $this->assertInstanceOf(Type::class, $type);
         $this->assertInstanceOf(MultiType::class, $type);
-        $this->assertSame($expected, (string) $type);
+        $this->assertSame($expected, Printer::print($type));
         $type = Type::from($as_string);
         $this->assertInstanceOf(Type::class, $type);
         $this->assertInstanceOf(MultiType::class, $type);
-        $this->assertSame($expected, (string) $type);
+        $this->assertSame($expected, Printer::print($type));
     }
 
     public function singleTypeList(): Generator
@@ -79,7 +80,7 @@ class MultiTypeTest extends TestCase
         $this->assertInstanceOf(Type::class, $type);
         $this->assertInstanceOf(MultiType::class, $type);
         $type->contains(...$contains);
-        $this->assertSame($expected, (string) $type);
+        $this->assertSame($expected, Printer::print($type));
     }
 
     public function multiTypeList(): Generator
@@ -109,13 +110,13 @@ class MultiTypeTest extends TestCase
         $this->assertInstanceOf(MultiType::class, $type);
         $this->assertTrue($type instanceof $class);
         $type->contains(...$contains);
-        $this->assertSame($expected, (string) $type);
+        $this->assertSame($expected, Printer::print($type));
 
         $type = $class::of(...$contains);
         $this->assertInstanceOf(Type::class, $type);
         $this->assertInstanceOf(MultiType::class, $type);
         $this->assertInstanceOf($class, $type);
-        $this->assertSame($expected, (string) $type);
+        $this->assertSame($expected, Printer::print($type));
     }
 
     public function testBadData(): void
@@ -136,7 +137,7 @@ class MultiTypeTest extends TestCase
         $contains = [NumberType::class, new StringType()];
         $type->contains(...$contains);
         $type->setSeperator("??");
-        $this->assertSame("(number??string)", (string) $type);
+        $this->assertSame("(number??string)", Printer::print($type));
     }
 
     /**
@@ -146,10 +147,10 @@ class MultiTypeTest extends TestCase
     {
         $actual = Type::from("number|string");
         $this->assertInstanceOf(UnionType::class, $actual);
-        $this->assertSame("(number | string)", (string) $actual);
+        $this->assertSame("(number | string)", Printer::print($actual));
 
         $actual = Type::from("number&string");
         $this->assertInstanceOf(IntersectionType::class, $actual);
-        $this->assertSame("(number & string)", (string) $actual);
+        $this->assertSame("(number & string)", Printer::print($actual));
     }
 }

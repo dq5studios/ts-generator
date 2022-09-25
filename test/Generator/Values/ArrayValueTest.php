@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests\Generator\Values;
 
+use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Types\ArrayType;
 use DQ5Studios\TypeScript\Generator\Values\ArrayValue;
 use PHPUnit\Framework\TestCase;
@@ -26,9 +27,9 @@ class ArrayValueTest extends TestCase
     public function testToString(): void
     {
         $actual = new ArrayValue();
-        $this->assertSame("[]", (string) $actual);
+        $this->assertSame("[]", Printer::print($actual));
 
         $actual = new ArrayValue(["mungojerrie", "rumpleteazer"]);
-        $this->assertSame("[\"mungojerrie\", \"rumpleteazer\"]", (string) $actual);
+        $this->assertSame("[\"mungojerrie\", \"rumpleteazer\"]", Printer::print($actual));
     }
 }

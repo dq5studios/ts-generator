@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests\Generator\Types;
 
+use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Tokens\ClassPropertyToken;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Types\ClassType;
@@ -35,10 +36,10 @@ class ClassTypeTest extends TestCase
         }
 
         $actual = new ClassType("jellicle");
-        $this->assertSame("jellicle", (string) $actual->getName());
+        $this->assertSame("jellicle", Printer::print($actual->getName()));
 
         $actual = new ClassType(new NameToken("jellicle"));
-        $this->assertSame("jellicle", (string) $actual->getName());
+        $this->assertSame("jellicle", Printer::print($actual->getName()));
     }
 
     /**
@@ -48,11 +49,11 @@ class ClassTypeTest extends TestCase
     {
         $actual = new ClassType("jellicle");
         $actual->setName("pollicle");
-        $this->assertSame("pollicle", (string) $actual->getName());
+        $this->assertSame("pollicle", Printer::print($actual->getName()));
 
         $actual = new ClassType(new NameToken("jellicle"));
         $actual->setName(NameToken::from("pollicle"));
-        $this->assertSame("pollicle", (string) $actual->getName());
+        $this->assertSame("pollicle", Printer::print($actual->getName()));
     }
 
     public function testMemberActions(): void
@@ -104,7 +105,7 @@ declare class jellicle {
     growltiger: ("mungojerrie" | "rumpelteazer");
 }
 ENUM;
-        $this->assertSame($expected, (string) $actual);
+        $this->assertSame($expected, Printer::print($actual));
 
         $actual = new ClassType("jellicle");
         $actual->addProperty("grizabella", StringType::class, "glamour cat");
@@ -124,7 +125,7 @@ class jellicle {
     skimbleshanks: (string | number);
 }
 ENUM;
-        $this->assertSame($expected, (string) $actual);
+        $this->assertSame($expected, Printer::print($actual));
 
         $actual = new ClassType("jellicle");
         $subtype = new ClassType("cat");
@@ -139,7 +140,7 @@ export class jellicle extends jellylorum {
     rumpelteazer: cat;
 }
 ENUM;
-        $this->assertSame($expected, (string) $actual);
+        $this->assertSame($expected, Printer::print($actual));
     }
 
     public function testExport(): void
@@ -194,6 +195,6 @@ class jellicle {
     skimbleshanks: string = "the railway cat";
 }
 ENUM;
-        $this->assertSame($expected, (string) $actual);
+        $this->assertSame($expected, Printer::print($actual));
     }
 }

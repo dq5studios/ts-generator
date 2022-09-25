@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests\Generator\Types;
 
+use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Types\FunctionType;
 use DQ5Studios\TypeScript\Generator\Types\ObjectType;
 use DQ5Studios\TypeScript\Generator\Types\Type;
@@ -30,6 +31,6 @@ class ComplexTypeTest extends TestCase
     {
         $type = new $class();
         $this->assertInstanceOf(Type::class, $type);
-        $this->assertSame($expected, (string) $type);
+        $this->assertSame($expected, Printer::print($type));
     }
 }

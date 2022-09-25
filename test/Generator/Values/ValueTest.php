@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests\Generator\Values;
 
+use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Types\ArrayType;
 use DQ5Studios\TypeScript\Generator\Types\BooleanType;
 use DQ5Studios\TypeScript\Generator\Types\Interfaces\LiteralType;
@@ -56,7 +57,7 @@ class ValueTest extends TestCase
         $this->assertInstanceOf(LiteralType::class, $value);
         $type = $value->asLiteral();
         $this->assertInstanceOf(Type::class, $type);
-        $this->assertSame($expected, (string) $type);
+        $this->assertSame($expected, Printer::print($type));
     }
 
     public function valueList(): Generator
@@ -80,7 +81,7 @@ class ValueTest extends TestCase
     {
         $value = new $class($initial);
         $this->assertInstanceOf(Value::class, $value);
-        $this->assertSame($expected, (string) $value);
+        $this->assertSame($expected, Printer::print($value));
     }
 
     public function typeList(): Generator

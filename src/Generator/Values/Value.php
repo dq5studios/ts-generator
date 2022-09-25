@@ -52,9 +52,4 @@ abstract class Value
     {
         return $this->type;
     }
-
-    public function __toString(): string
-    {
-        return (new Printer())->printValue($this);
-    }
 }

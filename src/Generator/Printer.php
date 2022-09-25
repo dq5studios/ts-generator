@@ -57,12 +57,12 @@ class Printer
             $print instanceof FunctionSignatureToken => (new Printer())->printFunctionSignature($print),
             $print instanceof IndexSignatureToken => (new Printer())->printIndexSignature($print),
             $print instanceof InterfaceType => (new Printer())->printInterface($print),
-            $print instanceof MemberToken => (new Printer())->printMemberToken($print),
-            $print instanceof MultiType => (new Printer())->printMultiType($print),
             $print instanceof NameToken => (new Printer())->printName($print),
             $print instanceof ObjectType => (new Printer())->printObject($print),
             $print instanceof ObjectValue => (new Printer())->printObjectValue($print),
             $print instanceof TupleType => (new Printer())->printTuple($print),
+            $print instanceof MultiType => (new Printer())->printMultiType($print),
+            $print instanceof MemberToken => (new Printer())->printMemberToken($print),
             $print instanceof Type => (new Printer())->printType($print),
             $print instanceof Value => (new Printer())->printValue($print),
             default => "",
@@ -278,7 +278,7 @@ class Printer
             }
         }
         if (!($value instanceof NoneValue)) {
-            $output .= " = " . (string) $token->getValue();
+            $output .= " = " . Printer::print($token->getValue());
         }
 
         return $output;

@@ -12,6 +12,4 @@ use DQ5Studios\TypeScript\Generator\Types\Type;
 interface LiteralType
 {
     public function asLiteral(): Type;
-
-    public function __toString(): string;
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests\Generator\Types;
 
+use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Tokens\EnumMemberToken;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Types\EnumType;
@@ -29,10 +30,10 @@ class EnumTypeTest extends TestCase
         }
 
         $actual = new EnumType("jellicle");
-        $this->assertSame("jellicle", (string) $actual->getName());
+        $this->assertSame("jellicle", Printer::print($actual->getName()));
 
         $actual = new EnumType(new NameToken("jellicle"));
-        $this->assertSame("jellicle", (string) $actual->getName());
+        $this->assertSame("jellicle", Printer::print($actual->getName()));
     }
 
     /**
@@ -42,11 +43,11 @@ class EnumTypeTest extends TestCase
     {
         $actual = new EnumType("jellicle");
         $actual->setName("pollicle");
-        $this->assertSame("pollicle", (string) $actual->getName());
+        $this->assertSame("pollicle", Printer::print($actual->getName()));
 
         $actual = new EnumType(new NameToken("jellicle"));
         $actual->setName(NameToken::from("pollicle"));
-        $this->assertSame("pollicle", (string) $actual->getName());
+        $this->assertSame("pollicle", Printer::print($actual->getName()));
     }
 
     public function testMemberActions(): void
@@ -107,7 +108,7 @@ export const enum jellicle {
     mungojerrie,
 }
 ENUM;
-        $this->assertSame($expected, (string) $actual);
+        $this->assertSame($expected, Printer::print($actual));
 
         $actual = new EnumType("jellicle");
         $actual->addMember("grizabella", 5);
@@ -122,7 +123,7 @@ declare enum jellicle {
     skimbleshanks = "railway cat",
 }
 ENUM;
-        $this->assertSame($expected, (string) $actual);
+        $this->assertSame($expected, Printer::print($actual));
     }
 
     public function testExport(): void

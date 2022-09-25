@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Generator\Types\Traits;
 
+use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Types\PrimitiveType;
 use DQ5Studios\TypeScript\Generator\Types\Type;
 
@@ -17,7 +18,7 @@ trait LiteralType
         $type = new class () extends PrimitiveType {
             protected string $type = "";
         };
-        $type->setType((string) $this);
+        $type->setType(Printer::print($this));
 
         return $type;
     }

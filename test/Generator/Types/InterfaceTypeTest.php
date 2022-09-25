@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests\Generator\Types;
 
+use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Tokens\InterfacePropertyToken;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Types\InterfaceType;
@@ -34,10 +35,10 @@ class InterfaceTypeTest extends TestCase
         }
 
         $actual = new InterfaceType("jellicle");
-        $this->assertSame("jellicle", (string) $actual->getName());
+        $this->assertSame("jellicle", Printer::print($actual->getName()));
 
         $actual = new InterfaceType(new NameToken("jellicle"));
-        $this->assertSame("jellicle", (string) $actual->getName());
+        $this->assertSame("jellicle", Printer::print($actual->getName()));
     }
 
     /**
@@ -47,11 +48,11 @@ class InterfaceTypeTest extends TestCase
     {
         $actual = new InterfaceType("jellicle");
         $actual->setName("pollicle");
-        $this->assertSame("pollicle", (string) $actual->getName());
+        $this->assertSame("pollicle", Printer::print($actual->getName()));
 
         $actual = new InterfaceType(new NameToken("jellicle"));
         $actual->setName(NameToken::from("pollicle"));
-        $this->assertSame("pollicle", (string) $actual->getName());
+        $this->assertSame("pollicle", Printer::print($actual->getName()));
     }
 
     public function testMemberActions(): void
@@ -102,7 +103,7 @@ declare interface jellicle {
     growltiger: ("mungojerrie" | "rumpelteazer");
 }
 ENUM;
-        $this->assertSame($expected, (string) $actual);
+        $this->assertSame($expected, Printer::print($actual));
 
         $actual = new InterfaceType("jellicle");
         $actual->addProperty("grizabella", StringType::class);
@@ -122,7 +123,7 @@ interface jellicle {
     skimbleshanks: (string | number);
 }
 ENUM;
-        $this->assertSame($expected, (string) $actual);
+        $this->assertSame($expected, Printer::print($actual));
 
         $actual = new InterfaceType("jellicle");
         $subtype = new InterfaceType("cat");
@@ -137,7 +138,7 @@ export interface jellicle extends jellylorum {
     rumpelteazer: cat;
 }
 ENUM;
-        $this->assertSame($expected, (string) $actual);
+        $this->assertSame($expected, Printer::print($actual));
     }
 
     public function testExport(): void
@@ -196,6 +197,6 @@ interface jellicle {
     skimbleshanks: string;
 }
 ENUM;
-        $this->assertSame($expected, (string) $actual);
+        $this->assertSame($expected, Printer::print($actual));
     }
 }

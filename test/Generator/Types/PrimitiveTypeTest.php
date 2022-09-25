@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests\Generator\Types;
 
+use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Types\AnyType;
 use DQ5Studios\TypeScript\Generator\Types\BigIntType;
 use DQ5Studios\TypeScript\Generator\Types\BooleanType;
@@ -60,10 +61,10 @@ class PrimitiveTypeTest extends TestCase
         $type = new $class();
         $this->assertInstanceOf(Type::class, $type);
         $this->assertInstanceOf(PrimitiveType::class, $type);
-        $this->assertSame($expected, (string) $type);
+        $this->assertSame($expected, Printer::print($type));
         $type = Type::from($as_string);
         $this->assertInstanceOf(Type::class, $type);
         $this->assertInstanceOf(PrimitiveType::class, $type);
-        $this->assertSame($expected, (string) $type);
+        $this->assertSame($expected, Printer::print($type));
     }
 }

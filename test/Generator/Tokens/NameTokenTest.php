@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests\Generator\Tokens;
 
+use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Types\EnumType;
 use Exception;
@@ -32,11 +33,11 @@ class NameTokenTest extends TestCase
         }
 
         $actual = NameToken::from("pollicle");
-        $this->assertSame("pollicle", (string) $actual);
+        $this->assertSame("pollicle", Printer::print($actual));
         $actual = NameToken::from($actual);
-        $this->assertSame("pollicle", (string) $actual);
+        $this->assertSame("pollicle", Printer::print($actual));
         $actual = new NameToken("jellicle");
-        $this->assertSame("jellicle", (string) $actual);
+        $this->assertSame("jellicle", Printer::print($actual));
 
         $actual = new NameToken("jellicle");
         $this->assertSame("jellicle", $actual->getName());

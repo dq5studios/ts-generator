@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests\Generator\Tokens;
 
+use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Tokens\IndexSignatureToken;
 use DQ5Studios\TypeScript\Generator\Types\NumberType;
 use DQ5Studios\TypeScript\Generator\Types\Type;
@@ -19,7 +20,7 @@ class IndexSignatureTokenTest extends TestCase
     public function testOf(): void
     {
         $actual = IndexSignatureToken::of("string");
-        $this->assertSame("[index: string]", (string) $actual);
+        $this->assertSame("[index: string]", Printer::print($actual));
     }
 
     public function testSetType(): void
@@ -34,7 +35,7 @@ class IndexSignatureTokenTest extends TestCase
 
         $type = new NumberType();
         $actual->setType($type);
-        $this->assertSame("[skimbleshanks: number]", (string) $actual);
-        $this->assertSame("number", (string) $actual->getType());
+        $this->assertSame("[skimbleshanks: number]", Printer::print($actual));
+        $this->assertSame("number", Printer::print($actual->getType()));
     }
 }

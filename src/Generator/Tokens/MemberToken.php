@@ -61,9 +61,4 @@ class MemberToken implements CanName, CanComment
 
         return $this;
     }
-
-    public function __toString(): string
-    {
-        return (new Printer())->printMemberToken($this);
-    }
 }

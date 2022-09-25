@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Generator\Tokens;
 
+use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanParameters;
 use DQ5Studios\TypeScript\Generator\Types\Traits\HasParameters;
 use DQ5Studios\TypeScript\Generator\Types\Type;
@@ -24,7 +25,10 @@ class FunctionSignatureToken extends NameToken implements CanParameters
      */
     public static function of(string|NameToken $label, string|Type ...$types): self
     {
-        $fn = new self((string) $label);
+        if ($label instanceof NameToken) {
+            $label = Printer::print($label);
+        }
+        $fn = new self($label);
         $fn->setParameters($types);
 
         return $fn;

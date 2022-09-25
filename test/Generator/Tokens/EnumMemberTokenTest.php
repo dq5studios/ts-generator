@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests\Generator\Tokens;
 
+use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Tokens\EnumMemberToken;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Values\NoneValue;
@@ -22,19 +23,19 @@ class EnumMemberTokenTest extends TestCase
     public function testToString(): void
     {
         $actual = EnumMemberToken::from(NameToken::from("skimbleshanks"), "railway cat");
-        $this->assertSame("skimbleshanks = \"railway cat\"", (string) $actual);
+        $this->assertSame("skimbleshanks = \"railway cat\"", Printer::print($actual));
 
         $actual = EnumMemberToken::from(NameToken::from("skimbleshanks"), 42);
-        $this->assertSame("skimbleshanks = 42", (string) $actual);
+        $this->assertSame("skimbleshanks = 42", Printer::print($actual));
 
         $actual = EnumMemberToken::from("skimbleshanks", new StringValue("railway cat"));
-        $this->assertSame("skimbleshanks = \"railway cat\"", (string) $actual);
+        $this->assertSame("skimbleshanks = \"railway cat\"", Printer::print($actual));
 
         $actual = EnumMemberToken::from("skimbleshanks", new NumberValue(42));
-        $this->assertSame("skimbleshanks = 42", (string) $actual);
+        $this->assertSame("skimbleshanks = 42", Printer::print($actual));
 
         $actual = EnumMemberToken::from("skimbleshanks", new NoneValue());
-        $this->assertSame("skimbleshanks", (string) $actual);
+        $this->assertSame("skimbleshanks", Printer::print($actual));
 
         try {
             $actual = EnumMemberToken::from("macavity", 1, 2);

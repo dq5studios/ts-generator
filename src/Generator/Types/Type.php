@@ -122,9 +122,4 @@ abstract class Type
 
         return new $type();
     }
-
-    public function __toString(): string
-    {
-        return (new Printer())->printType($this);
-    }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests\Generator\Tokens;
 
+use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Tokens\MemberToken;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Types\EnumType;
@@ -50,26 +51,26 @@ class MemberTokenTest extends TestCase
     public function testToString(): void
     {
         $actual = new MemberToken(NameToken::from("skimbleshanks"));
-        $this->assertSame("skimbleshanks", (string) $actual);
+        $this->assertSame("skimbleshanks", Printer::print($actual));
 
         $type = new EnumType("jellicles");
         $actual->setType($type);
-        $this->assertSame("skimbleshanks: jellicles", (string) $actual);
+        $this->assertSame("skimbleshanks: jellicles", Printer::print($actual));
 
         $type = new StringType();
         $actual->setType($type);
-        $this->assertSame("skimbleshanks: string", (string) $actual);
+        $this->assertSame("skimbleshanks: string", Printer::print($actual));
 
         $value = new StringValue("railway cat");
         $actual->setValue($value);
-        $this->assertSame("skimbleshanks: string = \"railway cat\"", (string) $actual);
+        $this->assertSame("skimbleshanks: string = \"railway cat\"", Printer::print($actual));
 
         $type = new NoneType();
         $actual->setType($type);
-        $this->assertSame("skimbleshanks = \"railway cat\"", (string) $actual);
+        $this->assertSame("skimbleshanks = \"railway cat\"", Printer::print($actual));
 
         $type = new NoneType();
         $actual->setType($type);
-        $this->assertSame("skimbleshanks = \"railway cat\"", (string) $actual);
+        $this->assertSame("skimbleshanks = \"railway cat\"", Printer::print($actual));
     }
 }

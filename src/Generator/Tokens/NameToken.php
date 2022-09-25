@@ -35,9 +35,4 @@ class NameToken
     {
         return $this->name;
     }
-
-    public function __toString(): string
-    {
-        return (new Printer())->printName($this);
-    }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests\Generator\Types;
 
+use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Tokens\FunctionParameterToken;
 use DQ5Studios\TypeScript\Generator\Types\FunctionType;
 use DQ5Studios\TypeScript\Generator\Types\NumberType;
@@ -23,24 +24,24 @@ class FunctionTypeTest extends TestCase
     {
         $function = new FunctionType();
         $function->setReturn(new VoidType());
-        $this->assertSame("() => void", (string) $function, "Void return as object");
+        $this->assertSame("() => void", Printer::print($function), "Void return as object");
 
         $function = new FunctionType();
         $function->setReturn(VoidType::class);
         $this->assertInstanceOf(VoidType::class, $function->getReturn());
-        $this->assertSame("() => void", (string) $function, "Void return as class-string");
+        $this->assertSame("() => void", Printer::print($function), "Void return as class-string");
 
         $function = new FunctionType();
         $function->setReturn(UnionType::of(NumberType::class, StringType::class));
-        $this->assertSame("() => (number | string)", (string) $function, "Union return as class-string");
+        $this->assertSame("() => (number | string)", Printer::print($function), "Union return as class-string");
 
         $function = new FunctionType();
         $function->setParameters([new NumberType()]);
-        $this->assertSame("(arg_0: number) => void", (string) $function, "Number parameter as object");
+        $this->assertSame("(arg_0: number) => void", Printer::print($function), "Number parameter as object");
 
         $function = new FunctionType();
         $function->setParameters([NumberType::class]);
-        $this->assertSame("(arg_0: number) => void", (string) $function, "Number parameter as class-string");
+        $this->assertSame("(arg_0: number) => void", Printer::print($function), "Number parameter as class-string");
 
         $function = new FunctionType();
         $function->setParameters([NumberType::class, StringType::class]);
@@ -48,7 +49,7 @@ class FunctionTypeTest extends TestCase
         $this->assertContainsOnlyInstancesOf(FunctionParameterToken::class, $parameters);
         $this->assertCount(2, $parameters);
         $signature = "(arg_0: number, arg_1: string) => void";
-        $this->assertSame($signature, (string) $function, "Multiple parameters as class-string");
+        $this->assertSame($signature, Printer::print($function), "Multiple parameters as class-string");
 
         $function = new FunctionType();
         try {
@@ -63,11 +64,11 @@ class FunctionTypeTest extends TestCase
     {
         $function = new FunctionType();
         $function->addParameter(new StringType(), "skimbleshanks");
-        $this->assertSame("(skimbleshanks: string) => void", (string) $function);
+        $this->assertSame("(skimbleshanks: string) => void", Printer::print($function));
         $param = $function->addParameter(new NumberType());
-        $this->assertSame("(skimbleshanks: string, arg_1: number) => void", (string) $function);
+        $this->assertSame("(skimbleshanks: string, arg_1: number) => void", Printer::print($function));
         $param->hasOptional(true);
         $param->setName("rumtumtugger");
-        $this->assertSame("(skimbleshanks: string, rumtumtugger?: number) => void", (string) $function);
+        $this->assertSame("(skimbleshanks: string, rumtumtugger?: number) => void", Printer::print($function));
     }
 }

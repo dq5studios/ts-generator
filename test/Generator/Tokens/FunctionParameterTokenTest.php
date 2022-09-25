@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests\Generator\Tokens;
 
+use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Tokens\FunctionParameterToken;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Types\ArrayType;
@@ -22,19 +23,19 @@ class FunctionParameterTokenTest extends TestCase
     public function testToString(): void
     {
         $actual = FunctionParameterToken::from("skimbleshanks", new StringType());
-        $this->assertSame("skimbleshanks: string", (string) $actual);
+        $this->assertSame("skimbleshanks: string", Printer::print($actual));
 
         $actual = FunctionParameterToken::from("skimbleshanks?", new StringType());
-        $this->assertSame("skimbleshanks?: string", (string) $actual);
+        $this->assertSame("skimbleshanks?: string", Printer::print($actual));
         $this->assertTrue($actual->isOptional());
 
         $actual = FunctionParameterToken::from("...skimbleshanks?", ArrayType::of(Type::NUMBER));
-        $this->assertSame("...skimbleshanks?: number[]", (string) $actual);
+        $this->assertSame("...skimbleshanks?: number[]", Printer::print($actual));
         $this->assertTrue($actual->isOptional());
         $this->assertTrue($actual->isSpread());
 
         $actual = FunctionParameterToken::from(NameToken::from("skimbleshanks"), StringType::class);
-        $this->assertSame("skimbleshanks: string", (string) $actual);
+        $this->assertSame("skimbleshanks: string", Printer::print($actual));
 
         try {
             FunctionParameterToken::from("macavity", "invalid");

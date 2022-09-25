@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests\Generator\Values;
 
+use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Types\ObjectType;
 use DQ5Studios\TypeScript\Generator\Values\ObjectValue;
 use PHPUnit\Framework\TestCase;
@@ -26,12 +27,12 @@ class ObjectValueTest extends TestCase
     public function testToString(): void
     {
         $actual = new ObjectValue();
-        $this->assertSame("{}", (string) $actual);
+        $this->assertSame("{}", Printer::print($actual));
 
         $actual = new ObjectValue(["mungojerrie", "rumpleteazer"]);
-        $this->assertSame("{ \"0\": \"mungojerrie\", \"1\": \"rumpleteazer\" }", (string) $actual);
+        $this->assertSame("{ \"0\": \"mungojerrie\", \"1\": \"rumpleteazer\" }", Printer::print($actual));
 
         $actual = new ObjectValue(["rumtumtugger" => "jennyanydots", "mungojerrie" => "rumpleteazer"]);
-        $this->assertSame("{ \"rumtumtugger\": \"jennyanydots\", \"mungojerrie\": \"rumpleteazer\" }", (string) $actual);
+        $this->assertSame("{ \"rumtumtugger\": \"jennyanydots\", \"mungojerrie\": \"rumpleteazer\" }", Printer::print($actual));
     }
 }
