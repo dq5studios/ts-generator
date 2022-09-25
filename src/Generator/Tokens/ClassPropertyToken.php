@@ -47,7 +47,7 @@ class ClassPropertyToken extends MemberToken implements CanOptional, CanReadonly
             $value = new NoneValue();
         }
         if (is_string($name)) {
-            if ("?" === substr($name, -1)) {
+            if (str_ends_with($name, "?")) {
                 $optional = true;
                 $name = rtrim($name, "?");
             }

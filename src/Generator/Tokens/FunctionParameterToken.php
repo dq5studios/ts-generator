@@ -29,11 +29,11 @@ class FunctionParameterToken extends MemberToken implements CanOptional, CanSpre
         $spread = false;
         $optional = false;
         if (is_string($name)) {
-            if (($type instanceof ArrayType || $type instanceof TupleType) && "..." === substr($name, 0, 3)) {
+            if (($type instanceof ArrayType || $type instanceof TupleType) && str_starts_with($name, "...")) {
                 $spread = true;
                 $name = ltrim($name, ".");
             }
-            if ("?" === substr($name, -1)) {
+            if (str_ends_with($name, "?")) {
                 $optional = true;
                 $name = rtrim($name, "?");
             }

@@ -22,7 +22,7 @@ class ObjectPropertyToken extends MemberToken implements CanOptional
     {
         $optional = false;
         if (is_string($name)) {
-            if ("?" === substr($name, -1)) {
+            if (str_ends_with($name, "?")) {
                 $optional = true;
                 $name = rtrim($name, "?");
             }
