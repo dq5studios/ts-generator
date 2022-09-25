@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests\Generator\Tokens;
 
+use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Tokens\CommentToken;
 use PHPUnit\Framework\TestCase;
 
@@ -20,7 +21,7 @@ class CommentTokenTest extends TestCase
 
         $actual = new CommentToken("mungojerrie");
         $actual->set("rumpelteazer");
-        $this->assertSame("/** rumpelteazer */", (string) $actual);
+        $this->assertSame("/** rumpelteazer */", Printer::print($actual));
 
         $actual = new CommentToken("mungojerrie");
         $actual->expand("rumpelteazer");
@@ -30,16 +31,16 @@ class CommentTokenTest extends TestCase
  * rumpelteazer
  */
 comment;
-        $this->assertSame($expected, (string) $actual);
+        $this->assertSame($expected, Printer::print($actual));
     }
 
     public function testToString(): void
     {
         $actual = new CommentToken("");
-        $this->assertSame("", (string) $actual);
+        $this->assertSame("", Printer::print($actual));
 
         $actual = new CommentToken("skimbleshanks");
-        $this->assertSame("/** skimbleshanks */", (string) $actual);
+        $this->assertSame("/** skimbleshanks */", Printer::print($actual));
 
         $actual = new CommentToken("skimbleshanks\nthe railway cat");
         $expected = <<<'comment'
@@ -48,6 +49,6 @@ comment;
  * the railway cat
  */
 comment;
-        $this->assertSame($expected, (string) $actual);
+        $this->assertSame($expected, Printer::print($actual));
     }
 }

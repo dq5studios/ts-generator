@@ -44,6 +44,31 @@ class Printer
     protected string $member_sep = ";";
     protected string $property_sep = ",";
 
+    public static function print(CommentToken|File|MemberToken|NameToken|Type|Value $print): string
+    {
+        return match (true) {
+            $print instanceof ArrayType => (new Printer())->printArray($print),
+            $print instanceof ArrayValue => (new Printer())->printArrayValue($print),
+            $print instanceof ClassType => (new Printer())->printClass($print),
+            $print instanceof CommentToken => (new Printer())->printComment($print),
+            $print instanceof EnumType => (new Printer())->printEnum($print),
+            $print instanceof File => (new Printer())->printFile($print),
+            $print instanceof FunctionType => (new Printer())->printFunction($print),
+            $print instanceof FunctionSignatureToken => (new Printer())->printFunctionSignature($print),
+            $print instanceof IndexSignatureToken => (new Printer())->printIndexSignature($print),
+            $print instanceof InterfaceType => (new Printer())->printInterface($print),
+            $print instanceof MemberToken => (new Printer())->printMemberToken($print),
+            $print instanceof MultiType => (new Printer())->printMultiType($print),
+            $print instanceof NameToken => (new Printer())->printName($print),
+            $print instanceof ObjectType => (new Printer())->printObject($print),
+            $print instanceof ObjectValue => (new Printer())->printObjectValue($print),
+            $print instanceof TupleType => (new Printer())->printTuple($print),
+            $print instanceof Type => (new Printer())->printType($print),
+            $print instanceof Value => (new Printer())->printValue($print),
+            default => "",
+        };
+    }
+
     public function printArray(ArrayType $array): string
     {
         $callback = [$this, "printType"];
@@ -107,7 +132,7 @@ class Printer
         if (empty($comments)) {
             return "";
         }
-        if (empty(preg_match_all("/\n/", $comments))) {
+        if (!str_contains($comments, "\n")) {
             return "/** {$comments} */";
         }
         $comments = preg_replace("/\n/", "\n * ", $comments);
@@ -279,14 +304,11 @@ class Printer
 
     public function printName(NameToken $name): string
     {
-        switch (true) {
-            case $name instanceof IndexSignatureToken:
-                return $this->printIndexSignature($name);
-            case $name instanceof FunctionSignatureToken:
-                return $this->printFunctionSignature($name);
-        }
-
-        return $name->getName();
+        return match (true) {
+            $name instanceof IndexSignatureToken => $this->printIndexSignature($name),
+            $name instanceof FunctionSignatureToken => $this->printFunctionSignature($name),
+            default => $name->getName(),
+        };
     }
 
     public function printObject(ObjectType $object): string
@@ -353,50 +375,32 @@ class Printer
 
     public function printType(Type $type): string
     {
-        switch (true) {
-            case $type instanceof ArrayType:
-                return $this->printArray($type);
-            case $type instanceof ClassType:
-                return $this->printClass($type);
-            case $type instanceof EnumType:
-                return $this->printEnum($type);
-            case $type instanceof FunctionType:
-                return $this->printFunction($type);
-            case $type instanceof InterfaceType:
-                return $this->printInterface($type);
-            case $type instanceof ObjectType:
-                return $this->printObject($type);
-            case $type instanceof TupleType:
-                return $this->printTuple($type);
-            case $type instanceof MultiType:
-                return $this->printMultiType($type);
-        }
-
-        return $type->getType();
+        return match (true) {
+            $type instanceof ArrayType => $this->printArray($type),
+            $type instanceof ClassType => $this->printClass($type),
+            $type instanceof EnumType => $this->printEnum($type),
+            $type instanceof FunctionType => $this->printFunction($type),
+            $type instanceof InterfaceType => $this->printInterface($type),
+            $type instanceof ObjectType => $this->printObject($type),
+            $type instanceof TupleType => $this->printTuple($type),
+            $type instanceof MultiType => $this->printMultiType($type),
+            default => $type->getType(),
+        };
     }
 
     public function printValue(Value $value): string
     {
-        switch (true) {
-            case $value instanceof ArrayValue:
-                return $this->printArrayValue($value);
-            case $value instanceof BooleanValue:
-                return $value->getValue() ? "true" : "false";
-            case $value instanceof NoneValue:
-                return "";
-            case $value instanceof NullValue:
-                return "null";
-            case $value instanceof NumberValue:
-                return (string) $value->getValue();
-            case $value instanceof ObjectValue:
-                return $this->printObjectValue($value);
-            case $value instanceof StringValue:
-                return "\"{$value->getValue()}\"";
-            case $value instanceof UndefinedValue:
-                return "undefined";
-        }
-
-        return (string) $value;
+        return match (true) {
+            $value instanceof ArrayValue => $this->printArrayValue($value),
+            $value instanceof BooleanValue => $value->getValue() ? "true" : "false",
+            $value instanceof NoneValue => "",
+            $value instanceof NullValue => "null",
+            $value instanceof NumberValue => (string) $value->getValue(),
+            $value instanceof ObjectValue => $this->printObjectValue($value),
+            $value instanceof StringValue => "\"{$value->getValue()}\"",
+            $value instanceof UndefinedValue => "undefined",
+            default => Printer::print($value),
+        };
     }
 
     /**

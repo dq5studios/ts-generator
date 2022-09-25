@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Generator\Tokens;
 
-use DQ5Studios\TypeScript\Generator\Printer;
-
 /**
  * A comment for the item below it
  */
@@ -32,10 +30,5 @@ class CommentToken
         $this->comment = $comment;
 
         return $this;
-    }
-
-    public function __toString(): string
-    {
-        return (new Printer())->printComment($this);
     }
 }
