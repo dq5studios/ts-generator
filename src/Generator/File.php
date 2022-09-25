@@ -16,7 +16,7 @@ class File implements CanComment
 {
     use HasComment;
 
-    /** @var list<Type> */
+    /** @var Type[] */
     protected array $contents = [];
 
     public function addClass(string $name): ClassType
@@ -46,7 +46,7 @@ class File implements CanComment
         return $this;
     }
 
-    /** @return list<Type> */
+    /** @return Type[] */
     public function getContents(): array
     {
         return $this->contents;

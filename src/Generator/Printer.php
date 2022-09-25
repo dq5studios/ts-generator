@@ -47,7 +47,7 @@ class Printer
     public function printArray(ArrayType $array): string
     {
         $callback = [$this, "printType"];
-        /** @var list<string> */
+        /** @var string[] */
         $is = array_map($callback, $array->getContents());
         $types = match (count($is)) {
             0 => "",
@@ -61,7 +61,7 @@ class Printer
     public function printArrayValue(ArrayValue $array): string
     {
         $callback = [$this, "printValue"];
-        /** @var list<string> */
+        /** @var string[] */
         $is = array_map($callback, $array->getValue());
         if (empty($is)) {
             return "[]";
@@ -267,7 +267,7 @@ class Printer
         if (count($types) > 1) {
             $output .= "(";
         }
-        /** @var list<string> */
+        /** @var string[] */
         $mapping = array_map($callback, $type->getContents());
         $output .= join($type->getSeperator(), $mapping);
         if (count($types) > 1) {
@@ -328,7 +328,7 @@ class Printer
     public function printObjectValue(ObjectValue $object): string
     {
         $callback = [$this, "printValue"];
-        /** @var list<string> */
+        /** @var string[] */
         $is = array_map($callback, $object->getValue());
         if (empty($is)) {
             return "{}";
@@ -345,7 +345,7 @@ class Printer
     public function printTuple(TupleType $tuple): string
     {
         $callback = [$this, "printType"];
-        /** @var list<string> */
+        /** @var string[] */
         $mapping = array_map($callback, $tuple->getContents());
 
         return "[" . join($tuple->getSeperator(), $mapping) . "]";

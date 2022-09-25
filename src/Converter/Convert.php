@@ -33,7 +33,7 @@ use Symfony\Component\PropertyInfo\Type as SymfonyType;
 
 class Convert
 {
-    final private function __construct(
+    private function __construct(
         private NameToken $name,
         private NameToken|null $extends,
         /** @var NameToken[] */

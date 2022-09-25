@@ -9,7 +9,7 @@ namespace DQ5Studios\TypeScript\Generator\Types;
  */
 abstract class MultiType extends Type
 {
-    /** @var list<Type> */
+    /** @var Type[] */
     protected array $is = [];
 
     protected string $sep = "";
@@ -49,7 +49,7 @@ abstract class MultiType extends Type
         return $this;
     }
 
-    /** @return list<Type> */
+    /** @return Type[] */
     public function getContents(): array
     {
         return $this->is;
