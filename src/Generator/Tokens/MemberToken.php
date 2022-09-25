@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Generator\Tokens;
 
-use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanComment;
 use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanName;
 use DQ5Studios\TypeScript\Generator\Types\NoneType;
