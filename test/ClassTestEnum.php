@@ -7,17 +7,17 @@ namespace DQ5Studios\TypeScript\Tests;
 use DQ5Studios\TypeScript\Generator\Types\EnumType;
 
 /**
- * Number registration status
+ * Some cats you may know
  */
 #[EnumType]
 class ClassTestEnum
 {
-    /** Unknown */
-    private const unknown = 0;
-    /** Pending */
-    private const pending = 1;
-    /** Approved */
-    private const approved = 2;
-    /** Removed */
-    private const removed = 3;
+    /** skimbleshanks */
+    private const skimbleshanks = 0;
+    /** mungojerrie */
+    private const mungojerrie = 1;
+    /** rumpelteazer */
+    private const rumpelteazer = 2;
+    /** macavity */
+    private const macavity = 3;
 }

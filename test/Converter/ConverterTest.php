@@ -63,14 +63,14 @@ HEREDOC;
     {
         $expected = <<<HEREDOC
 enum ClassTestEnum {
-    /** Unknown */
-    unknown = 0,
-    /** Pending */
-    pending = 1,
-    /** Approved */
-    approved = 2,
-    /** Removed */
-    removed = 3,
+    /** skimbleshanks */
+    skimbleshanks = 0,
+    /** mungojerrie */
+    mungojerrie = 1,
+    /** rumpelteazer */
+    rumpelteazer = 2,
+    /** macavity */
+    macavity = 3,
 }
 HEREDOC;
 
@@ -88,14 +88,14 @@ HEREDOC;
     {
         $expected = <<<HEREDOC
 enum ClassTestNativeEnum {
-    /** @var int Unknown */
-    unknown,
-    /** @var int Pending */
-    pending,
-    /** @var int Approved */
-    approved,
-    /** @var int Removed */
-    removed,
+    /** @var int skimbleshanks */
+    skimbleshanks,
+    /** @var int mungojerrie */
+    mungojerrie,
+    /** @var int rumpelteazer */
+    rumpelteazer,
+    /** @var int macavity */
+    macavity,
 }
 HEREDOC;
 
@@ -113,14 +113,14 @@ HEREDOC;
     {
         $expected = <<<HEREDOC
 enum ClassTestNativeBackedEnum {
-    /** @var int Unknown */
-    unknown = 0,
-    /** @var int Pending */
-    pending = 1,
-    /** @var int Approved */
-    approved = 2,
-    /** @var int Removed */
-    removed = 3,
+    /** @var int skimbleshanks */
+    skimbleshanks = 1,
+    /** @var int mungojerrie */
+    mungojerrie = 2,
+    /** @var int rumpelteazer */
+    rumpelteazer = 3,
+    /** @var int macavity */
+    macavity = 4,
 }
 HEREDOC;
 

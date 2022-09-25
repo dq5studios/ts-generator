@@ -9,16 +9,16 @@ if (PHP_VERSION_ID < 80100) {
 }
 
 /**
- * Number registration status
+ * Some cats you may know
  */
 enum ClassTestNativeEnum
 {
-    /** @var int Unknown */
-    case unknown;
-    /** @var int Pending */
-    case pending;
-    /** @var int Approved */
-    case approved;
-    /** @var int Removed */
-    case removed;
+    /** @var int skimbleshanks */
+    case skimbleshanks;
+    /** @var int mungojerrie */
+    case mungojerrie;
+    /** @var int rumpelteazer */
+    case rumpelteazer;
+    /** @var int macavity */
+    case macavity;
 }
