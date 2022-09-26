@@ -7,6 +7,7 @@ namespace DQ5Studios\TypeScript\Tests\Generator\Tokens;
 use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Tokens\ClassPropertyToken;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
+use DQ5Studios\TypeScript\Generator\Tokens\VisibilityToken;
 use DQ5Studios\TypeScript\Generator\Types\StringType;
 use DQ5Studios\TypeScript\Generator\Types\UnionType;
 use DQ5Studios\TypeScript\Generator\Values\StringValue;
@@ -30,6 +31,10 @@ class ClassPropertyTokenTest extends TestCase
         $actual = ClassPropertyToken::from("skimbleshanks", new StringType(), readonly: true);
         $this->assertSame("readonly skimbleshanks: string", Printer::print($actual));
         $this->assertTrue($actual->isReadonly());
+
+        $actual = ClassPropertyToken::from("skimbleshanks", new StringType(), visibility: VisibilityToken::PRIVATE);
+        $this->assertSame("private skimbleshanks: string", Printer::print($actual));
+        $this->assertEquals(new VisibilityToken(VisibilityToken::PRIVATE), $actual->getVisibility());
 
         $actual = ClassPropertyToken::from(NameToken::from("skimbleshanks"), new StringType())->hasStatic(true);
         $this->assertSame("static skimbleshanks: string", Printer::print($actual));

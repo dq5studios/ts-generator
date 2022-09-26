@@ -181,6 +181,26 @@ ENUM;
         $this->assertContains($also, $extends);
     }
 
+    public function testImplement(): void
+    {
+        $actual = new ClassType("jellicle");
+        $first = new ClassType("rumpelteazer");
+        $also = new ClassType("jellylorum");
+        $actual->addImplement($first);
+        $actual->addImplement($also);
+        $implements = $actual->getImplement();
+        $this->assertContainsOnlyInstancesOf(ClassType::class, $implements);
+        $this->assertContains($first, $implements);
+        $this->assertContains($also, $implements);
+
+        $actual = new ClassType("jellicle");
+        $actual->setImplement([$first, $also]);
+        $implements = $actual->getImplement();
+        $this->assertContainsOnlyInstancesOf(ClassType::class, $implements);
+        $this->assertContains($first, $implements);
+        $this->assertContains($also, $implements);
+    }
+
     public function testAddSignatures(): void
     {
         $actual = new ClassType("jellicle");
