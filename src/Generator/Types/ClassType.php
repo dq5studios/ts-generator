@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DQ5Studios\TypeScript\Generator\Types;
 
 use Attribute;
+use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Tokens\ClassPropertyToken;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanAmbient;
@@ -46,7 +47,7 @@ class ClassType extends ContainerType implements CanExtend, CanImplement, CanExp
         }
         $member = ClassPropertyToken::from($name, $type, $value);
 
-        return $this->properties[$member->getName()->getName()] = $member;
+        return $this->properties[Printer::print($member->getName())] = $member;
     }
 
     /**

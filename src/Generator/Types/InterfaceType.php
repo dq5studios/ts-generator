@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DQ5Studios\TypeScript\Generator\Types;
 
 use Attribute;
+use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Tokens\InterfacePropertyToken;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanAmbient;
@@ -42,7 +43,7 @@ class InterfaceType extends ContainerType implements CanExtend, CanExport, CanAm
     {
         $member = InterfacePropertyToken::from($name, $type);
 
-        return $this->properties[$member->getName()->getName()] = $member;
+        return $this->properties[Printer::print($member->getName())] = $member;
     }
 
     /**
