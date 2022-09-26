@@ -30,8 +30,6 @@ class ObjectType extends ComplexType implements CanComment, CanIndexSignature, C
 
     /**
      * @param class-string<Type>|Type|Type::* $type
-     *
-     * @throws InvalidArgumentException
      */
     public function addProperty(string|NameToken $name, string|Type $type): ObjectPropertyToken
     {
