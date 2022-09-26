@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Generator\Types;
 
-use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Tokens\ObjectPropertyToken;
 use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanComment;
@@ -35,7 +34,7 @@ class ObjectType extends ComplexType implements CanComment, CanIndexSignature, C
     {
         $member = ObjectPropertyToken::from($name, $type);
 
-        return $this->properties[Printer::print($member->getName())] = $member;
+        return $this->properties[$member->getName()->getName()] = $member;
     }
 
     /**

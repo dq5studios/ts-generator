@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace DQ5Studios\TypeScript\Generator\Types;
 
 use Attribute;
-use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Tokens\EnumMemberToken;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanAmbient;
@@ -53,7 +52,7 @@ class EnumType extends ContainerType implements CanExport, CanAmbient
         // TODO: Error if const & computed value
         $this->can_auto = ($member->getValue() instanceof NumberValue) || ($member->getValue() instanceof NoneValue);
 
-        return $this->members[Printer::print($member->getName())] = $member;
+        return $this->members[$member->getName()->getName()] = $member;
     }
 
     /**
