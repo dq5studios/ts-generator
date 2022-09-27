@@ -67,7 +67,7 @@ class Convert
         $class_name = new NameToken($class_name);
 
         $extends = $reflection->getParentClass() ?: null;
-        if ($extends) {
+        if (null !== $extends) {
             $extends = Convert::nameSafe($extends->getName());
             $extends = new NameToken($extends);
         }
@@ -291,9 +291,8 @@ class Convert
     {
         $comment = preg_replace("/\/\*\*(.*)\*\//ms", "$1", $comment);
         $comment = str_replace([" *", "\n"], "", $comment);
-        $comment = trim($comment);
 
-        return $comment;
+        return trim($comment);
     }
 
     /**
@@ -310,11 +309,9 @@ class Convert
                 $type_list[] = new NullType();
             }
             $basic = $type->getBuiltinType();
-            if (!$type->isCollection() && "object" !== $basic) {
-                if (array_key_exists($basic, Type::$php_type_map)) {
-                    $type_list[] = Type::from(Type::$php_type_map[$basic]);
-                    continue;
-                }
+            if (!$type->isCollection() && "object" !== $basic && array_key_exists($basic, Type::$php_type_map)) {
+                $type_list[] = Type::from(Type::$php_type_map[$basic]);
+                continue;
             }
             if ("object" === $basic) {
                 $class = $type->getClassName();

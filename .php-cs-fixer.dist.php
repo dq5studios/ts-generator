@@ -2,6 +2,7 @@
 
 $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__)
+    ->exclude("cache/")
 ;
 
 $config = new PhpCsFixer\Config();

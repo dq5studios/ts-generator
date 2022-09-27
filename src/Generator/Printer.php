@@ -77,7 +77,7 @@ class Printer
         $types = match (count($is)) {
             0 => "",
             1 => $is[0],
-            default => "(" . join($array->getSeperator(), $is) . ")",
+            default => "(" . implode($array->getSeperator(), $is) . ")",
         };
 
         return $types . "[]";
@@ -98,7 +98,7 @@ class Printer
     public function printClass(ClassType $class): string
     {
         $comment = $this->printComment($class->getComment());
-        $output = !empty($comment) ? "{$comment}\n" : "";
+        $output = empty($comment) ? "" : "{$comment}\n";
         $output .= $class->isExport() ? "export " : "";
         $output .= $class->isAmbient() ? "declare " : "";
         $output .= "class " . $this->printName($class->getName());
@@ -144,7 +144,7 @@ class Printer
     public function printEnum(EnumType $enum): string
     {
         $comment = $this->printComment($enum->getComment());
-        $output = !empty($comment) ? "{$comment}\n" : "";
+        $output = empty($comment) ? "" : "{$comment}\n";
         $output .= $enum->isExport() ? "export " : "";
         $output .= $enum->isAmbient() ? "declare " : "";
         $output .= $enum->isConst() ? "const " : "";
@@ -209,7 +209,7 @@ class Printer
     public function printInterface(InterfaceType $interface): string
     {
         $comment = $this->printComment($interface->getComment());
-        $output = !empty($comment) ? "{$comment}\n" : "";
+        $output = empty($comment) ? "" : "{$comment}\n";
         $output .= $interface->isExport() ? "export " : "";
         $output .= $interface->isAmbient() ? "declare " : "";
         $output .= "interface " . $this->printName($interface->getName());
@@ -233,41 +233,31 @@ class Printer
     public function printMemberToken(MemberToken $token): string
     {
         $comment = $this->printComment($token->getComment());
-        $output = !empty($comment) ? "{$comment}\n" : "";
+        $output = empty($comment) ? "" : "{$comment}\n";
         $value = $token->getValue();
         $type = $token->getType();
-        if ($token instanceof CanReadonly) {
+        if ($token instanceof CanReadonly && $token->isReadonly()) {
             // TODO: Check type is not fn
             // TODO: Confirm class/interface
-            if ($token->isReadonly()) {
-                $output .= "readonly ";
-            }
+            $output .= "readonly ";
         }
-        if ($token instanceof CanStatic) {
+        if ($token instanceof CanStatic && $token->isStatic()) {
             // TODO: Confirm class/interface
-            if ($token->isStatic()) {
-                $output .= "static ";
-            }
+            $output .= "static ";
         }
-        if ($token instanceof CanVisibility) {
-            if ($visibility = $token->getVisibility()) {
-                $output .= match ($visibility->get()) {
-                    VisibilityToken::PUBLIC => "public ",
-                    VisibilityToken::PROTECTED => "protected ",
-                    VisibilityToken::PRIVATE => "private ",
-                };
-            }
+        if ($token instanceof CanVisibility && ($visibility = $token->getVisibility())) {
+            $output .= match ($visibility->get()) {
+                VisibilityToken::PUBLIC => "public ",
+                VisibilityToken::PROTECTED => "protected ",
+                VisibilityToken::PRIVATE => "private ",
+            };
         }
-        if ($value instanceof NoneValue) {
-            if ($token instanceof CanSpread && $token->isSpread()) {
-                $output .= "...";
-            }
+        if ($value instanceof NoneValue && ($token instanceof CanSpread && $token->isSpread())) {
+            $output .= "...";
         }
         $output .= $this->printName($token->getName());
-        if ($value instanceof NoneValue) {
-            if ($token instanceof CanOptional && $token->isOptional()) {
-                $output .= "?";
-            }
+        if ($value instanceof NoneValue && ($token instanceof CanOptional && $token->isOptional())) {
+            $output .= "?";
         }
         if (!($type instanceof NoneType)) {
             $output .= ": ";
@@ -294,7 +284,7 @@ class Printer
         }
         /** @var string[] */
         $mapping = array_map($callback, $type->getContents());
-        $output .= join($type->getSeperator(), $mapping);
+        $output .= implode($type->getSeperator(), $mapping);
         if (count($types) > 1) {
             $output .= ")";
         }
@@ -314,7 +304,7 @@ class Printer
     public function printObject(ObjectType $object): string
     {
         $comment = $this->printComment($object->getComment());
-        $output = !empty($comment) ? "{$comment}\n" : "";
+        $output = empty($comment) ? "" : "{$comment}\n";
         if (empty($object->getProperties())) {
             return $output . $object->getType();
         }
@@ -370,7 +360,7 @@ class Printer
         /** @var string[] */
         $mapping = array_map($callback, $tuple->getContents());
 
-        return "[" . join($tuple->getSeperator(), $mapping) . "]";
+        return "[" . implode($tuple->getSeperator(), $mapping) . "]";
     }
 
     public function printType(Type $type): string

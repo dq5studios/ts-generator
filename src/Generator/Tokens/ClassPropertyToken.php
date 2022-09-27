@@ -46,11 +46,9 @@ class ClassPropertyToken extends MemberToken implements CanOptional, CanReadonly
         if (is_null($value)) {
             $value = new NoneValue();
         }
-        if (is_string($name)) {
-            if (str_ends_with($name, "?")) {
-                $optional = true;
-                $name = rtrim($name, "?");
-            }
+        if (is_string($name) && str_ends_with($name, "?")) {
+            $optional = true;
+            $name = rtrim($name, "?");
         }
         $name = NameToken::from($name);
         $type = Type::from($type);

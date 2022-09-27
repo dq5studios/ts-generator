@@ -21,11 +21,9 @@ class ObjectPropertyToken extends MemberToken implements CanOptional
     public static function from(string|NameToken $name, string|Type $type): self
     {
         $optional = false;
-        if (is_string($name)) {
-            if (str_ends_with($name, "?")) {
-                $optional = true;
-                $name = rtrim($name, "?");
-            }
+        if (is_string($name) && str_ends_with($name, "?")) {
+            $optional = true;
+            $name = rtrim($name, "?");
         }
         $name = NameToken::from($name);
         $type = Type::from($type);

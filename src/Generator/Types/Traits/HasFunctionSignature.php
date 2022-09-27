@@ -20,11 +20,7 @@ trait HasFunctionSignature
      */
     public function addCallableSignature(string|Type ...$types): MemberToken
     {
-        if (empty($types)) {
-            $type = new VoidType();
-        } else {
-            $type = array_pop($types);
-        }
+        $type = [] === $types ? new VoidType() : array_pop($types);
         $name = FunctionSignatureToken::of("callable", ...$types)->hasCallable(true);
 
         return $this->addProperty($name, $type);
@@ -36,11 +32,7 @@ trait HasFunctionSignature
     public function addConstructorSignature(string|Type ...$types): MemberToken
     {
         // TODO: Make sure no property named 'this'
-        if (empty($types)) {
-            $type = new VoidType();
-        } else {
-            $type = array_pop($types);
-        }
+        $type = [] === $types ? new VoidType() : array_pop($types);
         $name = FunctionSignatureToken::of("constructor", ...$types)->hasConstructor(true);
 
         return $this->addProperty($name, $type);
@@ -51,11 +43,7 @@ trait HasFunctionSignature
      */
     public function addMethodSignature(string|NameToken $label, string|Type ...$types): MemberToken
     {
-        if (empty($types)) {
-            $type = new VoidType();
-        } else {
-            $type = array_pop($types);
-        }
+        $type = [] === $types ? new VoidType() : array_pop($types);
         $name = FunctionSignatureToken::of($label, ...$types)->hasMethod(true);
 
         return $this->addProperty($name, $type);

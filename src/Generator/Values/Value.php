@@ -31,17 +31,16 @@ abstract class Value
         if ($value instanceof Value) {
             return $value;
         }
-        $value = match (gettype($value)) {
-            "boolean" => new BooleanValue($value),
-            "integer" => new NumberValue($value),
-            "double" => new NumberValue($value),
+
+        return match (get_debug_type($value)) {
+            "bool" => new BooleanValue($value),
+            "int" => new NumberValue($value),
+            "float" => new NumberValue($value),
             "string" => new StringValue($value),
-            "NULL" => new NullValue(),
+            "null" => new NullValue(),
             "array" => self::whichArrayObject($value),
             default => new UndefinedValue()
         };
-
-        return $value;
     }
 
     /**
