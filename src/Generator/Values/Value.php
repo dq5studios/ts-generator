@@ -40,7 +40,7 @@ abstract class Value
             "string" => new StringValue($value),
             "null" => new NullValue(),
             "array" => self::whichArrayObject($value),
-            default => new UndefinedValue()
+            default => new UndefinedValue(),
         };
     }
 

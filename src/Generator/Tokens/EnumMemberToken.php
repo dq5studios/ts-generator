@@ -33,7 +33,7 @@ class EnumMemberToken extends MemberToken
             $value[0] instanceof NumberValue,
             $value[0] instanceof StringValue,
             $value[0] instanceof NoneValue => $value[0],
-            default => throw new InvalidArgumentException("Computed members not supported yet")
+            default => throw new InvalidArgumentException("Computed members not supported yet"),
         };
 
         return new self(value: $typed_value, name: $name);

@@ -372,13 +372,12 @@ class Printer
         return match (true) {
             $value instanceof ArrayValue => $this->printArrayValue($value),
             $value instanceof BooleanValue => $value->getValue() ? "true" : "false",
-            $value instanceof NoneValue => "",
             $value instanceof NullValue => "null",
             $value instanceof NumberValue => (string) $value->getValue(),
             $value instanceof ObjectValue => $this->printObjectValue($value),
             $value instanceof StringValue => "\"{$value->getValue()}\"",
             $value instanceof UndefinedValue => "undefined",
-            default => Printer::print($value),
+            default => "", // NoneValue
         };
     }
 
