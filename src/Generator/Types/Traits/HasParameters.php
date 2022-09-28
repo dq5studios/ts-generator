@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Generator\Types\Traits;
 
-use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Tokens\FunctionParameterToken;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Types\Type;
@@ -30,7 +29,7 @@ trait HasParameters
         }
         $member = FunctionParameterToken::from($name, $type);
 
-        return $this->parameters[Printer::print($member->getName())] = $member;
+        return $this->parameters[$member->getName()->getName()] = $member;
     }
 
     /**
