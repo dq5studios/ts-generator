@@ -22,6 +22,7 @@ abstract class Value
             /** @var list<scalar|null> $value */
             return new ArrayValue($value);
         }
+
         /** @var array<string,scalar|null> $value */
         return new ObjectValue($value);
     }

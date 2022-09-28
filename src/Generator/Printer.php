@@ -47,22 +47,10 @@ class Printer
     public static function print(CommentToken|File|MemberToken|NameToken|Type|Value $print): string
     {
         return match (true) {
-            $print instanceof ArrayType => (new Printer())->printArray($print),
-            $print instanceof ArrayValue => (new Printer())->printArrayValue($print),
-            $print instanceof ClassType => (new Printer())->printClass($print),
             $print instanceof CommentToken => (new Printer())->printComment($print),
-            $print instanceof EnumType => (new Printer())->printEnum($print),
             $print instanceof File => (new Printer())->printFile($print),
-            $print instanceof FunctionType => (new Printer())->printFunction($print),
-            $print instanceof FunctionSignatureToken => (new Printer())->printFunctionSignature($print),
-            $print instanceof IndexSignatureToken => (new Printer())->printIndexSignature($print),
-            $print instanceof InterfaceType => (new Printer())->printInterface($print),
-            $print instanceof NameToken => (new Printer())->printName($print),
-            $print instanceof ObjectType => (new Printer())->printObject($print),
-            $print instanceof ObjectValue => (new Printer())->printObjectValue($print),
-            $print instanceof TupleType => (new Printer())->printTuple($print),
-            $print instanceof MultiType => (new Printer())->printMultiType($print),
             $print instanceof MemberToken => (new Printer())->printMemberToken($print),
+            $print instanceof NameToken => (new Printer())->printName($print),
             $print instanceof Type => (new Printer())->printType($print),
             $print instanceof Value => (new Printer())->printValue($print),
             default => "",
@@ -160,7 +148,8 @@ class Printer
 
     public function printFile(File $file): string
     {
-        $output = "";
+        $comment = $this->printComment($file->getComment());
+        $output = empty($comment) ? "" : "{$comment}\n";
         foreach ($file->getContents() as $type) {
             $output .= $this->printType($type) . "\n\n";
         }
