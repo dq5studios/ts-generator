@@ -10,7 +10,7 @@ return $config->setRules([
         "@Symfony" => true,
         "concat_space" => ["spacing" => "one"],
         "phpdoc_summary" => false,
-        "phpdoc_to_comment" => ["ignored_tags" => ["var"]],
+        "phpdoc_to_comment" => ["ignored_tags" => ["var", "psalm-suppress"]],
         "single_quote" => false,
         "class_definition" => ["space_before_parenthesis" => true],
     ])
