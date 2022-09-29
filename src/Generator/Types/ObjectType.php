@@ -34,7 +34,7 @@ class ObjectType extends ComplexType implements CanComment, CanIndexSignature, C
     {
         $member = ObjectPropertyToken::from($name, $type);
 
-        return $this->properties[$member->getName()->getName() . count($this->properties)] = $member;
+        return $this->properties[$member->getName()->getName() . "_" . count($this->properties)] = $member;
     }
 
     /**

@@ -42,7 +42,7 @@ class InterfaceType extends ContainerType implements CanExtend, CanExport, CanAm
     {
         $member = InterfacePropertyToken::from($name, $type);
 
-        return $this->properties[$member->getName()->getName() . count($this->properties)] = $member;
+        return $this->properties[$member->getName()->getName() . "_" . count($this->properties)] = $member;
     }
 
     /**

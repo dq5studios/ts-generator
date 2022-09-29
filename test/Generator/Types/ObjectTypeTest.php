@@ -64,13 +64,13 @@ class ObjectTypeTest extends TestCase
             )
         );
 
-        $expected = <<<'ENUM'
+        $expected = <<<'OBJECT'
 {
     skimbleshanks: number,
     grizabella: string,
     growltiger: ("mungojerrie" | "rumpelteazer"),
 }
-ENUM;
+OBJECT;
         $this->assertSame($expected, Printer::print($actual));
 
         $actual = new ObjectType();
@@ -79,7 +79,7 @@ ENUM;
         $actual->addProperty("skimbleshanks", UnionType::of(StringType::class, NumberType::class));
         $actual->addComment("jellicles can\n\njellicles do");
 
-        $expected = <<<'ENUM'
+        $expected = <<<'OBJECT'
 /**
  * jellicles can
  *
@@ -90,7 +90,7 @@ ENUM;
     mungojerrie: number,
     skimbleshanks: (string | number),
 }
-ENUM;
+OBJECT;
         $this->assertSame($expected, Printer::print($actual));
 
         $actual = new ObjectType();
@@ -98,9 +98,9 @@ ENUM;
         $subtype->addProperty("mungojerrie", NumberType::class);
         $actual->addProperty("rumpelteazer", $subtype);
 
-        $expected = <<<'ENUM'
+        $expected = <<<'OBJECT'
 { rumpelteazer: { mungojerrie: number } }
-ENUM;
+OBJECT;
         $this->assertSame($expected, Printer::print($actual));
     }
 }

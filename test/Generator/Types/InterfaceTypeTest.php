@@ -96,13 +96,13 @@ class InterfaceTypeTest extends TestCase
             )
         );
 
-        $expected = <<<'ENUM'
+        $expected = <<<'INTERFACE'
 declare interface jellicle {
     skimbleshanks: number;
     grizabella: string;
     growltiger: ("mungojerrie" | "rumpelteazer");
 }
-ENUM;
+INTERFACE;
         $this->assertSame($expected, Printer::print($actual));
 
         $actual = new InterfaceType("jellicle");
@@ -111,7 +111,7 @@ ENUM;
         $actual->addProperty("skimbleshanks", UnionType::of(StringType::class, NumberType::class));
         $actual->addComment("jellicles can\n\njellicles do");
 
-        $expected = <<<'ENUM'
+        $expected = <<<'INTERFACE'
 /**
  * jellicles can
  *
@@ -122,7 +122,7 @@ interface jellicle {
     mungojerrie: number;
     skimbleshanks: (string | number);
 }
-ENUM;
+INTERFACE;
         $this->assertSame($expected, Printer::print($actual));
 
         $actual = new InterfaceType("jellicle");
@@ -133,11 +133,11 @@ ENUM;
         $extend = new InterfaceType("jellylorum");
         $actual->addExtend($extend);
 
-        $expected = <<<'ENUM'
+        $expected = <<<'INTERFACE'
 export interface jellicle extends jellylorum {
     rumpelteazer: cat;
 }
-ENUM;
+INTERFACE;
         $this->assertSame($expected, Printer::print($actual));
     }
 
@@ -188,7 +188,7 @@ ENUM;
         $actual->addConstructorSignature(Type::NUMBER, Type::VOID);
         $actual->addProperty("skimbleshanks", "string");
 
-        $expected = <<<'ENUM'
+        $expected = <<<'INTERFACE'
 interface jellicle {
     [index: string]: number;
     [index: number]: string;
@@ -196,7 +196,7 @@ interface jellicle {
     new (arg_0: number): void;
     skimbleshanks: string;
 }
-ENUM;
+INTERFACE;
         $this->assertSame($expected, Printer::print($actual));
     }
 }

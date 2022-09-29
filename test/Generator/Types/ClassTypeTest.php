@@ -98,13 +98,13 @@ class ClassTypeTest extends TestCase
             new NoneValue()
         );
 
-        $expected = <<<'ENUM'
+        $expected = <<<'CLASS'
 declare class jellicle {
     skimbleshanks: number = 19;
     grizabella: string = "glamour cat";
     growltiger: ("mungojerrie" | "rumpelteazer");
 }
-ENUM;
+CLASS;
         $this->assertSame($expected, Printer::print($actual));
 
         $actual = new ClassType("jellicle");
@@ -113,7 +113,7 @@ ENUM;
         $actual->addProperty("skimbleshanks", UnionType::of(StringType::class, NumberType::class), new NoneValue());
         $actual->addComment("jellicles can\n\njellicles do");
 
-        $expected = <<<'ENUM'
+        $expected = <<<'CLASS'
 /**
  * jellicles can
  *
@@ -124,7 +124,7 @@ class jellicle {
     mungojerrie: number = 21;
     skimbleshanks: (string | number);
 }
-ENUM;
+CLASS;
         $this->assertSame($expected, Printer::print($actual));
 
         $actual = new ClassType("jellicle");
@@ -135,11 +135,11 @@ ENUM;
         $extend = new ClassType("jellylorum");
         $actual->addExtend($extend);
 
-        $expected = <<<'ENUM'
+        $expected = <<<'CLASS'
 export class jellicle extends jellylorum {
     rumpelteazer: cat;
 }
-ENUM;
+CLASS;
         $this->assertSame($expected, Printer::print($actual));
     }
 
@@ -208,13 +208,13 @@ ENUM;
         $actual->addIndexSignature(Type::NUMBER, Type::STRING);
         $actual->addProperty("skimbleshanks", "string", "the railway cat");
 
-        $expected = <<<'ENUM'
+        $expected = <<<'CLASS'
 class jellicle {
     [index: string]: number;
     [index: number]: string;
     skimbleshanks: string = "the railway cat";
 }
-ENUM;
+CLASS;
         $this->assertSame($expected, Printer::print($actual));
     }
 }

@@ -46,7 +46,7 @@ class ClassType extends ContainerType implements CanExtend, CanImplement, CanExp
         }
         $member = ClassPropertyToken::from($name, $type, $value);
 
-        return $this->properties[$member->getName()->getName() . count($this->properties)] = $member;
+        return $this->properties[$member->getName()->getName() . "_" . count($this->properties)] = $member;
     }
 
     /**
