@@ -59,7 +59,7 @@ class Convert
                 } else {
                     $reflection = ReflectionClass::createFromInstance($class);
                 }
-                // $reflection = new ReflectionClass($class);
+            // $reflection = new ReflectionClass($class);
             } else {
                 $reflection = $class;
             }
