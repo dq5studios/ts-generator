@@ -108,8 +108,8 @@ class Command extends SymfonyCommand
         /** @var ReflectionClass $class */
         foreach ($io->progressIterate($classes) as $class) {
             if (!$class->isAnonymous()) {
-                // $io->info("Converting {$class->getShortName()}");
-                // $file->append(Convert::fromPHP($class->getName()));
+                // $io->info("Converting {$class->getShortName()};" . get_class($class));
+                $file->append(Convert::fromPHP($class->getName()));
             }
             // $progress->advance();
         }

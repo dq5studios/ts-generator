@@ -19,12 +19,12 @@ use DQ5Studios\TypeScript\Generator\Types\UnknownType;
 use DQ5Studios\TypeScript\Generator\Types\VoidType;
 use DQ5Studios\TypeScript\Generator\Values\NoneValue;
 use InvalidArgumentException;
-use ReflectionAttribute;
-use ReflectionClass;
-use ReflectionEnum;
-use ReflectionEnumBackedCase;
 use ReflectionException;
-use ReflectionNamedType;
+use Roave\BetterReflection\Reflection\ReflectionAttribute;
+use Roave\BetterReflection\Reflection\ReflectionClass;
+use Roave\BetterReflection\Reflection\ReflectionEnum;
+use Roave\BetterReflection\Reflection\ReflectionNamedType;
+use Roave\BetterReflection\Reflector\Exception\IdentifierNotFound;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\PhpStanExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
@@ -53,12 +53,26 @@ class Convert
     public static function fromPHP(string|object $class): Type
     {
         try {
-            $reflection = new ReflectionClass($class);
+            if (!($class instanceof ReflectionClass) && !($class instanceof ReflectionEnum)) {
+                if (is_string($class)) {
+                    $reflection = ReflectionClass::createFromName($class);
+                } else {
+                    $reflection = ReflectionClass::createFromInstance($class);
+                }
+                // $reflection = new ReflectionClass($class);
+            } else {
+                $reflection = $class;
+            }
 
             if (PHP_VERSION_ID >= 80100 && $reflection->isEnum()) {
-                $reflection = new ReflectionEnum($class);
+                if (is_string($class)) {
+                    $reflection = ReflectionEnum::createFromName($class);
+                } elseif (!is_a($reflection, ReflectionEnum::class)) {
+                    $reflection = ReflectionEnum::createFromInstance($class);
+                }
+                // $reflection = new ReflectionEnum($class);
             }
-        } catch (ReflectionException) {
+        } catch (ReflectionException|IdentifierNotFound) {
             throw new InvalidArgumentException("Class does not exist");
         }
         $class = $reflection->getName();
@@ -132,7 +146,7 @@ class Convert
         }
 
         if (PHP_VERSION_ID >= 80100 && $reflection instanceof ReflectionEnum) {
-            $backing_type = $reflection->getBackingType();
+            $backing_type = $reflection->isBacked() ? $reflection->getBackingType() : null;
             $cases = $reflection->getCases();
             foreach ($cases as $case) {
                 $m = new Member(
@@ -145,8 +159,8 @@ class Convert
                 if (is_a($backing_type, ReflectionNamedType::class)) {
                     $m->type = Type::from(Type::$php_type_map[$backing_type->getName()]);
                 }
-                if ($case instanceof ReflectionEnumBackedCase) {
-                    $m->value = $case->getBackingValue();
+                if ($reflection->isBacked()) {
+                    $m->value = $case->getValue();
                 }
 
                 $type_comment = $case->getDocComment();
@@ -168,6 +182,7 @@ class Convert
                 continue;
             }
 
+            /** @var mixed */
             $value = $const->getValue();
             $m = new Member(
                 name: new NameToken(Convert::nameSafe($const->getName())),
