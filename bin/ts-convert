@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+namespace DQ5Studios\TypeScript;
+
+use DQ5Studios\TypeScript\Converter\Command;
+use Symfony\Component\Console\Application;
+
+require __DIR__ . "/../vendor/autoload.php";
+
+$command = new Command();
+$application = new Application();
+$application->add($command);
+$application->setDefaultCommand((string) $command->getName());
+$application->run();

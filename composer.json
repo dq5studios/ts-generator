@@ -15,8 +15,15 @@
             "dealerdirect/phpcodesniffer-composer-installer": true
         }
     },
+    "bin": [
+        "bin/ts-convert"
+    ],
     "require": {
         "php": ">=8.0",
+        "composer-runtime-api": "^2.1",
+        "roave/better-reflection": "^5.11",
+        "symfony/console": "^6.0",
+        "symfony/finder": "^6.0",
         "symfony/polyfill-php81": "^1.22",
         "symfony/property-info": "^6.0"
     },
