@@ -23,7 +23,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Finder\Finder;
 
 class Command extends SymfonyCommand
 {
@@ -34,6 +33,7 @@ class Command extends SymfonyCommand
     public const INPUT_DIR = 2;
     public const OUTPUT_FILE = 0;
     public const OUTPUT_DIR = 1;
+    public const OUTPUT_NEW_FILE = 2;
 
     protected function configure(): void
     {
@@ -59,12 +59,10 @@ class Command extends SymfonyCommand
         $input_mode = null;
         if (empty($input_loc)) {
             $input_mode = Command::INPUT_PROJECT;
-        } else {
-            if (is_dir($input_loc)) {
-                $input_mode = Command::INPUT_DIR;
-            } elseif (is_file($input_loc)) {
-                $input_mode = Command::INPUT_FILE;
-            }
+        } elseif (is_dir($input_loc)) {
+            $input_mode = Command::INPUT_DIR;
+        } elseif (is_file($input_loc)) {
+            $input_mode = Command::INPUT_FILE;
         }
         if (is_null($input_mode)) {
             $io->error("Input directory/file not found");
@@ -72,7 +70,7 @@ class Command extends SymfonyCommand
             return Command::FAILURE;
         }
 
-        $output_mode = null;
+        $output_mode = Command::OUTPUT_NEW_FILE;
         if (is_dir($output_loc)) {
             $output_mode = Command::OUTPUT_DIR;
         } elseif (is_file($output_loc)) {
@@ -80,10 +78,7 @@ class Command extends SymfonyCommand
             $io->confirm("Output file already exists, overwrite?", true);
         }
         // TODO: If doesn't exist yet, figure out if file/dir
-        // TODO: If not set, put files along side input
-        if (is_null($output_mode)) {
-            $io->info("What to do with the output");
-        }
+        // TODO: If not set, put files along side input?
 
         $io->info("Looking in {$input_loc}; writing to {$output_loc}");
 
@@ -109,15 +104,19 @@ class Command extends SymfonyCommand
             if (!$class->isAnonymous()) {
                 // $io->info("Converting {$class->getShortName()};" . get_class($class));
                 $file->append(Convert::fromPHP($class->getName()));
+                if (Command::OUTPUT_DIR === $output_mode) {
+                    // Each input file gets its own output file
+                    file_put_contents("{$output_loc}/{$class->getShortName()}.d.ts", Printer::print($file));
+                    $file = new File();
+                }
             }
-            // $progress->advance();
         }
-        file_put_contents($output_loc, Printer::print($file));
+        if (Command::OUTPUT_FILE === $output_mode) {
+            file_put_contents($output_loc, Printer::print($file));
+        }
 
         $io->success("Finished!");
 
-        // $finder = new Finder();
-        // $finder->files()->in(__DIR__)->name('/\.php$/');
         return Command::SUCCESS;
     }
 }
