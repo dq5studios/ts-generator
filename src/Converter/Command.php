@@ -103,7 +103,7 @@ class Command extends SymfonyCommand
         foreach ($io->progressIterate($classes) as $class) {
             if (!$class->isAnonymous()) {
                 // $io->info("Converting {$class->getShortName()};" . get_class($class));
-                $file->append(Convert::fromPHP($class->getName()));
+                $file->append(Convert::fromPHP($class));
                 if (Command::OUTPUT_DIR === $output_mode) {
                     // Each input file gets its own output file
                     file_put_contents("{$output_loc}/{$class->getShortName()}.d.ts", Printer::print($file));

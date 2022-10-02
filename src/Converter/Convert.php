@@ -53,26 +53,19 @@ class Convert
     public static function fromPHP(string|object $class): Type
     {
         try {
-            if (!($class instanceof ReflectionClass) && !($class instanceof ReflectionEnum)) {
-                if (is_string($class)) {
-                    $reflection = ReflectionClass::createFromName($class);
-                } else {
-                    $reflection = ReflectionClass::createFromInstance($class);
-                }
-            // $reflection = new ReflectionClass($class);
+            if (is_string($class)) {
+                $reflection = ReflectionClass::createFromName($class);
+            } elseif (!($class instanceof ReflectionClass)) {
+                $reflection = ReflectionClass::createFromInstance($class);
             } else {
                 $reflection = $class;
             }
 
+            // If it's a native enum, reload as a reflection enum
             if (PHP_VERSION_ID >= 80100 && $reflection->isEnum()) {
-                if (is_string($class)) {
-                    $reflection = ReflectionEnum::createFromName($class);
-                } elseif (!is_a($reflection, ReflectionEnum::class)) {
-                    $reflection = ReflectionEnum::createFromInstance($class);
-                }
-                // $reflection = new ReflectionEnum($class);
+                $reflection = ReflectionEnum::createFromName($reflection->getName());
             }
-        } catch (ReflectionException|IdentifierNotFound) {
+        } catch (ReflectionException | IdentifierNotFound) {
             throw new InvalidArgumentException("Class does not exist");
         }
         $class = $reflection->getName();
@@ -171,7 +164,7 @@ class Convert
             }
         }
 
-        $consts = $reflection->getReflectionConstants();
+        $consts = $reflection->getConstants();
         foreach ($consts as $const) {
             // Handled by getCases()
             if (
