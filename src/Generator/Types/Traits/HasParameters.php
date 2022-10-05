@@ -21,11 +21,11 @@ trait HasParameters
      */
     public function addParameter(string|Type $type, string|NameToken $name = null): FunctionParameterToken
     {
-        if (is_null($this->parameters)) {
+        if (null === $this->parameters) {
             $this->parameters = [];
         }
         if (empty($name)) {
-            $name = "arg_" . count($this->parameters);
+            $name = "arg_" . \count($this->parameters);
         }
         $member = FunctionParameterToken::from($name, $type);
 

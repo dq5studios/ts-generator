@@ -26,7 +26,7 @@ trait HasComment
 
     public function getComment(): CommentToken
     {
-        if (is_null($this->comment)) {
+        if (null === $this->comment) {
             $this->comment = new CommentToken();
         }
 

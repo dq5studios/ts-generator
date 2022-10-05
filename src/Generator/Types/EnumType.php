@@ -22,8 +22,8 @@ use InvalidArgumentException;
 #[Attribute(Attribute::TARGET_CLASS)]
 class EnumType extends ContainerType implements CanExport, CanAmbient
 {
-    use HasExport;
     use HasAmbient;
+    use HasExport;
 
     protected string $type = "enum";
     /** @var array<string,EnumMemberToken> */
@@ -37,7 +37,7 @@ class EnumType extends ContainerType implements CanExport, CanAmbient
      */
     public function addMember(string|NameToken $name, int|float|string|Value ...$value): EnumMemberToken
     {
-        if (count($value) > 1) {
+        if (\count($value) > 1) {
             throw new InvalidArgumentException("No more that one value can be assigned at a time");
         }
         if (empty($value) && !$this->can_auto) {

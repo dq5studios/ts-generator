@@ -16,8 +16,8 @@ use InvalidArgumentException;
  */
 abstract class ContainerType extends Type implements CanName, CanComment
 {
-    use HasName;
     use HasComment;
+    use HasName;
 
     protected string $type = "";
 
@@ -26,7 +26,7 @@ abstract class ContainerType extends Type implements CanName, CanComment
      */
     final public function __construct(string|NameToken $name = null)
     {
-        if (is_null($name)) {
+        if (null === $name) {
             throw new InvalidArgumentException("Name required");
         }
 

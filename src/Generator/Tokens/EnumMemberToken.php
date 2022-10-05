@@ -20,7 +20,7 @@ class EnumMemberToken extends MemberToken
      */
     public static function from(string|NameToken $name, int|float|string|Value ...$value): self
     {
-        if (count($value) > 1) {
+        if (\count($value) > 1) {
             throw new InvalidArgumentException("No more that one value can be assigned at a time");
         }
 
@@ -28,8 +28,8 @@ class EnumMemberToken extends MemberToken
 
         $typed_value = match (true) {
             empty($value) => new NoneValue(),
-            is_int($value[0]) || is_float($value[0]) => new NumberValue($value[0]),
-            is_string($value[0]) => new StringValue($value[0]),
+            \is_int($value[0]) || \is_float($value[0]) => new NumberValue($value[0]),
+            \is_string($value[0]) => new StringValue($value[0]),
             $value[0] instanceof NumberValue,
             $value[0] instanceof StringValue,
             $value[0] instanceof NoneValue => $value[0],

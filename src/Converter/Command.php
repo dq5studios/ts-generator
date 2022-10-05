@@ -58,23 +58,23 @@ class Command extends SymfonyCommand
 
         $input_mode = null;
         if (empty($input_loc)) {
-            $input_mode = Command::INPUT_PROJECT;
+            $input_mode = self::INPUT_PROJECT;
         } elseif (is_dir($input_loc)) {
-            $input_mode = Command::INPUT_DIR;
+            $input_mode = self::INPUT_DIR;
         } elseif (is_file($input_loc)) {
-            $input_mode = Command::INPUT_FILE;
+            $input_mode = self::INPUT_FILE;
         }
-        if (is_null($input_mode)) {
+        if (null === $input_mode) {
             $io->error("Input directory/file not found");
 
-            return Command::FAILURE;
+            return self::FAILURE;
         }
 
-        $output_mode = Command::OUTPUT_NEW_FILE;
+        $output_mode = self::OUTPUT_NEW_FILE;
         if (is_dir($output_loc)) {
-            $output_mode = Command::OUTPUT_DIR;
+            $output_mode = self::OUTPUT_DIR;
         } elseif (is_file($output_loc)) {
-            $output_mode = Command::OUTPUT_FILE;
+            $output_mode = self::OUTPUT_FILE;
             $io->confirm("Output file already exists, overwrite?", true);
         }
         // TODO: If doesn't exist yet, figure out if file/dir
@@ -86,14 +86,14 @@ class Command extends SymfonyCommand
 
         /** @psalm-suppress InternalClass, InternalMethod */
         $reflector = match ($input_mode) {
-            Command::INPUT_PROJECT => new DefaultReflector(
+            self::INPUT_PROJECT => new DefaultReflector(
                 new AggregateSourceLocator([
                     (new MakeLocatorForComposerJson())(InstalledVersions::getRootPackage()["install_path"], $ast_locator),
                     new PhpInternalSourceLocator($ast_locator, new ReflectionSourceStubber()),
                 ])
             ),
-            Command::INPUT_FILE => new DefaultReflector(new SingleFileSourceLocator($input_loc, $ast_locator)),
-            Command::INPUT_DIR => new DefaultReflector(new DirectoriesSourceLocator([$input_loc], $ast_locator)),
+            self::INPUT_FILE => new DefaultReflector(new SingleFileSourceLocator($input_loc, $ast_locator)),
+            self::INPUT_DIR => new DefaultReflector(new DirectoriesSourceLocator([$input_loc], $ast_locator)),
         };
 
         $classes = $reflector->reflectAllClasses();
@@ -104,19 +104,19 @@ class Command extends SymfonyCommand
             if (!$class->isAnonymous()) {
                 // $io->info("Converting {$class->getShortName()};" . get_class($class));
                 $file->append(Convert::fromPHP($class));
-                if (Command::OUTPUT_DIR === $output_mode) {
+                if (self::OUTPUT_DIR === $output_mode) {
                     // Each input file gets its own output file
                     file_put_contents("{$output_loc}/{$class->getShortName()}.d.ts", Printer::print($file));
                     $file = new File();
                 }
             }
         }
-        if (Command::OUTPUT_FILE === $output_mode) {
+        if (self::OUTPUT_FILE === $output_mode) {
             file_put_contents($output_loc, Printer::print($file));
         }
 
         $io->success("Finished!");
 
-        return Command::SUCCESS;
+        return self::SUCCESS;
     }
 }

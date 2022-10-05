@@ -26,10 +26,10 @@ use InvalidArgumentException;
 #[Attribute(Attribute::TARGET_CLASS)]
 class ClassType extends ContainerType implements CanExtend, CanImplement, CanExport, CanAmbient, CanIndexSignature
 {
+    use HasAmbient;
+    use HasExport;
     use HasExtend;
     use HasImplement;
-    use HasExport;
-    use HasAmbient;
     use HasIndexSignature;
 
     protected string $type = "class";
@@ -41,12 +41,12 @@ class ClassType extends ContainerType implements CanExtend, CanImplement, CanExp
      */
     public function addProperty(string|NameToken $name, string|Type $type, mixed $value = null): ClassPropertyToken
     {
-        if (is_null($value)) {
+        if (null === $value) {
             $value = new NoneValue();
         }
         $member = ClassPropertyToken::from($name, $type, $value);
 
-        return $this->properties[$member->getName()->getName() . "_" . count($this->properties)] = $member;
+        return $this->properties[$member->getName()->getName() . "_" . \count($this->properties)] = $member;
     }
 
     /**

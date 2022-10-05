@@ -18,8 +18,8 @@ use DQ5Studios\TypeScript\Generator\Values\Value;
  */
 class MemberToken implements CanName, CanComment
 {
-    use HasName;
     use HasComment;
+    use HasName;
 
     protected Type $type;
     protected Value $value;
@@ -27,11 +27,11 @@ class MemberToken implements CanName, CanComment
     public function __construct(NameToken|null $name = null, Type|null $type = null, Value|null $value = null)
     {
         $this->name = $name;
-        if (is_null($type)) {
+        if (null === $type) {
             $type = new NoneType();
         }
         $this->type = $type;
-        if (is_null($value)) {
+        if (null === $value) {
             $value = new NoneValue();
         }
         $this->value = $value;

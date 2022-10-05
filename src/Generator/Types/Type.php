@@ -46,23 +46,23 @@ abstract class Type
 
     /** @var array<Type::*,class-string<Type>> */
     private static array $type_map = [
-        Type::ANY => AnyType::class,
-        Type::ARRAY => ArrayType::class,
-        Type::BIGINT => BigIntType::class,
-        Type::BOOLEAN => BooleanType::class,
-        Type::FUNCTION => FunctionType::class,
-        Type::INTERSECTION => IntersectionType::class,
-        Type::NEVER => NeverType::class,
-        Type::NULL => NullType::class,
-        Type::NUMBER => NumberType::class,
-        Type::OBJECT => ObjectType::class,
-        Type::STRING => StringType::class,
-        Type::SYMBOL => SymbolType::class,
-        Type::TUPLE => TupleType::class,
-        Type::UNDEFINED => UndefinedType::class,
-        Type::UNION => UnionType::class,
-        Type::UNKNOWN => UnknownType::class,
-        Type::VOID => VoidType::class,
+        self::ANY => AnyType::class,
+        self::ARRAY => ArrayType::class,
+        self::BIGINT => BigIntType::class,
+        self::BOOLEAN => BooleanType::class,
+        self::FUNCTION => FunctionType::class,
+        self::INTERSECTION => IntersectionType::class,
+        self::NEVER => NeverType::class,
+        self::NULL => NullType::class,
+        self::NUMBER => NumberType::class,
+        self::OBJECT => ObjectType::class,
+        self::STRING => StringType::class,
+        self::SYMBOL => SymbolType::class,
+        self::TUPLE => TupleType::class,
+        self::UNDEFINED => UndefinedType::class,
+        self::UNION => UnionType::class,
+        self::UNKNOWN => UnknownType::class,
+        self::VOID => VoidType::class,
     ];
 
     protected string $type;
@@ -82,9 +82,9 @@ abstract class Type
     /**
      * @param class-string<Type>|Type|Type::*|string $type
      */
-    public static function from(string|Type $type): Type
+    public static function from(string|Type $type): self
     {
-        if ($type instanceof Type) {
+        if ($type instanceof self) {
             return $type;
         }
         if (str_ends_with($type, "[]")) {
@@ -109,13 +109,13 @@ abstract class Type
             return IntersectionType::of(...$parts);
         }
         // Check if they passed in a PHP type by mistake
-        if (array_key_exists($type, Type::$php_type_map)) {
-            $type = Type::$php_type_map[$type];
+        if (\array_key_exists($type, self::$php_type_map)) {
+            $type = self::$php_type_map[$type];
         }
-        if (array_key_exists($type, Type::$type_map)) {
-            $type = Type::$type_map[$type];
+        if (\array_key_exists($type, self::$type_map)) {
+            $type = self::$type_map[$type];
         }
-        if (!is_subclass_of($type, Type::class)) {
+        if (!is_subclass_of($type, self::class)) {
             throw new InvalidArgumentException("Unknown type");
         }
 

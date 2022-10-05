@@ -24,7 +24,7 @@ class InterfacePropertyToken extends MemberToken implements CanOptional, CanRead
     public static function from(string|NameToken $name, string|Type $type): self
     {
         $optional = false;
-        if (is_string($name) && str_ends_with($name, "?")) {
+        if (\is_string($name) && str_ends_with($name, "?")) {
             $optional = true;
             $name = rtrim($name, "?");
         }

@@ -28,7 +28,7 @@ class FunctionParameterToken extends MemberToken implements CanOptional, CanSpre
         $type = Type::from($type);
         $spread = false;
         $optional = false;
-        if (is_string($name)) {
+        if (\is_string($name)) {
             if (($type instanceof ArrayType || $type instanceof TupleType) && str_starts_with($name, "...")) {
                 $spread = true;
                 $name = ltrim($name, ".");

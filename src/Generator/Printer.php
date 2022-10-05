@@ -47,12 +47,12 @@ class Printer
     public static function print(CommentToken|File|MemberToken|NameToken|Type|Value $print): string
     {
         return match (true) {
-            $print instanceof CommentToken => (new Printer())->printComment($print),
-            $print instanceof File => (new Printer())->printFile($print),
-            $print instanceof MemberToken => (new Printer())->printMemberToken($print),
-            $print instanceof NameToken => (new Printer())->printName($print),
-            $print instanceof Type => (new Printer())->printType($print),
-            $print instanceof Value => (new Printer())->printValue($print),
+            $print instanceof CommentToken => (new self())->printComment($print),
+            $print instanceof File => (new self())->printFile($print),
+            $print instanceof MemberToken => (new self())->printMemberToken($print),
+            $print instanceof NameToken => (new self())->printName($print),
+            $print instanceof Type => (new self())->printType($print),
+            $print instanceof Value => (new self())->printValue($print),
             default => "",
         };
     }
@@ -62,7 +62,7 @@ class Printer
         $callback = [$this, "printType"];
         /** @var string[] */
         $is = array_map($callback, $array->getContents());
-        $types = match (count($is)) {
+        $types = match (\count($is)) {
             0 => "",
             1 => $is[0],
             default => "(" . implode($array->getSeperator(), $is) . ")",
@@ -257,7 +257,7 @@ class Printer
             }
         }
         if (!($value instanceof NoneValue)) {
-            $output .= " = " . Printer::print($token->getValue());
+            $output .= " = " . self::print($token->getValue());
         }
 
         return $output;
@@ -268,13 +268,13 @@ class Printer
         $callback = [$this, "printType"];
         $output = "";
         $types = $type->getContents();
-        if (count($types) > 1) {
+        if (\count($types) > 1) {
             $output .= "(";
         }
         /** @var string[] */
         $mapping = array_map($callback, $type->getContents());
         $output .= implode($type->getSeperator(), $mapping);
-        if (count($types) > 1) {
+        if (\count($types) > 1) {
             $output .= ")";
         }
 
@@ -297,7 +297,7 @@ class Printer
         if (empty($object->getProperties())) {
             return $output . $object->getType();
         }
-        if (1 === count($object->getProperties())) {
+        if (1 === \count($object->getProperties())) {
             return $this->printObjectSingleLine($object);
         }
         $output .= "{\n";
@@ -390,7 +390,7 @@ class Printer
      */
     private function shakeParameterThis(array $list): array
     {
-        if (array_key_exists("this", $list)) {
+        if (\array_key_exists("this", $list)) {
             $move = $list["this"];
             unset($list["this"]);
             array_unshift($list, $move);

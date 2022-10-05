@@ -23,7 +23,7 @@ class NameToken
 
     public static function from(string|NameToken $name): self
     {
-        if ($name instanceof NameToken) {
+        if ($name instanceof self) {
             return $name;
         }
 

@@ -53,7 +53,7 @@ class Convert
     public static function fromPHP(string|object $class): Type
     {
         try {
-            if (is_string($class)) {
+            if (\is_string($class)) {
                 $reflection = ReflectionClass::createFromName($class);
             } elseif (!($class instanceof ReflectionClass)) {
                 $reflection = ReflectionClass::createFromInstance($class);
@@ -62,7 +62,7 @@ class Convert
             }
 
             // If it's a native enum, reload as a reflection enum
-            if (PHP_VERSION_ID >= 80100 && $reflection->isEnum()) {
+            if (\PHP_VERSION_ID >= 80100 && $reflection->isEnum()) {
                 $reflection = ReflectionEnum::createFromName($reflection->getName());
             }
         } catch (ReflectionException | IdentifierNotFound) {
@@ -70,19 +70,19 @@ class Convert
         }
         $class = $reflection->getName();
 
-        $class_name = Convert::nameSafe($reflection->getName());
+        $class_name = self::nameSafe($reflection->getName());
         $class_name = new NameToken($class_name);
 
         $extends = $reflection->getParentClass() ?: null;
         if (null !== $extends) {
-            $extends = Convert::nameSafe($extends->getName());
+            $extends = self::nameSafe($extends->getName());
             $extends = new NameToken($extends);
         }
 
         $implements = [];
         $interfaces = $reflection->getInterfaces();
         foreach ($interfaces as $interf) {
-            $implements[] = new NameToken(Convert::nameSafe($interf->getName()));
+            $implements[] = new NameToken(self::nameSafe($interf->getName()));
         }
 
         $php_doc = new PhpDocExtractor();
@@ -99,23 +99,23 @@ class Convert
         $members = [];
         $props = $reflection->getProperties();
         foreach ($props as $prop) {
-            $p_name = new NameToken(Convert::nameSafe($prop->getName()));
+            $p_name = new NameToken(self::nameSafe($prop->getName()));
 
             // Skip built ins
             if (
-                PHP_VERSION_ID >= 80100
+                \PHP_VERSION_ID >= 80100
                 && method_exists($reflection, "isEnum")
                 && $reflection->isEnum()
-                && in_array($p_name->getName(), ["name", "value"])
+                && \in_array($p_name->getName(), ["name", "value"])
             ) {
                 continue;
             }
 
             $type_detail = $info->getTypes($class, $prop->getName());
-            if (is_null($type_detail)) {
+            if (null === $type_detail) {
                 $type = new UnknownType();
             } else {
-                $type = Convert::typeResolve($type_detail);
+                $type = self::typeResolve($type_detail);
             }
             $visibility = match (true) {
                 $prop->isPublic() => VisibilityToken::PUBLIC,
@@ -138,12 +138,12 @@ class Convert
             $members[] = $m;
         }
 
-        if (PHP_VERSION_ID >= 80100 && $reflection instanceof ReflectionEnum) {
+        if (\PHP_VERSION_ID >= 80100 && $reflection instanceof ReflectionEnum) {
             $backing_type = $reflection->isBacked() ? $reflection->getBackingType() : null;
             $cases = $reflection->getCases();
             foreach ($cases as $case) {
                 $m = new Member(
-                    name: new NameToken(Convert::nameSafe($case->getName())),
+                    name: new NameToken(self::nameSafe($case->getName())),
                     type: new UnknownType(),
                     readonly: true,
                     visibility: VisibilityToken::PUBLIC, // TODO: Look up visibility
@@ -158,7 +158,7 @@ class Convert
 
                 $type_comment = $case->getDocComment();
                 if (!empty($type_comment)) {
-                    $m->comment = Convert::parseComment($type_comment);
+                    $m->comment = self::parseComment($type_comment);
                 }
                 $members[] = $m;
             }
@@ -168,7 +168,7 @@ class Convert
         foreach ($consts as $const) {
             // Handled by getCases()
             if (
-                PHP_VERSION_ID >= 80100
+                \PHP_VERSION_ID >= 80100
                 && method_exists($const, "isEnumCase")
                 && $const->isEnumCase()
             ) {
@@ -178,15 +178,15 @@ class Convert
             /** @var mixed */
             $value = $const->getValue();
             $m = new Member(
-                name: new NameToken(Convert::nameSafe($const->getName())),
-                type: Type::from(Type::$php_type_map[gettype($value)]),
+                name: new NameToken(self::nameSafe($const->getName())),
+                type: Type::from(Type::$php_type_map[\gettype($value)]),
                 value: $value,
                 readonly: true,
                 visibility: VisibilityToken::PUBLIC, // TODO: Look up visibility
             );
             $type_comment = $const->getDocComment();
             if (!empty($type_comment)) {
-                $m->comment = Convert::parseComment($type_comment);
+                $m->comment = self::parseComment($type_comment);
             }
             $members[] = $m;
         }
@@ -212,7 +212,7 @@ class Convert
         }
 
         if (
-            PHP_VERSION_ID >= 80100
+            \PHP_VERSION_ID >= 80100
             && method_exists($reflection, "isEnum")
             && $reflection->isEnum()
         ) {
@@ -225,7 +225,7 @@ class Convert
     public function toClass(): ClassType
     {
         $class = new ClassType($this->name);
-        if (!is_null($this->extends)) {
+        if (null !== $this->extends) {
             $class->addExtend(new ClassType($this->extends));
         }
         // TODO: implement interfaces
@@ -252,7 +252,7 @@ class Convert
     public function toInterface(): InterfaceType
     {
         $interface = new InterfaceType($this->name);
-        if (!is_null($this->extends)) {
+        if (null !== $this->extends) {
             $interface->addExtend(new InterfaceType($this->extends));
         }
         foreach ($this->members as $prop) {
@@ -272,7 +272,7 @@ class Convert
     {
         $enum = new EnumType($this->name);
         foreach ($this->members as $prop) {
-            if (isset($prop->value) && (is_numeric($prop->value) || is_string($prop->value))) {
+            if (isset($prop->value) && (is_numeric($prop->value) || \is_string($prop->value))) {
                 $p = $enum->addMember($prop->name, $prop->value);
             } else {
                 $p = $enum->addMember($prop->name);
@@ -317,13 +317,13 @@ class Convert
                 $type_list[] = new NullType();
             }
             $basic = $type->getBuiltinType();
-            if (!$type->isCollection() && "object" !== $basic && array_key_exists($basic, Type::$php_type_map)) {
+            if (!$type->isCollection() && "object" !== $basic && \array_key_exists($basic, Type::$php_type_map)) {
                 $type_list[] = Type::from(Type::$php_type_map[$basic]);
                 continue;
             }
             if ("object" === $basic) {
                 $class = $type->getClassName();
-                if (is_null($class)) {
+                if (null === $class) {
                     $type_list[] = new ObjectType();
                     continue;
                 }
@@ -343,12 +343,12 @@ class Convert
                 $key = $type->getCollectionKeyTypes();
                 $typed_key = Type::from(Type::NUMBER);
                 if (!empty($key)) {
-                    $typed_key = Convert::typeResolve($key);
+                    $typed_key = self::typeResolve($key);
                 }
                 $value = $type->getCollectionValueTypes();
                 $typed_value = new UnknownType();
                 if (!empty($value)) {
-                    $typed_value = Convert::typeResolve($value);
+                    $typed_value = self::typeResolve($value);
                 }
                 if ($typed_key instanceof NumberType) {
                     $type_list[] = ArrayType::of($typed_value);
@@ -362,7 +362,7 @@ class Convert
             $type_list[] = new UnknownType();
         }
         if (!empty($type_list)) {
-            if (1 === count($type_list)) {
+            if (1 === \count($type_list)) {
                 return $type_list[0];
             }
 

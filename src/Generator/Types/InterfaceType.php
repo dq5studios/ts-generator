@@ -25,11 +25,11 @@ use InvalidArgumentException;
 #[Attribute(Attribute::TARGET_CLASS)]
 class InterfaceType extends ContainerType implements CanExtend, CanExport, CanAmbient, CanIndexSignature, CanFunctionSignature
 {
-    use HasExtend;
-    use HasExport;
     use HasAmbient;
-    use HasIndexSignature;
+    use HasExport;
+    use HasExtend;
     use HasFunctionSignature;
+    use HasIndexSignature;
 
     protected string $type = "interface";
     /** @var array<string,InterfacePropertyToken> */
@@ -42,7 +42,7 @@ class InterfaceType extends ContainerType implements CanExtend, CanExport, CanAm
     {
         $member = InterfacePropertyToken::from($name, $type);
 
-        return $this->properties[$member->getName()->getName() . "_" . count($this->properties)] = $member;
+        return $this->properties[$member->getName()->getName() . "_" . \count($this->properties)] = $member;
     }
 
     /**

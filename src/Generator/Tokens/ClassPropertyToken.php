@@ -43,10 +43,10 @@ class ClassPropertyToken extends MemberToken implements CanOptional, CanReadonly
         bool $optional = false,
         bool $static = false,
     ): self {
-        if (is_null($value)) {
+        if (null === $value) {
             $value = new NoneValue();
         }
-        if (is_string($name) && str_ends_with($name, "?")) {
+        if (\is_string($name) && str_ends_with($name, "?")) {
             $optional = true;
             $name = rtrim($name, "?");
         }
@@ -57,7 +57,7 @@ class ClassPropertyToken extends MemberToken implements CanOptional, CanReadonly
         $class = (new self(type: $type, name: $name, value: $value))
             ->hasStatic($static)
             ->hasOptional($optional);
-        if (!is_null($visibility)) {
+        if (null !== $visibility) {
             $class->setVisibility($visibility);
         }
         if (

@@ -20,7 +20,7 @@ class FunctionType extends ComplexType implements CanParameters
 
     public function isSignature(): bool
     {
-        return !is_null($this->parameters) || !is_null($this->return);
+        return null !== $this->parameters || null !== $this->return;
     }
 
     public function getReturn(): Type

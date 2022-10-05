@@ -165,16 +165,16 @@
         },
         {
             "name": "roave/better-reflection",
-            "version": "6.0.0",
+            "version": "6.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/BetterReflection.git",
-                "reference": "392fc73fdf6472aa8c0d456368594399358f037d"
+                "reference": "1a04b2fd86a3cef4f75b9efc7598f2865581c217"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/BetterReflection/zipball/392fc73fdf6472aa8c0d456368594399358f037d",
-                "reference": "392fc73fdf6472aa8c0d456368594399358f037d",
+                "url": "https://api.github.com/repos/Roave/BetterReflection/zipball/1a04b2fd86a3cef4f75b9efc7598f2865581c217",
+                "reference": "1a04b2fd86a3cef4f75b9efc7598f2865581c217",
                 "shasum": ""
             },
             "require": {
@@ -233,9 +233,9 @@
             "description": "Better Reflection - an improved code reflection API",
             "support": {
                 "issues": "https://github.com/Roave/BetterReflection/issues",
-                "source": "https://github.com/Roave/BetterReflection/tree/6.0.0"
+                "source": "https://github.com/Roave/BetterReflection/tree/6.1.0"
             },
-            "time": "2022-09-30T17:23:54+00:00"
+            "time": "2022-10-04T16:16:52+00:00"
         },
         {
             "name": "roave/signature",

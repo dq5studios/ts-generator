@@ -16,7 +16,7 @@ abstract class Value
     /** @var class-string<T> */
     protected string $type = UndefinedType::class;
 
-    private static function whichArrayObject(array $value): Value
+    private static function whichArrayObject(array $value): self
     {
         if (array_is_list($value)) {
             /** @var list<scalar|null> $value */
@@ -27,9 +27,9 @@ abstract class Value
         return new ObjectValue($value);
     }
 
-    public static function from(mixed $value): Value
+    public static function from(mixed $value): self
     {
-        if ($value instanceof Value) {
+        if ($value instanceof self) {
             return $value;
         }
 
