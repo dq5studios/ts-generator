@@ -97,12 +97,12 @@ class InterfaceTypeTest extends TestCase
         );
 
         $expected = <<<'INTERFACE'
-declare interface jellicle {
-    skimbleshanks: number;
-    grizabella: string;
-    growltiger: ("mungojerrie" | "rumpelteazer");
-}
-INTERFACE;
+            declare interface jellicle {
+                skimbleshanks: number;
+                grizabella: string;
+                growltiger: ("mungojerrie" | "rumpelteazer");
+            }
+            INTERFACE;
         $this->assertSame($expected, Printer::print($actual));
 
         $actual = new InterfaceType("jellicle");
@@ -112,17 +112,17 @@ INTERFACE;
         $actual->addComment("jellicles can\n\njellicles do");
 
         $expected = <<<'INTERFACE'
-/**
- * jellicles can
- *
- * jellicles do
- */
-interface jellicle {
-    grizabella: string;
-    mungojerrie: number;
-    skimbleshanks: (string | number);
-}
-INTERFACE;
+            /**
+             * jellicles can
+             *
+             * jellicles do
+             */
+            interface jellicle {
+                grizabella: string;
+                mungojerrie: number;
+                skimbleshanks: (string | number);
+            }
+            INTERFACE;
         $this->assertSame($expected, Printer::print($actual));
 
         $actual = new InterfaceType("jellicle");
@@ -134,10 +134,10 @@ INTERFACE;
         $actual->addExtend($extend);
 
         $expected = <<<'INTERFACE'
-export interface jellicle extends jellylorum {
-    rumpelteazer: cat;
-}
-INTERFACE;
+            export interface jellicle extends jellylorum {
+                rumpelteazer: cat;
+            }
+            INTERFACE;
         $this->assertSame($expected, Printer::print($actual));
     }
 
@@ -189,14 +189,14 @@ INTERFACE;
         $actual->addProperty("skimbleshanks", "string");
 
         $expected = <<<'INTERFACE'
-interface jellicle {
-    [index: string]: number;
-    [index: number]: string;
-    (arg_0: string, arg_1: string): void;
-    new (arg_0: number): void;
-    skimbleshanks: string;
-}
-INTERFACE;
+            interface jellicle {
+                [index: string]: number;
+                [index: number]: string;
+                (arg_0: string, arg_1: string): void;
+                new (arg_0: number): void;
+                skimbleshanks: string;
+            }
+            INTERFACE;
         $this->assertSame($expected, Printer::print($actual));
     }
 }

@@ -65,12 +65,12 @@ class ObjectTypeTest extends TestCase
         );
 
         $expected = <<<'OBJECT'
-{
-    skimbleshanks: number,
-    grizabella: string,
-    growltiger: ("mungojerrie" | "rumpelteazer"),
-}
-OBJECT;
+            {
+                skimbleshanks: number,
+                grizabella: string,
+                growltiger: ("mungojerrie" | "rumpelteazer"),
+            }
+            OBJECT;
         $this->assertSame($expected, Printer::print($actual));
 
         $actual = new ObjectType();
@@ -80,17 +80,17 @@ OBJECT;
         $actual->addComment("jellicles can\n\njellicles do");
 
         $expected = <<<'OBJECT'
-/**
- * jellicles can
- *
- * jellicles do
- */
-{
-    grizabella: string,
-    mungojerrie: number,
-    skimbleshanks: (string | number),
-}
-OBJECT;
+            /**
+             * jellicles can
+             *
+             * jellicles do
+             */
+            {
+                grizabella: string,
+                mungojerrie: number,
+                skimbleshanks: (string | number),
+            }
+            OBJECT;
         $this->assertSame($expected, Printer::print($actual));
 
         $actual = new ObjectType();
@@ -99,8 +99,8 @@ OBJECT;
         $actual->addProperty("rumpelteazer", $subtype);
 
         $expected = <<<'OBJECT'
-{ rumpelteazer: { mungojerrie: number } }
-OBJECT;
+            { rumpelteazer: { mungojerrie: number } }
+            OBJECT;
         $this->assertSame($expected, Printer::print($actual));
     }
 }

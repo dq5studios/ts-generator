@@ -99,12 +99,12 @@ class ClassTypeTest extends TestCase
         );
 
         $expected = <<<'CLASS'
-declare class jellicle {
-    skimbleshanks: number = 19;
-    grizabella: string = "glamour cat";
-    growltiger: ("mungojerrie" | "rumpelteazer");
-}
-CLASS;
+            declare class jellicle {
+                skimbleshanks: number = 19;
+                grizabella: string = "glamour cat";
+                growltiger: ("mungojerrie" | "rumpelteazer");
+            }
+            CLASS;
         $this->assertSame($expected, Printer::print($actual));
 
         $actual = new ClassType("jellicle");
@@ -114,17 +114,17 @@ CLASS;
         $actual->addComment("jellicles can\n\njellicles do");
 
         $expected = <<<'CLASS'
-/**
- * jellicles can
- *
- * jellicles do
- */
-class jellicle {
-    grizabella: string = "glamour cat";
-    mungojerrie: number = 21;
-    skimbleshanks: (string | number);
-}
-CLASS;
+            /**
+             * jellicles can
+             *
+             * jellicles do
+             */
+            class jellicle {
+                grizabella: string = "glamour cat";
+                mungojerrie: number = 21;
+                skimbleshanks: (string | number);
+            }
+            CLASS;
         $this->assertSame($expected, Printer::print($actual));
 
         $actual = new ClassType("jellicle");
@@ -136,10 +136,10 @@ CLASS;
         $actual->addExtend($extend);
 
         $expected = <<<'CLASS'
-export class jellicle extends jellylorum {
-    rumpelteazer: cat;
-}
-CLASS;
+            export class jellicle extends jellylorum {
+                rumpelteazer: cat;
+            }
+            CLASS;
         $this->assertSame($expected, Printer::print($actual));
     }
 
@@ -209,12 +209,12 @@ CLASS;
         $actual->addProperty("skimbleshanks", "string", "the railway cat");
 
         $expected = <<<'CLASS'
-class jellicle {
-    [index: string]: number;
-    [index: number]: string;
-    skimbleshanks: string = "the railway cat";
-}
-CLASS;
+            class jellicle {
+                [index: string]: number;
+                [index: number]: string;
+                skimbleshanks: string = "the railway cat";
+            }
+            CLASS;
         $this->assertSame($expected, Printer::print($actual));
     }
 }

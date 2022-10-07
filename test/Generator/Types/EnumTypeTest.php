@@ -102,12 +102,12 @@ class EnumTypeTest extends TestCase
         $actual->hasConst(true);
 
         $expected = <<<'ENUM'
-export const enum jellicle {
-    skimbleshanks,
-    grizabella,
-    mungojerrie,
-}
-ENUM;
+            export const enum jellicle {
+                skimbleshanks,
+                grizabella,
+                mungojerrie,
+            }
+            ENUM;
         $this->assertSame($expected, Printer::print($actual));
 
         $actual = new EnumType("jellicle");
@@ -117,12 +117,12 @@ ENUM;
         $actual->hasAmbient(true);
 
         $expected = <<<'ENUM'
-declare enum jellicle {
-    grizabella = 5,
-    mungojerrie,
-    skimbleshanks = "railway cat",
-}
-ENUM;
+            declare enum jellicle {
+                grizabella = 5,
+                mungojerrie,
+                skimbleshanks = "railway cat",
+            }
+            ENUM;
         $this->assertSame($expected, Printer::print($actual));
     }
 

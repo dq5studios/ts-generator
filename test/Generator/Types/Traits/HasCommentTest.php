@@ -31,11 +31,11 @@ class HasCommentTest extends TestCase
         $this->assertSame("/** mungojerrie */", Printer::print($mock->getComment()));
 
         $expected = <<<'comment'
-/**
- * mungojerrie
- * rumpelteazer
- */
-comment;
+            /**
+             * mungojerrie
+             * rumpelteazer
+             */
+            comment;
 
         /** @var HasComment */
         $mock = $this->getMockForTrait(HasComment::class);

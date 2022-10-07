@@ -26,11 +26,11 @@ class CommentTokenTest extends TestCase
         $actual = new CommentToken("mungojerrie");
         $actual->expand("rumpelteazer");
         $expected = <<<'comment'
-/**
- * mungojerrie
- * rumpelteazer
- */
-comment;
+            /**
+             * mungojerrie
+             * rumpelteazer
+             */
+            comment;
         $this->assertSame($expected, Printer::print($actual));
     }
 
@@ -44,11 +44,11 @@ comment;
 
         $actual = new CommentToken("skimbleshanks\nthe railway cat");
         $expected = <<<'comment'
-/**
- * skimbleshanks
- * the railway cat
- */
-comment;
+            /**
+             * skimbleshanks
+             * the railway cat
+             */
+            comment;
         $this->assertSame($expected, Printer::print($actual));
     }
 }

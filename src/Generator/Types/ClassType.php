@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Generator\Types;
 
-use Attribute;
 use DQ5Studios\TypeScript\Generator\Tokens\ClassPropertyToken;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanAmbient;
@@ -23,7 +22,6 @@ use InvalidArgumentException;
 /**
  * The class type, equivalent to PHP class
  */
-#[Attribute(Attribute::TARGET_CLASS)]
 class ClassType extends ContainerType implements CanExtend, CanImplement, CanExport, CanAmbient, CanIndexSignature
 {
     use HasAmbient;
