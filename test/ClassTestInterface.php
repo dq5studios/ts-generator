@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests;
 
-use DQ5Studios\TypeScript\Generator\Types\InterfaceType;
+use DQ5Studios\TypeScript\Generator\Types\Attributes\IsInterface;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 
 /**
@@ -12,7 +12,7 @@ use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
  *
  * @property float $doc_only
  */
-#[InterfaceType]
+#[IsInterface]
 class ClassTestInterface
 {
     public string $key = "name";

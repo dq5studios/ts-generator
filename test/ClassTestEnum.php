@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests;
 
-use DQ5Studios\TypeScript\Generator\Types\EnumType;
+use DQ5Studios\TypeScript\Generator\Types\Attributes\IsEnum;
 
 /**
  * Some cats you may know
  */
-#[EnumType]
+#[IsEnum]
 class ClassTestEnum
 {
     /** skimbleshanks */

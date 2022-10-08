@@ -7,6 +7,9 @@ namespace DQ5Studios\TypeScript\Converter;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Tokens\VisibilityToken;
 use DQ5Studios\TypeScript\Generator\Types\ArrayType;
+use DQ5Studios\TypeScript\Generator\Types\Attributes\IsClass;
+use DQ5Studios\TypeScript\Generator\Types\Attributes\IsEnum;
+use DQ5Studios\TypeScript\Generator\Types\Attributes\IsInterface;
 use DQ5Studios\TypeScript\Generator\Types\ClassType;
 use DQ5Studios\TypeScript\Generator\Types\EnumType;
 use DQ5Studios\TypeScript\Generator\Types\InterfaceType;
@@ -62,7 +65,7 @@ class Convert
             }
 
             // If it's a native enum, reload as a reflection enum
-            if (\PHP_VERSION_ID >= 80100 && $reflection->isEnum()) {
+            if ($reflection->isEnum()) {
                 $reflection = ReflectionEnum::createFromName($reflection->getName());
             }
         } catch (ReflectionException | IdentifierNotFound) {
@@ -103,9 +106,7 @@ class Convert
 
             // Skip built ins
             if (
-                \PHP_VERSION_ID >= 80100
-                && method_exists($reflection, "isEnum")
-                && $reflection->isEnum()
+                $reflection->isEnum()
                 && \in_array($p_name->getName(), ["name", "value"])
             ) {
                 continue;
@@ -117,15 +118,18 @@ class Convert
             } else {
                 $type = self::typeResolve($type_detail);
             }
+
             $visibility = match (true) {
                 $prop->isPublic() => VisibilityToken::PUBLIC,
                 $prop->isProtected() => VisibilityToken::PROTECTED,
                 $prop->isPrivate() => VisibilityToken::PRIVATE,
             };
+
+            $readonly = $prop->isReadOnly();
             $m = new Member(
                 name: $p_name,
                 type: $type,
-                readonly: false, // TODO: Look up readonly status
+                readonly: $readonly,
                 visibility: $visibility,
             );
             if ($prop->hasDefaultValue()) {
@@ -138,7 +142,7 @@ class Convert
             $members[] = $m;
         }
 
-        if (\PHP_VERSION_ID >= 80100 && $reflection instanceof ReflectionEnum) {
+        if ($reflection instanceof ReflectionEnum) {
             $backing_type = $reflection->isBacked() ? $reflection->getBackingType() : null;
             $cases = $reflection->getCases();
             foreach ($cases as $case) {
@@ -166,15 +170,6 @@ class Convert
 
         $consts = $reflection->getConstants();
         foreach ($consts as $const) {
-            // Handled by getCases()
-            if (
-                \PHP_VERSION_ID >= 80100
-                && method_exists($const, "isEnumCase")
-                && $const->isEnumCase()
-            ) {
-                continue;
-            }
-
             /** @var mixed */
             $value = $const->getValue();
             $m = new Member(
@@ -200,22 +195,18 @@ class Convert
         $type = new self($class_name, $extends, $implements, $members, $attributes);
 
         foreach ($type->attributes as $attr) {
-            if (EnumType::class === $attr->getName()) {
+            if (IsEnum::class === $attr->getName()) {
                 return $type->toEnum();
             }
-            if (InterfaceType::class === $attr->getName()) {
+            if (IsInterface::class === $attr->getName()) {
                 return $type->toInterface();
             }
-            if (ClassType::class === $attr->getName()) {
+            if (IsClass::class === $attr->getName()) {
                 return $type->toClass();
             }
         }
 
-        if (
-            \PHP_VERSION_ID >= 80100
-            && method_exists($reflection, "isEnum")
-            && $reflection->isEnum()
-        ) {
+        if ($reflection->isEnum()) {
             return $type->toEnum();
         }
 
@@ -280,6 +271,34 @@ class Convert
             if (isset($prop->comment)) {
                 $p->addComment($prop->comment);
             }
+        }
+        foreach ($this->attributes as $attr) {
+            if (IsEnum::class === $attr->getName()) {
+                /** @var mixed $value */
+                foreach ($attr->getArguments() as $key => $value) {
+                    if (null === $value) {
+                        continue;
+                    }
+                    if ("ambient" === $key && \is_bool($value)) {
+                        $enum->hasAmbient($value);
+                    }
+                    if ("const" === $key && \is_bool($value)) {
+                        $enum->hasConst($value);
+                    }
+                    if ("export" === $key && \is_bool($value)) {
+                        $enum->hasExport($value);
+                    }
+                    if ("name" === $key && (\is_string($value) || $value instanceof NameToken)) {
+                        $enum->setName($value);
+                    }
+                    if ("comment" === $key && \is_string($value)) {
+                        $enum->setComment($value);
+                    }
+                }
+            }
+            // if (HasExport::class === $attr->getName()) {
+            //     $enum->hasExport();
+            // }
         }
 
         return $enum;
