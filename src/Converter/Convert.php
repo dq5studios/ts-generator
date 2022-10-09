@@ -7,8 +7,11 @@ namespace DQ5Studios\TypeScript\Converter;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Tokens\VisibilityToken;
 use DQ5Studios\TypeScript\Generator\Types\ArrayType;
+use DQ5Studios\TypeScript\Generator\Types\Attributes\IsAmbient;
 use DQ5Studios\TypeScript\Generator\Types\Attributes\IsClass;
+use DQ5Studios\TypeScript\Generator\Types\Attributes\IsConst;
 use DQ5Studios\TypeScript\Generator\Types\Attributes\IsEnum;
+use DQ5Studios\TypeScript\Generator\Types\Attributes\IsExport;
 use DQ5Studios\TypeScript\Generator\Types\Attributes\IsInterface;
 use DQ5Studios\TypeScript\Generator\Types\ClassType;
 use DQ5Studios\TypeScript\Generator\Types\EnumType;
@@ -296,9 +299,15 @@ class Convert
                     }
                 }
             }
-            // if (HasExport::class === $attr->getName()) {
-            //     $enum->hasExport();
-            // }
+            if (IsAmbient::class === $attr->getName()) {
+                $enum->hasAmbient((bool) ($attr->getArguments()[0] ?? $attr->getArguments()["ambient"] ?? true));
+            }
+            if (IsConst::class === $attr->getName()) {
+                $enum->hasConst((bool) ($attr->getArguments()[0] ?? $attr->getArguments()["const"] ?? true));
+            }
+            if (IsExport::class === $attr->getName()) {
+                $enum->hasExport((bool) ($attr->getArguments()[0] ?? $attr->getArguments()["export"] ?? true));
+            }
         }
 
         return $enum;
