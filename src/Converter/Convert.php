@@ -9,10 +9,12 @@ use DQ5Studios\TypeScript\Generator\Tokens\VisibilityToken;
 use DQ5Studios\TypeScript\Generator\Types\ArrayType;
 use DQ5Studios\TypeScript\Generator\Types\Attributes\IsAmbient;
 use DQ5Studios\TypeScript\Generator\Types\Attributes\IsClass;
+use DQ5Studios\TypeScript\Generator\Types\Attributes\IsComment;
 use DQ5Studios\TypeScript\Generator\Types\Attributes\IsConst;
 use DQ5Studios\TypeScript\Generator\Types\Attributes\IsEnum;
 use DQ5Studios\TypeScript\Generator\Types\Attributes\IsExport;
 use DQ5Studios\TypeScript\Generator\Types\Attributes\IsInterface;
+use DQ5Studios\TypeScript\Generator\Types\Attributes\IsName;
 use DQ5Studios\TypeScript\Generator\Types\ClassType;
 use DQ5Studios\TypeScript\Generator\Types\EnumType;
 use DQ5Studios\TypeScript\Generator\Types\InterfaceType;
@@ -277,36 +279,37 @@ class Convert
         }
         foreach ($this->attributes as $attr) {
             if (IsEnum::class === $attr->getName()) {
-                /** @var mixed $value */
-                foreach ($attr->getArguments() as $key => $value) {
-                    if (null === $value) {
-                        continue;
-                    }
-                    if ("ambient" === $key && \is_bool($value)) {
-                        $enum->hasAmbient($value);
-                    }
-                    if ("const" === $key && \is_bool($value)) {
-                        $enum->hasConst($value);
-                    }
-                    if ("export" === $key && \is_bool($value)) {
-                        $enum->hasExport($value);
-                    }
-                    if ("name" === $key && (\is_string($value) || $value instanceof NameToken)) {
-                        $enum->setName($value);
-                    }
-                    if ("comment" === $key && \is_string($value)) {
-                        $enum->setComment($value);
-                    }
+                $attr_def = new IsEnum(...$attr->getArguments());
+                if (isset($attr_def->name)) {
+                    $enum->setName($attr_def->name);
+                }
+                if (isset($attr_def->comment)) {
+                    $enum->setComment($attr_def->comment);
+                }
+                if (isset($attr_def->export)) {
+                    $enum->hasExport($attr_def->export);
+                }
+                if (isset($attr_def->ambient)) {
+                    $enum->hasAmbient($attr_def->ambient);
+                }
+                if (isset($attr_def->const)) {
+                    $enum->hasConst($attr_def->const);
                 }
             }
-            if (IsAmbient::class === $attr->getName()) {
-                $enum->hasAmbient((bool) ($attr->getArguments()[0] ?? $attr->getArguments()["ambient"] ?? true));
+            if (IsName::class === $attr->getName()) {
+                $enum->setName((new IsName(...$attr->getArguments()))->name);
             }
-            if (IsConst::class === $attr->getName()) {
-                $enum->hasConst((bool) ($attr->getArguments()[0] ?? $attr->getArguments()["const"] ?? true));
+            if (IsComment::class === $attr->getName()) {
+                $enum->setComment((new IsComment(...$attr->getArguments()))->comment);
             }
             if (IsExport::class === $attr->getName()) {
-                $enum->hasExport((bool) ($attr->getArguments()[0] ?? $attr->getArguments()["export"] ?? true));
+                $enum->hasExport((new IsExport(...$attr->getArguments()))->export);
+            }
+            if (IsAmbient::class === $attr->getName()) {
+                $enum->hasAmbient((new IsAmbient(...$attr->getArguments()))->ambient);
+            }
+            if (IsConst::class === $attr->getName()) {
+                $enum->hasConst((new IsConst(...$attr->getArguments()))->const);
             }
         }
 
