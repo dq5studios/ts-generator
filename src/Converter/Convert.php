@@ -260,6 +260,40 @@ class Convert
                 $p->hasReadonly($prop->readonly);
             }
         }
+        foreach ($this->attributes as $attr) {
+            if (IsEnum::class === $attr->getName()) {
+                /** @psalm-suppress MixedArgument */
+                $attr_def = new IsEnum(...$attr->getArguments());
+                if (isset($attr_def->name)) {
+                    $interface->setName($attr_def->name);
+                }
+                if (isset($attr_def->comment)) {
+                    $interface->setComment($attr_def->comment);
+                }
+                if (isset($attr_def->export)) {
+                    $interface->hasExport($attr_def->export);
+                }
+                if (isset($attr_def->ambient)) {
+                    $interface->hasAmbient($attr_def->ambient);
+                }
+            }
+            if (IsName::class === $attr->getName()) {
+                /** @psalm-suppress MixedArgument */
+                $interface->setName((new IsName(...$attr->getArguments()))->name);
+            }
+            if (IsComment::class === $attr->getName()) {
+                /** @psalm-suppress MixedArgument */
+                $interface->setComment((new IsComment(...$attr->getArguments()))->comment);
+            }
+            if (IsExport::class === $attr->getName()) {
+                /** @psalm-suppress MixedArgument */
+                $interface->hasExport((new IsExport(...$attr->getArguments()))->export);
+            }
+            if (IsAmbient::class === $attr->getName()) {
+                /** @psalm-suppress MixedArgument */
+                $interface->hasAmbient((new IsAmbient(...$attr->getArguments()))->ambient);
+            }
+        }
 
         return $interface;
     }
@@ -279,6 +313,7 @@ class Convert
         }
         foreach ($this->attributes as $attr) {
             if (IsEnum::class === $attr->getName()) {
+                /** @psalm-suppress MixedArgument */
                 $attr_def = new IsEnum(...$attr->getArguments());
                 if (isset($attr_def->name)) {
                     $enum->setName($attr_def->name);
@@ -297,18 +332,23 @@ class Convert
                 }
             }
             if (IsName::class === $attr->getName()) {
+                /** @psalm-suppress MixedArgument */
                 $enum->setName((new IsName(...$attr->getArguments()))->name);
             }
             if (IsComment::class === $attr->getName()) {
+                /** @psalm-suppress MixedArgument */
                 $enum->setComment((new IsComment(...$attr->getArguments()))->comment);
             }
             if (IsExport::class === $attr->getName()) {
+                /** @psalm-suppress MixedArgument */
                 $enum->hasExport((new IsExport(...$attr->getArguments()))->export);
             }
             if (IsAmbient::class === $attr->getName()) {
+                /** @psalm-suppress MixedArgument */
                 $enum->hasAmbient((new IsAmbient(...$attr->getArguments()))->ambient);
             }
             if (IsConst::class === $attr->getName()) {
+                /** @psalm-suppress MixedArgument */
                 $enum->hasConst((new IsConst(...$attr->getArguments()))->const);
             }
         }
