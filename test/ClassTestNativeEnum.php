@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests;
 
+use DQ5Studios\TypeScript\Generator\Types\Attributes\IsExport;
+
 if (\PHP_VERSION_ID < 80100) {
     return;
 }
@@ -11,6 +13,7 @@ if (\PHP_VERSION_ID < 80100) {
 /**
  * Some cats you may know
  */
+#[IsExport]
 enum ClassTestNativeEnum
 {
     /** @var int skimbleshanks */

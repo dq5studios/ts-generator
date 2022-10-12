@@ -12,13 +12,16 @@ use DQ5Studios\TypeScript\Tests\ClassTestInterface;
 use DQ5Studios\TypeScript\Tests\ClassTestNativeBackedEnum;
 use DQ5Studios\TypeScript\Tests\ClassTestNativeEnum;
 use PHPUnit\Framework\TestCase;
+use Roave\BetterReflection\BetterReflection;
+use Roave\BetterReflection\Reflector\DefaultReflector;
+use Roave\BetterReflection\SourceLocator\Type\StringSourceLocator;
 
 /**
  * @covers \DQ5Studios\TypeScript\Converter\Convert
  */
 class ConverterTest extends TestCase
 {
-    public function testInterfaceConversion(): void
+    public function testInterfaceConversionFromFile(): void
     {
         $expected = <<<HEREDOC
             interface ClassTestInterface {
@@ -39,17 +42,42 @@ class ConverterTest extends TestCase
         $this->assertSame($expected, $output);
     }
 
-    public function testClassConversion(): void
+    public function testInterfaceConversionFromString(): void
     {
         $expected = <<<HEREDOC
-            class ClassTestClass {
-                public key: string = "name";
+            interface ClassTestInterface {
+                key: string;
                 /** All the names */
-                public list: (string | number)[] = ["name", "scram"];
+                list: (string | number)[];
                 /** Special value */
-                protected value: number = 42;
+                value: number;
+                ex: (null | PhpDocExtractor);
+                surprise: { [index: string]: unknown };
+            }
+            HEREDOC;
+
+        $code = file_get_contents(__DIR__ . "/../ClassTestInterface.php");
+        $ast_locator = (new BetterReflection())->astLocator();
+        $reflector = new DefaultReflector(new StringSourceLocator($code, $ast_locator));
+        $reflection_class = $reflector->reflectAllClasses()[0];
+        $interface = Convert::fromPHP($reflection_class);
+
+        $output = Printer::print($interface);
+
+        $this->assertSame($expected, $output);
+    }
+
+    public function testClassConversionFromFile(): void
+    {
+        $expected = <<<HEREDOC
+            export class ClassTestClass {
+                public readonly key: string;
+                /** All the names */
+                public list: (string | number)[];
+                /** Special value */
+                protected value: number;
                 public ex: (null | PhpDocExtractor);
-                private surprise: { [index: string]: unknown } = { "a1": 1, "b2": 2, "c3": 3 };
+                private surprise: { [index: string]: unknown };
             }
             HEREDOC;
 
@@ -60,7 +88,7 @@ class ConverterTest extends TestCase
         $this->assertSame($expected, $output);
     }
 
-    public function testEnumConversion(): void
+    public function testEnumConversionFromFile(): void
     {
         $expected = <<<HEREDOC
             enum ClassTestEnum {
@@ -85,10 +113,10 @@ class ConverterTest extends TestCase
     /**
      * @requires PHP >= 8.1
      */
-    public function testNativeEnumConversion(): void
+    public function testNativeEnumConversionFromFile(): void
     {
         $expected = <<<HEREDOC
-            enum ClassTestNativeEnum {
+            export enum ClassTestNativeEnum {
                 /** @var int skimbleshanks */
                 skimbleshanks,
                 /** @var int mungojerrie */
@@ -110,10 +138,39 @@ class ConverterTest extends TestCase
     /**
      * @requires PHP >= 8.1
      */
-    public function testNativeBackedEnumConversion(): void
+    public function testNativeEnumConversionFromString(): void
     {
         $expected = <<<HEREDOC
-            enum ClassTestNativeBackedEnum {
+            export enum ClassTestNativeEnum {
+                /** @var int skimbleshanks */
+                skimbleshanks,
+                /** @var int mungojerrie */
+                mungojerrie,
+                /** @var int rumpelteazer */
+                rumpelteazer,
+                /** @var int macavity */
+                macavity,
+            }
+            HEREDOC;
+
+        $code = file_get_contents(__DIR__ . "/../ClassTestNativeEnum.php");
+        $ast_locator = (new BetterReflection())->astLocator();
+        $reflector = new DefaultReflector(new StringSourceLocator($code, $ast_locator));
+        $reflection_class = $reflector->reflectAllClasses()[0];
+        $enum = Convert::fromPHP($reflection_class);
+
+        $output = Printer::print($enum);
+
+        $this->assertSame($expected, $output);
+    }
+
+    /**
+     * @requires PHP >= 8.1
+     */
+    public function testNativeBackedEnumConversionFromFile(): void
+    {
+        $expected = <<<HEREDOC
+            export enum ClassTestNativeBackedEnum {
                 /** @var int skimbleshanks */
                 skimbleshanks = 1,
                 /** @var int mungojerrie */
@@ -126,6 +183,35 @@ class ConverterTest extends TestCase
             HEREDOC;
 
         $enum = Convert::fromPHP(ClassTestNativeBackedEnum::class);
+
+        $output = Printer::print($enum);
+
+        $this->assertSame($expected, $output);
+    }
+
+    /**
+     * @requires PHP >= 8.1
+     */
+    public function testNativeBackedEnumConversionFromString(): void
+    {
+        $expected = <<<HEREDOC
+            export enum ClassTestNativeBackedEnum {
+                /** @var int skimbleshanks */
+                skimbleshanks = 1,
+                /** @var int mungojerrie */
+                mungojerrie = 2,
+                /** @var int rumpelteazer */
+                rumpelteazer = 3,
+                /** @var int macavity */
+                macavity = 4,
+            }
+            HEREDOC;
+
+        $code = file_get_contents(__DIR__ . "/../ClassTestNativeBackedEnum.php");
+        $ast_locator = (new BetterReflection())->astLocator();
+        $reflector = new DefaultReflector(new StringSourceLocator($code, $ast_locator));
+        $reflection_class = $reflector->reflectAllClasses()[0];
+        $enum = Convert::fromPHP($reflection_class);
 
         $output = Printer::print($enum);
 
