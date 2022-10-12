@@ -106,6 +106,7 @@ class Printer
         }
         $output .= $this->open_bracket . "\n";
         foreach ($class->getProperties() as $prop) {
+            // TODO: If ambient/export, don't print value
             $output .= preg_replace("/^(.*)$/m", $this->indent . "$1", $this->printMemberToken($prop));
             $output .= $this->member_sep . "\n";
         }
@@ -225,21 +226,21 @@ class Printer
         $output = empty($comment) ? "" : "{$comment}\n";
         $value = $token->getValue();
         $type = $token->getType();
-        if ($token instanceof CanReadonly && $token->isReadonly()) {
-            // TODO: Check type is not fn
-            // TODO: Confirm class/interface
-            $output .= "readonly ";
-        }
-        if ($token instanceof CanStatic && $token->isStatic()) {
-            // TODO: Confirm class/interface
-            $output .= "static ";
-        }
         if ($token instanceof CanVisibility && ($visibility = $token->getVisibility())) {
             $output .= match ($visibility->get()) {
                 VisibilityToken::PUBLIC => "public ",
                 VisibilityToken::PROTECTED => "protected ",
                 VisibilityToken::PRIVATE => "private ",
             };
+        }
+        if ($token instanceof CanStatic && $token->isStatic()) {
+            // TODO: Confirm class/interface
+            $output .= "static ";
+        }
+        if ($token instanceof CanReadonly && $token->isReadonly()) {
+            // TODO: Check type is not fn
+            // TODO: Confirm class/interface
+            $output .= "readonly ";
         }
         if ($value instanceof NoneValue && ($token instanceof CanSpread && $token->isSpread())) {
             $output .= "...";

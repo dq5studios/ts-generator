@@ -232,20 +232,15 @@ class Convert
         // if (!empty($this->implements)) {
         //     $class->addImplement(new ClassType($this->implements));
         // }
-        foreach ($this->members as $prop) {
-            if (!isset($prop->value)) {
-                $prop->value = new NoneValue();
-            }
-            $p = $class->addProperty($prop->name, $prop->type, $prop->value);
-            if (isset($prop->comment)) {
-                $p->addComment($prop->comment);
-            }
-            if (isset($prop->readonly)) {
-                $p->hasReadonly($prop->readonly);
-            }
-            $p->setVisibility($prop->visibility);
-        }
         foreach ($this->attributes as $attr) {
+            /** @psalm-suppress MixedArgument */
+            match ($attr->getName()) {
+                IsName::class => $class->setName((new IsName(...$attr->getArguments()))->name),
+                IsComment::class => $class->setComment((new IsComment(...$attr->getArguments()))->comment),
+                IsExport::class => $class->hasExport((new IsExport(...$attr->getArguments()))->export),
+                IsAmbient::class => $class->hasAmbient((new IsAmbient(...$attr->getArguments()))->ambient),
+                default => null,
+            };
             if (IsClass::class === $attr->getName()) {
                 /** @psalm-suppress MixedArgument */
                 $attr_def = new IsClass(...$attr->getArguments());
@@ -262,22 +257,20 @@ class Convert
                     $class->hasAmbient($attr_def->ambient);
                 }
             }
-            if (IsName::class === $attr->getName()) {
-                /** @psalm-suppress MixedArgument */
-                $class->setName((new IsName(...$attr->getArguments()))->name);
+        }
+
+        foreach ($this->members as $prop) {
+            if (!isset($prop->value) || $class->isExport() || $class->isAmbient()) {
+                $prop->value = new NoneValue();
             }
-            if (IsComment::class === $attr->getName()) {
-                /** @psalm-suppress MixedArgument */
-                $class->setComment((new IsComment(...$attr->getArguments()))->comment);
+            $p = $class->addProperty($prop->name, $prop->type, $prop->value);
+            if (isset($prop->comment)) {
+                $p->addComment($prop->comment);
             }
-            if (IsExport::class === $attr->getName()) {
-                /** @psalm-suppress MixedArgument */
-                $class->hasExport((new IsExport(...$attr->getArguments()))->export);
+            if (isset($prop->readonly)) {
+                $p->hasReadonly($prop->readonly);
             }
-            if (IsAmbient::class === $attr->getName()) {
-                /** @psalm-suppress MixedArgument */
-                $class->hasAmbient((new IsAmbient(...$attr->getArguments()))->ambient);
-            }
+            $p->setVisibility($prop->visibility);
         }
 
         return $class;
@@ -299,6 +292,14 @@ class Convert
             }
         }
         foreach ($this->attributes as $attr) {
+            /** @psalm-suppress MixedArgument */
+            match ($attr->getName()) {
+                IsName::class => $interface->setName((new IsName(...$attr->getArguments()))->name),
+                IsComment::class => $interface->setComment((new IsComment(...$attr->getArguments()))->comment),
+                IsExport::class => $interface->hasExport((new IsExport(...$attr->getArguments()))->export),
+                IsAmbient::class => $interface->hasAmbient((new IsAmbient(...$attr->getArguments()))->ambient),
+                default => null,
+            };
             if (IsInterface::class === $attr->getName()) {
                 /** @psalm-suppress MixedArgument */
                 $attr_def = new IsInterface(...$attr->getArguments());
@@ -314,22 +315,6 @@ class Convert
                 if (isset($attr_def->ambient)) {
                     $interface->hasAmbient($attr_def->ambient);
                 }
-            }
-            if (IsName::class === $attr->getName()) {
-                /** @psalm-suppress MixedArgument */
-                $interface->setName((new IsName(...$attr->getArguments()))->name);
-            }
-            if (IsComment::class === $attr->getName()) {
-                /** @psalm-suppress MixedArgument */
-                $interface->setComment((new IsComment(...$attr->getArguments()))->comment);
-            }
-            if (IsExport::class === $attr->getName()) {
-                /** @psalm-suppress MixedArgument */
-                $interface->hasExport((new IsExport(...$attr->getArguments()))->export);
-            }
-            if (IsAmbient::class === $attr->getName()) {
-                /** @psalm-suppress MixedArgument */
-                $interface->hasAmbient((new IsAmbient(...$attr->getArguments()))->ambient);
             }
         }
 
@@ -350,6 +335,15 @@ class Convert
             }
         }
         foreach ($this->attributes as $attr) {
+            /** @psalm-suppress MixedArgument */
+            match ($attr->getName()) {
+                IsName::class => $enum->setName((new IsName(...$attr->getArguments()))->name),
+                IsComment::class => $enum->setComment((new IsComment(...$attr->getArguments()))->comment),
+                IsExport::class => $enum->hasExport((new IsExport(...$attr->getArguments()))->export),
+                IsAmbient::class => $enum->hasAmbient((new IsAmbient(...$attr->getArguments()))->ambient),
+                IsConst::class => $enum->hasConst((new IsConst(...$attr->getArguments()))->const),
+                default => null,
+            };
             if (IsEnum::class === $attr->getName()) {
                 /** @psalm-suppress MixedArgument */
                 $attr_def = new IsEnum(...$attr->getArguments());
@@ -368,26 +362,6 @@ class Convert
                 if (isset($attr_def->const)) {
                     $enum->hasConst($attr_def->const);
                 }
-            }
-            if (IsName::class === $attr->getName()) {
-                /** @psalm-suppress MixedArgument */
-                $enum->setName((new IsName(...$attr->getArguments()))->name);
-            }
-            if (IsComment::class === $attr->getName()) {
-                /** @psalm-suppress MixedArgument */
-                $enum->setComment((new IsComment(...$attr->getArguments()))->comment);
-            }
-            if (IsExport::class === $attr->getName()) {
-                /** @psalm-suppress MixedArgument */
-                $enum->hasExport((new IsExport(...$attr->getArguments()))->export);
-            }
-            if (IsAmbient::class === $attr->getName()) {
-                /** @psalm-suppress MixedArgument */
-                $enum->hasAmbient((new IsAmbient(...$attr->getArguments()))->ambient);
-            }
-            if (IsConst::class === $attr->getName()) {
-                /** @psalm-suppress MixedArgument */
-                $enum->hasConst((new IsConst(...$attr->getArguments()))->const);
             }
         }
 

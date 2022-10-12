@@ -7,7 +7,10 @@ $finder = PhpCsFixer\Finder::create()
 
 $config = new PhpCsFixer\Config();
 return $config->setRules([
+        "@PHP80Migration" => true,
+        "@PHP80Migration:risky" => true,
         "@Symfony" => true,
+        "@Symfony:risky" => true,
         "class_definition" => ["space_before_parenthesis" => true],
         "concat_space" => ["spacing" => "one"],
         "phpdoc_summary" => false,

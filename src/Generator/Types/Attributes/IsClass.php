@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace DQ5Studios\TypeScript\Generator\Types\Attributes;
 
 use Attribute;
-use DQ5Studios\TypeScript\Generator\Tokens\CommentToken;
-use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 
 /**
  * The class type, equivalent to PHP class

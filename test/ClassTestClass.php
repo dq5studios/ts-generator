@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests;
 
-use DQ5Studios\TypeScript\Generator\Types\ClassType;
+use DQ5Studios\TypeScript\Generator\Types\Attributes\IsClass;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 
 /**
@@ -12,10 +12,10 @@ use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
  *
  * @property float $doc_only
  */
-#[ClassType]
+#[IsClass(export: true)]
 class ClassTestClass
 {
-    public string $key = "name";
+    public readonly string $key;
     /** @var (string|int)[] All the names */
     public string|array $list = ["name", "scram"];
     /** @var int Special value */
