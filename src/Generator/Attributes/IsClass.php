@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace DQ5Studios\TypeScript\Generator\Types\Attributes;
+namespace DQ5Studios\TypeScript\Generator\Attributes;
 
 use Attribute;
 
 /**
- * The interface type, similar to PHP interface
+ * The class type, equivalent to PHP class
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class IsInterface
+class IsClass
 {
     public function __construct(
         public string|null $name = null,

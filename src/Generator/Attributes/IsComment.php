@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace DQ5Studios\TypeScript\Generator\Types\Attributes;
+namespace DQ5Studios\TypeScript\Generator\Attributes;
 
 use Attribute;
 
 /**
- * Is this type const
+ * Comment for type
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class IsConst
+class IsComment
 {
     public function __construct(
-        public bool $const = true,
+        public string $comment,
     ) {
     }
 }

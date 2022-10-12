@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests;
 
-use DQ5Studios\TypeScript\Generator\Types\Attributes\IsEnum;
+use DQ5Studios\TypeScript\Generator\Attributes\IsEnum;
 
 /**
  * Some cats you may know

@@ -2,22 +2,21 @@
 
 declare(strict_types=1);
 
-namespace DQ5Studios\TypeScript\Generator\Types\Attributes;
+namespace DQ5Studios\TypeScript\Generator\Attributes;
 
 use Attribute;
 
 /**
- * The enum type, equivalent to PHP enum
+ * The interface type, similar to PHP interface
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class IsEnum
+class IsInterface
 {
     public function __construct(
         public string|null $name = null,
         public string|null $comment = null,
         public bool|null $export = null,
         public bool|null $ambient = null,
-        public bool|null $const = null,
     ) {
     }
 }

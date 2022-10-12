@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Converter;
 
+use DQ5Studios\TypeScript\Generator\Attributes\IsAmbient;
+use DQ5Studios\TypeScript\Generator\Attributes\IsClass;
+use DQ5Studios\TypeScript\Generator\Attributes\IsComment;
+use DQ5Studios\TypeScript\Generator\Attributes\IsConst;
+use DQ5Studios\TypeScript\Generator\Attributes\IsEnum;
+use DQ5Studios\TypeScript\Generator\Attributes\IsExport;
+use DQ5Studios\TypeScript\Generator\Attributes\IsInterface;
+use DQ5Studios\TypeScript\Generator\Attributes\IsName;
+use DQ5Studios\TypeScript\Generator\Attributes\IsReadonly;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Tokens\VisibilityToken;
 use DQ5Studios\TypeScript\Generator\Types\ArrayType;
-use DQ5Studios\TypeScript\Generator\Types\Attributes\IsAmbient;
-use DQ5Studios\TypeScript\Generator\Types\Attributes\IsClass;
-use DQ5Studios\TypeScript\Generator\Types\Attributes\IsComment;
-use DQ5Studios\TypeScript\Generator\Types\Attributes\IsConst;
-use DQ5Studios\TypeScript\Generator\Types\Attributes\IsEnum;
-use DQ5Studios\TypeScript\Generator\Types\Attributes\IsExport;
-use DQ5Studios\TypeScript\Generator\Types\Attributes\IsInterface;
-use DQ5Studios\TypeScript\Generator\Types\Attributes\IsName;
 use DQ5Studios\TypeScript\Generator\Types\ClassType;
 use DQ5Studios\TypeScript\Generator\Types\EnumType;
 use DQ5Studios\TypeScript\Generator\Types\InterfaceType;
@@ -137,6 +138,14 @@ class Convert
                 readonly: $readonly,
                 visibility: $visibility,
             );
+
+            // Check for IsReadonly attribute
+            $attr_readonly = $prop->getAttributesByName(IsReadonly::class);
+            if (!empty($attr_readonly)) {
+                /** @psalm-suppress MixedArgument */
+                $m->readonly = (new IsReadonly(...$attr_readonly[0]->getArguments()))->readonly;
+            }
+
             if ($prop->hasDefaultValue()) {
                 $m->value = $prop->getDefaultValue();
             }

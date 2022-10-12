@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace DQ5Studios\TypeScript\Generator\Types\Attributes;
+namespace DQ5Studios\TypeScript\Generator\Attributes;
 
 use Attribute;
 
 /**
- * Comment for type
+ * Is this type ambient
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class IsComment
+class IsAmbient
 {
     public function __construct(
-        public string $comment,
+        public bool $ambient = true,
     ) {
     }
 }

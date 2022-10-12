@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DQ5Studios\TypeScript\Tests;
 
-use DQ5Studios\TypeScript\Generator\Types\Attributes\IsExport;
+use DQ5Studios\TypeScript\Generator\Attributes\IsExport;
 
 if (\PHP_VERSION_ID < 80100) {
     return;

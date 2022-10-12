@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DQ5Studios\TypeScript\Generator\Types\Attributes;
+namespace DQ5Studios\TypeScript\Generator\Attributes;
 
 use Attribute;
 

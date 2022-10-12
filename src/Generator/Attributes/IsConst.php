@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace DQ5Studios\TypeScript\Generator\Types\Attributes;
+namespace DQ5Studios\TypeScript\Generator\Attributes;
 
 use Attribute;
 
 /**
- * Is this type ambient
+ * Is this type const
  */
 #[Attribute(Attribute::TARGET_CLASS)]
-class IsAmbient
+class IsConst
 {
     public function __construct(
-        public bool $ambient = true,
+        public bool $const = true,
     ) {
     }
 }
