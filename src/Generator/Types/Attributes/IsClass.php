@@ -15,8 +15,8 @@ use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 class IsClass
 {
     public function __construct(
-        public string|NameToken|null $name = null,
-        public string|CommentToken|null $comment = null,
+        public string|null $name = null,
+        public string|null $comment = null,
         public bool|null $export = null,
         public bool|null $ambient = null,
     ) {

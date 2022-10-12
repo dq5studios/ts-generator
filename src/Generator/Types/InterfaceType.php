@@ -19,7 +19,7 @@ use DQ5Studios\TypeScript\Generator\Types\Traits\HasIndexSignature;
 use InvalidArgumentException;
 
 /**
- * The interface type, no PHP equivalent
+ * The interface type, similar to PHP interface
  */
 class InterfaceType extends ContainerType implements CanExtend, CanExport, CanAmbient, CanIndexSignature, CanFunctionSignature
 {

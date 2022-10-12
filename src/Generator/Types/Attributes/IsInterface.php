@@ -7,7 +7,7 @@ namespace DQ5Studios\TypeScript\Generator\Types\Attributes;
 use Attribute;
 
 /**
- * The interface type, no PHP equivalent
+ * The interface type, similar to PHP interface
  */
 #[Attribute(Attribute::TARGET_CLASS)]
 class IsInterface

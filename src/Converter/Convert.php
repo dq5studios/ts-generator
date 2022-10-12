@@ -215,6 +215,10 @@ class Convert
             return $type->toEnum();
         }
 
+        if ($reflection->isInterface()) {
+            return $type->toInterface();
+        }
+
         return $type->toClass();
     }
 
@@ -241,6 +245,40 @@ class Convert
             }
             $p->setVisibility($prop->visibility);
         }
+        foreach ($this->attributes as $attr) {
+            if (IsClass::class === $attr->getName()) {
+                /** @psalm-suppress MixedArgument */
+                $attr_def = new IsClass(...$attr->getArguments());
+                if (isset($attr_def->name)) {
+                    $class->setName($attr_def->name);
+                }
+                if (isset($attr_def->comment)) {
+                    $class->setComment($attr_def->comment);
+                }
+                if (isset($attr_def->export)) {
+                    $class->hasExport($attr_def->export);
+                }
+                if (isset($attr_def->ambient)) {
+                    $class->hasAmbient($attr_def->ambient);
+                }
+            }
+            if (IsName::class === $attr->getName()) {
+                /** @psalm-suppress MixedArgument */
+                $class->setName((new IsName(...$attr->getArguments()))->name);
+            }
+            if (IsComment::class === $attr->getName()) {
+                /** @psalm-suppress MixedArgument */
+                $class->setComment((new IsComment(...$attr->getArguments()))->comment);
+            }
+            if (IsExport::class === $attr->getName()) {
+                /** @psalm-suppress MixedArgument */
+                $class->hasExport((new IsExport(...$attr->getArguments()))->export);
+            }
+            if (IsAmbient::class === $attr->getName()) {
+                /** @psalm-suppress MixedArgument */
+                $class->hasAmbient((new IsAmbient(...$attr->getArguments()))->ambient);
+            }
+        }
 
         return $class;
     }
@@ -261,9 +299,9 @@ class Convert
             }
         }
         foreach ($this->attributes as $attr) {
-            if (IsEnum::class === $attr->getName()) {
+            if (IsInterface::class === $attr->getName()) {
                 /** @psalm-suppress MixedArgument */
-                $attr_def = new IsEnum(...$attr->getArguments());
+                $attr_def = new IsInterface(...$attr->getArguments());
                 if (isset($attr_def->name)) {
                     $interface->setName($attr_def->name);
                 }
