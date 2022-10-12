@@ -15,7 +15,7 @@ use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 #[IsClass(export: true)]
 class ClassTestClass
 {
-    public readonly string $key;
+    public string $key;
     /** @var (string|int)[] All the names */
     public string|array $list = ["name", "scram"];
     /** @var int Special value */

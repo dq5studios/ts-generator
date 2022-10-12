@@ -71,7 +71,7 @@ class ConverterTest extends TestCase
     {
         $expected = <<<HEREDOC
             export class ClassTestClass {
-                public readonly key: string;
+                public key: string;
                 /** All the names */
                 public list: (string | number)[];
                 /** Special value */
