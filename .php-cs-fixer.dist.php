@@ -16,7 +16,6 @@ return $config->setRules([
         "phpdoc_summary" => false,
         "phpdoc_to_comment" => ["ignored_tags" => ["var", "psalm-suppress"]],
         "single_quote" => false,
-        "types_spaces" => ["space_multiple_catch" => "single"],
     ])
     ->setFinder($finder)
 ;

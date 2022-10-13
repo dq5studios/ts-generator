@@ -8,19 +8,32 @@ use DQ5Studios\TypeScript\Converter\Convert;
 use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Tests\ClassTestClass;
 use DQ5Studios\TypeScript\Tests\ClassTestEnum;
+use DQ5Studios\TypeScript\Tests\ClassTestExtends;
 use DQ5Studios\TypeScript\Tests\ClassTestInterface;
 use DQ5Studios\TypeScript\Tests\ClassTestNativeBackedEnum;
 use DQ5Studios\TypeScript\Tests\ClassTestNativeEnum;
+use DQ5Studios\TypeScript\Tests\InterfaceTestInterface;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Roave\BetterReflection\BetterReflection;
 use Roave\BetterReflection\Reflector\DefaultReflector;
 use Roave\BetterReflection\SourceLocator\Type\StringSourceLocator;
+use Throwable;
 
 /**
  * @covers \DQ5Studios\TypeScript\Converter\Convert
  */
 class ConverterTest extends TestCase
 {
+    public function testFailure(): void
+    {
+        try {
+            Convert::fromPHP("invalid");
+        } catch (Throwable $th) {
+            $this->assertInstanceOf(InvalidArgumentException::class, $th);
+        }
+    }
+
     public function testInterfaceConversionFromFile(): void
     {
         $expected = <<<HEREDOC
@@ -36,6 +49,27 @@ class ConverterTest extends TestCase
             HEREDOC;
 
         $interface = Convert::fromPHP(ClassTestInterface::class);
+
+        $output = Printer::print($interface);
+
+        $this->assertSame($expected, $output);
+    }
+
+    public function testInterfaceConversionFromObject(): void
+    {
+        $expected = <<<HEREDOC
+            interface ClassTestInterface {
+                key: string;
+                /** All the names */
+                list: (string | number)[];
+                /** Special value */
+                value: number;
+                ex: (null | PhpDocExtractor);
+                surprise: { [index: string]: unknown };
+            }
+            HEREDOC;
+
+        $interface = Convert::fromPHP(new ClassTestInterface());
 
         $output = Printer::print($interface);
 
@@ -63,6 +97,41 @@ class ConverterTest extends TestCase
         $interface = Convert::fromPHP($reflection_class);
 
         $output = Printer::print($interface);
+
+        $this->assertSame($expected, $output);
+    }
+
+    public function testInterfaceConversionFromInterface(): void
+    {
+        $expected = <<<HEREDOC
+            interface InterfaceTestInterface {
+            }
+            HEREDOC;
+
+        $class = Convert::fromPHP(InterfaceTestInterface::class);
+
+        $output = Printer::print($class);
+
+        $this->assertSame($expected, $output);
+    }
+
+    public function testClassExtends(): void
+    {
+        $expected = <<<HEREDOC
+            class ClassTestExtends extends ClassTestClass {
+                public key: string;
+                /** All the names */
+                public list: (string | number)[] = ["name", "scram"];
+                /** Special value */
+                protected value: number = 42;
+                public ex: (null | PhpDocExtractor);
+                public readonly readonly_prop: string;
+            }
+            HEREDOC;
+
+        $class = Convert::fromPHP(ClassTestExtends::class);
+
+        $output = Printer::print($class);
 
         $this->assertSame($expected, $output);
     }

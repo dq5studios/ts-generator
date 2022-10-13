@@ -74,7 +74,7 @@ class Convert
             if ($reflection->isEnum()) {
                 $reflection = ReflectionEnum::createFromName($reflection->getName());
             }
-        } catch (ReflectionException | IdentifierNotFound) {
+        } catch (ReflectionException|IdentifierNotFound) {
             throw new InvalidArgumentException("Class does not exist");
         }
         $class = $reflection->getName();
