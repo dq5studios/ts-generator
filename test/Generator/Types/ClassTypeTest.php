@@ -20,6 +20,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \DQ5Studios\TypeScript\Generator\Types\ClassType
+ * @covers \DQ5Studios\TypeScript\Generator\Printer
  */
 class ClassTypeTest extends TestCase
 {

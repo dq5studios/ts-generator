@@ -45,6 +45,7 @@ class ValueTest extends TestCase
      * @covers \DQ5Studios\TypeScript\Generator\Values\NumberValue
      * @covers \DQ5Studios\TypeScript\Generator\Values\StringValue
      * @covers \DQ5Studios\TypeScript\Generator\Values\UndefinedValue
+     * @covers \DQ5Studios\TypeScript\Generator\Printer
      *
      * @dataProvider literalList
      *

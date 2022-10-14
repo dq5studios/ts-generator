@@ -18,6 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \DQ5Studios\TypeScript\Generator\Types\ObjectType
+ * @covers \DQ5Studios\TypeScript\Generator\Printer
  */
 class ObjectTypeTest extends TestCase
 {

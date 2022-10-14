@@ -9,4 +9,5 @@ namespace DQ5Studios\TypeScript\Tests;
  */
 interface InterfaceTestInterface
 {
+    public function Mungojerrie(): void;
 }

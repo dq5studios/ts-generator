@@ -19,6 +19,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \DQ5Studios\TypeScript\Generator\Types\InterfaceType
+ * @covers \DQ5Studios\TypeScript\Generator\Printer
  */
 class InterfaceTypeTest extends TestCase
 {

@@ -17,6 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \DQ5Studios\TypeScript\Generator\Types\FunctionType
+ * @covers \DQ5Studios\TypeScript\Generator\Printer
  */
 class FunctionTypeTest extends TestCase
 {

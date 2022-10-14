@@ -16,6 +16,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \DQ5Studios\TypeScript\Generator\Types\Type
+ * @covers \DQ5Studios\TypeScript\Generator\Printer
  */
 class TypeTest extends TestCase
 {

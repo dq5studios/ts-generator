@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DQ5Studios\TypeScript\Tests\Generator\Attributes;
+namespace DQ5Studios\TypeScript\Tests\Generator;
 
 use DQ5Studios\TypeScript\Generator\File;
 use DQ5Studios\TypeScript\Generator\Types\ClassType;

@@ -14,6 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \DQ5Studios\TypeScript\Generator\Types\EnumType
+ * @covers \DQ5Studios\TypeScript\Generator\Printer
  */
 class EnumTypeTest extends TestCase
 {
