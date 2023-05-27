@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class ComplexTypeTest extends TestCase
 {
-    public function typeList(): Generator
+    public static function typeList(): Generator
     {
         yield "Function" => [FunctionType::class, "Function"];
         yield "Object" => [ObjectType::class, "object"];

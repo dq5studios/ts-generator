@@ -23,7 +23,7 @@ use PHPUnit\Framework\TestCase;
 
 class PrimitiveTypeTest extends TestCase
 {
-    public function typeList(): Generator
+    public static function typeList(): Generator
     {
         yield "Any" => [AnyType::class, Type::ANY, "any"];
         yield "BitInt" => [BigIntType::class, Type::BIGINT, "bigint"];
