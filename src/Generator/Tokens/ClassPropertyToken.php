@@ -20,6 +20,8 @@ use DQ5Studios\TypeScript\Generator\Types\Type;
 use DQ5Studios\TypeScript\Generator\Values\NoneValue;
 use DQ5Studios\TypeScript\Generator\Values\Value;
 
+use function is_string;
+
 /**
  * A class property
  */
@@ -46,7 +48,7 @@ class ClassPropertyToken extends MemberToken implements CanOptional, CanReadonly
         if (null === $value) {
             $value = new NoneValue();
         }
-        if (\is_string($name) && str_ends_with($name, "?")) {
+        if (is_string($name) && str_ends_with($name, "?")) {
             $optional = true;
             $name = rtrim($name, "?");
         }
@@ -61,10 +63,10 @@ class ClassPropertyToken extends MemberToken implements CanOptional, CanReadonly
             $class->setVisibility($visibility);
         }
         if (
-            $type instanceof ArrayType ||
-            $type instanceof ObjectType ||
-            $type instanceof PrimitiveType ||
-            $type instanceof TupleType
+            $type instanceof ArrayType
+            || $type instanceof ObjectType
+            || $type instanceof PrimitiveType
+            || $type instanceof TupleType
         ) {
             // TODO: check if static, name isn't name, length, call
             $class->hasReadonly($readonly);

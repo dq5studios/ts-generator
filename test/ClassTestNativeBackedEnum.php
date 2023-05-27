@@ -6,7 +6,9 @@ namespace DQ5Studios\TypeScript\Tests;
 
 use DQ5Studios\TypeScript\Generator\Attributes\IsExport;
 
-if (\PHP_VERSION_ID < 80100) {
+use const PHP_VERSION_ID;
+
+if (PHP_VERSION_ID < 80100) {
     return;
 }
 

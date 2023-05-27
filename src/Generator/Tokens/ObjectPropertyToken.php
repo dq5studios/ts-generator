@@ -8,6 +8,8 @@ use DQ5Studios\TypeScript\Generator\Types\Interfaces\CanOptional;
 use DQ5Studios\TypeScript\Generator\Types\Traits\HasOptional;
 use DQ5Studios\TypeScript\Generator\Types\Type;
 
+use function is_string;
+
 /**
  * A member for an Enum
  */
@@ -21,7 +23,7 @@ class ObjectPropertyToken extends MemberToken implements CanOptional
     public static function from(string|NameToken $name, string|Type $type): self
     {
         $optional = false;
-        if (\is_string($name) && str_ends_with($name, "?")) {
+        if (is_string($name) && str_ends_with($name, "?")) {
             $optional = true;
             $name = rtrim($name, "?");
         }

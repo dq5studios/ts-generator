@@ -19,6 +19,8 @@ use DQ5Studios\TypeScript\Generator\Types\Traits\HasIndexSignature;
 use DQ5Studios\TypeScript\Generator\Values\NoneValue;
 use InvalidArgumentException;
 
+use function count;
+
 /**
  * The class type, equivalent to PHP class
  */
@@ -44,7 +46,7 @@ class ClassType extends ContainerType implements CanExtend, CanImplement, CanExp
         }
         $member = ClassPropertyToken::from($name, $type, $value);
 
-        return $this->properties[$member->getName()->getName() . "_" . \count($this->properties)] = $member;
+        return $this->properties[$member->getName()->getName() . "_" . count($this->properties)] = $member;
     }
 
     /**

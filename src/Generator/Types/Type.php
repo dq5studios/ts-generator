@@ -6,6 +6,8 @@ namespace DQ5Studios\TypeScript\Generator\Types;
 
 use InvalidArgumentException;
 
+use function array_key_exists;
+
 /**
  * This is a type
  *
@@ -109,10 +111,10 @@ abstract class Type
             return IntersectionType::of(...$parts);
         }
         // Check if they passed in a PHP type by mistake
-        if (\array_key_exists($type, self::$php_type_map)) {
+        if (array_key_exists($type, self::$php_type_map)) {
             $type = self::$php_type_map[$type];
         }
-        if (\array_key_exists($type, self::$type_map)) {
+        if (array_key_exists($type, self::$type_map)) {
             $type = self::$type_map[$type];
         }
         if (!is_subclass_of($type, self::class)) {

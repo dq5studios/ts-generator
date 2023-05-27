@@ -18,6 +18,8 @@ use DQ5Studios\TypeScript\Generator\Types\Traits\HasFunctionSignature;
 use DQ5Studios\TypeScript\Generator\Types\Traits\HasIndexSignature;
 use InvalidArgumentException;
 
+use function count;
+
 /**
  * The interface type, similar to PHP interface
  */
@@ -40,7 +42,7 @@ class InterfaceType extends ContainerType implements CanExtend, CanExport, CanAm
     {
         $member = InterfacePropertyToken::from($name, $type);
 
-        return $this->properties[$member->getName()->getName() . "_" . \count($this->properties)] = $member;
+        return $this->properties[$member->getName()->getName() . "_" . count($this->properties)] = $member;
     }
 
     /**

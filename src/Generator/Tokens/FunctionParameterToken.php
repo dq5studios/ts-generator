@@ -12,6 +12,8 @@ use DQ5Studios\TypeScript\Generator\Types\Traits\HasSpread;
 use DQ5Studios\TypeScript\Generator\Types\TupleType;
 use DQ5Studios\TypeScript\Generator\Types\Type;
 
+use function is_string;
+
 /**
  * A function signature
  */
@@ -28,7 +30,7 @@ class FunctionParameterToken extends MemberToken implements CanOptional, CanSpre
         $type = Type::from($type);
         $spread = false;
         $optional = false;
-        if (\is_string($name)) {
+        if (is_string($name)) {
             if (($type instanceof ArrayType || $type instanceof TupleType) && str_starts_with($name, "...")) {
                 $spread = true;
                 $name = ltrim($name, ".");

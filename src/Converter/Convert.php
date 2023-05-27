@@ -40,6 +40,12 @@ use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\PropertyInfo\Type as SymfonyType;
 
+use function array_key_exists;
+use function count;
+use function gettype;
+use function in_array;
+use function is_string;
+
 class Convert
 {
     private function __construct(
@@ -62,7 +68,7 @@ class Convert
     public static function fromPHP(string|object $class): Type
     {
         try {
-            if (\is_string($class)) {
+            if (is_string($class)) {
                 $reflection = ReflectionClass::createFromName($class);
             } elseif (!($class instanceof ReflectionClass)) {
                 $reflection = ReflectionClass::createFromInstance($class);
@@ -74,7 +80,7 @@ class Convert
             if ($reflection->isEnum()) {
                 $reflection = ReflectionEnum::createFromName($reflection->getName());
             }
-        } catch (ReflectionException|IdentifierNotFound) {
+        } catch (ReflectionException | IdentifierNotFound) {
             throw new InvalidArgumentException("Class does not exist");
         }
         $class = $reflection->getName();
@@ -113,7 +119,7 @@ class Convert
             // Skip built ins
             if (
                 $reflection->isEnum()
-                && \in_array($p_name->getName(), ["name", "value"])
+                && in_array($p_name->getName(), ["name", "value"])
             ) {
                 continue;
             }
@@ -188,7 +194,7 @@ class Convert
             $value = $const->getValue();
             $m = new Member(
                 name: new NameToken(self::nameSafe($const->getName())),
-                type: Type::from(Type::$php_type_map[\gettype($value)]),
+                type: Type::from(Type::$php_type_map[gettype($value)]),
                 value: $value,
                 readonly: true,
                 visibility: VisibilityToken::PUBLIC, // TODO: Look up visibility
@@ -334,7 +340,7 @@ class Convert
     {
         $enum = new EnumType($this->name);
         foreach ($this->members as $prop) {
-            if (isset($prop->value) && (is_numeric($prop->value) || \is_string($prop->value))) {
+            if (isset($prop->value) && (is_numeric($prop->value) || is_string($prop->value))) {
                 $p = $enum->addMember($prop->name, $prop->value);
             } else {
                 $p = $enum->addMember($prop->name);
@@ -409,7 +415,7 @@ class Convert
                 $type_list[] = new NullType();
             }
             $basic = $type->getBuiltinType();
-            if (!$type->isCollection() && "object" !== $basic && \array_key_exists($basic, Type::$php_type_map)) {
+            if (!$type->isCollection() && "object" !== $basic && array_key_exists($basic, Type::$php_type_map)) {
                 $type_list[] = Type::from(Type::$php_type_map[$basic]);
                 continue;
             }
@@ -454,7 +460,7 @@ class Convert
             $type_list[] = new UnknownType();
         }
         if (!empty($type_list)) {
-            if (1 === \count($type_list)) {
+            if (1 === count($type_list)) {
                 return $type_list[0];
             }
 

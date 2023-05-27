@@ -10,6 +10,8 @@ use DQ5Studios\TypeScript\Generator\Types\Traits\HasOptional;
 use DQ5Studios\TypeScript\Generator\Types\Traits\HasReadonly;
 use DQ5Studios\TypeScript\Generator\Types\Type;
 
+use function is_string;
+
 /**
  * A member for an Enum
  */
@@ -24,7 +26,7 @@ class InterfacePropertyToken extends MemberToken implements CanOptional, CanRead
     public static function from(string|NameToken $name, string|Type $type): self
     {
         $optional = false;
-        if (\is_string($name) && str_ends_with($name, "?")) {
+        if (is_string($name) && str_ends_with($name, "?")) {
             $optional = true;
             $name = rtrim($name, "?");
         }

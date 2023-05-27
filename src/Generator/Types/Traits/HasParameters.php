@@ -8,6 +8,8 @@ use DQ5Studios\TypeScript\Generator\Tokens\FunctionParameterToken;
 use DQ5Studios\TypeScript\Generator\Tokens\NameToken;
 use DQ5Studios\TypeScript\Generator\Types\Type;
 
+use function count;
+
 /**
  * Indicated thing is optional
  */
@@ -25,7 +27,7 @@ trait HasParameters
             $this->parameters = [];
         }
         if (empty($name)) {
-            $name = "arg_" . \count($this->parameters);
+            $name = "arg_" . count($this->parameters);
         }
         $member = FunctionParameterToken::from($name, $type);
 

@@ -15,6 +15,8 @@ use DQ5Studios\TypeScript\Generator\Values\NumberValue;
 use DQ5Studios\TypeScript\Generator\Values\Value;
 use InvalidArgumentException;
 
+use function count;
+
 /**
  * The enum type, equivalent to PHP enum
  */
@@ -35,7 +37,7 @@ class EnumType extends ContainerType implements CanExport, CanAmbient
      */
     public function addMember(string|NameToken $name, int|float|string|Value ...$value): EnumMemberToken
     {
-        if (\count($value) > 1) {
+        if (count($value) > 1) {
             throw new InvalidArgumentException("No more that one value can be assigned at a time");
         }
         if (empty($value) && !$this->can_auto) {
