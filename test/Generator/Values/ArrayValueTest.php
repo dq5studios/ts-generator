@@ -7,11 +7,11 @@ namespace DQ5Studios\TypeScript\Tests\Generator\Values;
 use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Types\ArrayType;
 use DQ5Studios\TypeScript\Generator\Values\ArrayValue;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \DQ5Studios\TypeScript\Generator\Values\ArrayValue
- */
+#[CoversClass(ArrayValue::class)]
+#[CoversClass(Printer::class)]
 class ArrayValueTest extends TestCase
 {
     public function testConstruct(): void

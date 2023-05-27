@@ -12,11 +12,10 @@ use DQ5Studios\TypeScript\Generator\Types\InterfaceType;
 use DQ5Studios\TypeScript\Generator\Types\NumberType;
 use DQ5Studios\TypeScript\Generator\Types\StringType;
 use DQ5Studios\TypeScript\Generator\Types\Type;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \DQ5Studios\TypeScript\Generator\File
- */
+#[CoversClass(File::class)]
 class FileTest extends TestCase
 {
     public function testAddClass(): void

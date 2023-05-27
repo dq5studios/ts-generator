@@ -9,8 +9,12 @@ use DQ5Studios\TypeScript\Generator\Types\FunctionType;
 use DQ5Studios\TypeScript\Generator\Types\ObjectType;
 use DQ5Studios\TypeScript\Generator\Types\Type;
 use Generator;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(FunctionType::class)]
+#[CoversClass(ObjectType::class)]
 class ComplexTypeTest extends TestCase
 {
     public static function typeList(): Generator
@@ -20,13 +24,9 @@ class ComplexTypeTest extends TestCase
     }
 
     /**
-     * @covers \DQ5Studios\TypeScript\Generator\Types\FunctionType
-     * @covers \DQ5Studios\TypeScript\Generator\Types\ObjectType
-     *
-     * @dataProvider typeList
-     *
      * @param class-string<Type> $class
      */
+    #[DataProvider(typeList::class)]
     public function testToString(string $class, string $expected): void
     {
         $type = new $class();

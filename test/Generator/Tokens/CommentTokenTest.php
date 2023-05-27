@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \DQ5Studios\TypeScript\Generator\Tokens\CommentToken
+ * @covers \DQ5Studios\TypeScript\Generator\Printer
  */
 class CommentTokenTest extends TestCase
 {

@@ -19,8 +19,22 @@ use DQ5Studios\TypeScript\Generator\Types\UndefinedType;
 use DQ5Studios\TypeScript\Generator\Types\UnknownType;
 use DQ5Studios\TypeScript\Generator\Types\VoidType;
 use Generator;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(AnyType::class)]
+#[CoversClass(BigIntType::class)]
+#[CoversClass(BooleanType::class)]
+#[CoversClass(NeverType::class)]
+#[CoversClass(NullType::class)]
+#[CoversClass(NumberType::class)]
+#[CoversClass(StringType::class)]
+#[CoversClass(SymbolType::class)]
+#[CoversClass(Type::class)]
+#[CoversClass(UndefinedType::class)]
+#[CoversClass(UnknownType::class)]
+#[CoversClass(VoidType::class)]
 class PrimitiveTypeTest extends TestCase
 {
     public static function typeList(): Generator
@@ -39,23 +53,9 @@ class PrimitiveTypeTest extends TestCase
     }
 
     /**
-     * @covers \DQ5Studios\TypeScript\Generator\Types\AnyType
-     * @covers \DQ5Studios\TypeScript\Generator\Types\BigIntType
-     * @covers \DQ5Studios\TypeScript\Generator\Types\BooleanType
-     * @covers \DQ5Studios\TypeScript\Generator\Types\NeverType
-     * @covers \DQ5Studios\TypeScript\Generator\Types\NullType
-     * @covers \DQ5Studios\TypeScript\Generator\Types\NumberType
-     * @covers \DQ5Studios\TypeScript\Generator\Types\StringType
-     * @covers \DQ5Studios\TypeScript\Generator\Types\SymbolType
-     * @covers \DQ5Studios\TypeScript\Generator\Types\Type
-     * @covers \DQ5Studios\TypeScript\Generator\Types\UndefinedType
-     * @covers \DQ5Studios\TypeScript\Generator\Types\UnknownType
-     * @covers \DQ5Studios\TypeScript\Generator\Types\VoidType
-     *
-     * @dataProvider typeList
-     *
      * @param class-string<Type> $class
      */
+    #[DataProvider(typeList::class)]
     public function testToString(string $class, string $as_string, string $expected): void
     {
         $type = new $class();

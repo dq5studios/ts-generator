@@ -190,7 +190,6 @@ class Convert
 
         $consts = $reflection->getConstants();
         foreach ($consts as $const) {
-            /** @var mixed */
             $value = $const->getValue();
             $m = new Member(
                 name: new NameToken(self::nameSafe($const->getName())),

@@ -7,11 +7,11 @@ namespace DQ5Studios\TypeScript\Tests\Generator\Values;
 use DQ5Studios\TypeScript\Generator\Printer;
 use DQ5Studios\TypeScript\Generator\Types\ObjectType;
 use DQ5Studios\TypeScript\Generator\Values\ObjectValue;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \DQ5Studios\TypeScript\Generator\Values\ObjectValue
- */
+#[CoversClass(ObjectValue::class)]
+#[CoversClass(Printer::class)]
 class ObjectValueTest extends TestCase
 {
     public function testConstruct(): void

@@ -25,12 +25,22 @@ use DQ5Studios\TypeScript\Generator\Values\StringValue;
 use DQ5Studios\TypeScript\Generator\Values\UndefinedValue;
 use DQ5Studios\TypeScript\Generator\Values\Value;
 use Generator;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
+#[CoversClass(BooleanValue::class)]
+#[CoversClass(NoneValue::class)]
+#[CoversClass(NullValue::class)]
+#[CoversClass(NumberValue::class)]
+#[CoversClass(Printer::class)]
+#[CoversClass(StringValue::class)]
+#[CoversClass(UndefinedValue::class)]
+#[CoversClass(Value::class)]
 class ValueTest extends TestCase
 {
-    public function literalList(): Generator
+    public static function literalList(): Generator
     {
         yield "Boolean" => [BooleanValue::class, true, "true"];
         yield "Null" => [NullValue::class, null, "null"];
@@ -40,17 +50,9 @@ class ValueTest extends TestCase
     }
 
     /**
-     * @covers \DQ5Studios\TypeScript\Generator\Values\BooleanValue
-     * @covers \DQ5Studios\TypeScript\Generator\Values\NullValue
-     * @covers \DQ5Studios\TypeScript\Generator\Values\NumberValue
-     * @covers \DQ5Studios\TypeScript\Generator\Values\StringValue
-     * @covers \DQ5Studios\TypeScript\Generator\Values\UndefinedValue
-     * @covers \DQ5Studios\TypeScript\Generator\Printer
-     *
-     * @dataProvider literalList
-     *
      * @param class-string<Value> $class
      */
+    #[DataProvider("literalList")]
     public function testToLiteralType(string $class, mixed $initial, string $expected): void
     {
         $value = new $class($initial);
@@ -61,7 +63,7 @@ class ValueTest extends TestCase
         $this->assertSame($expected, Printer::print($type));
     }
 
-    public function valueList(): Generator
+    public static function valueList(): Generator
     {
         yield "Boolean" => [BooleanValue::class, true, "true"];
         yield "None" => [NoneValue::class, null, ""];
@@ -72,12 +74,9 @@ class ValueTest extends TestCase
     }
 
     /**
-     * @covers \DQ5Studios\TypeScript\Generator\Values\Value
-     *
-     * @dataProvider valueList
-     *
      * @param class-string<Value> $class
      */
+    #[DataProvider("valueList")]
     public function testToString(string $class, mixed $initial, string $expected): void
     {
         $value = new $class($initial);
@@ -85,7 +84,7 @@ class ValueTest extends TestCase
         $this->assertSame($expected, Printer::print($value));
     }
 
-    public function typeList(): Generator
+    public static function typeList(): Generator
     {
         yield "Boolean" => [BooleanValue::class, true, BooleanType::class];
         yield "None" => [NoneValue::class, null, NoneType::class];
@@ -96,17 +95,9 @@ class ValueTest extends TestCase
     }
 
     /**
-     * @covers \DQ5Studios\TypeScript\Generator\Values\BooleanValue
-     * @covers \DQ5Studios\TypeScript\Generator\Values\NoneValue
-     * @covers \DQ5Studios\TypeScript\Generator\Values\NullValue
-     * @covers \DQ5Studios\TypeScript\Generator\Values\NumberValue
-     * @covers \DQ5Studios\TypeScript\Generator\Values\StringValue
-     * @covers \DQ5Studios\TypeScript\Generator\Values\UndefinedValue
-     *
-     * @dataProvider typeList
-     *
      * @param class-string<Value> $class
      */
+    #[DataProvider("typeList")]
     public function testGetType(string $class, mixed $initial, string $expected): void
     {
         $value = new $class($initial);
@@ -114,7 +105,7 @@ class ValueTest extends TestCase
         $this->assertSame($expected, $value->getType());
     }
 
-    public function fromList(): Generator
+    public static function fromList(): Generator
     {
         yield "Boolean" => [true, BooleanValue::class, BooleanType::class];
         yield "Integer" => [42, NumberValue::class, NumberType::class];
@@ -124,13 +115,10 @@ class ValueTest extends TestCase
     }
 
     /**
-     * @covers \DQ5Studios\TypeScript\Generator\Values\Value
-     *
-     * @dataProvider fromList
-     *
      * @param class-string<Value> $class
      * @param class-string<Type>  $type
      */
+    #[DataProvider("fromList")]
     public function testFrom(mixed $initial, string $class, string $type): void
     {
         $value = Value::from($initial);
@@ -146,7 +134,7 @@ class ValueTest extends TestCase
         $this->assertSame($again, $value);
     }
 
-    public function fromAdvancedList(): Generator
+    public static function fromAdvancedList(): Generator
     {
         yield "Array" => [["mungojerrie", "rumpleteazer"], ArrayValue::class, ArrayType::class];
         yield "Object" => [["rumtumtugger" => "jennyanydots", "mungojerrie" => "rumpleteazer"], ObjectValue::class, ObjectType::class];
@@ -154,13 +142,10 @@ class ValueTest extends TestCase
     }
 
     /**
-     * @covers \DQ5Studios\TypeScript\Generator\Values\Value
-     *
-     * @dataProvider fromAdvancedList
-     *
      * @param class-string<Value> $class
      * @param class-string<Type>  $type
      */
+    #[DataProvider("fromAdvancedList")]
     public function testAdvancedFrom(mixed $initial, string $class, string $type): void
     {
         $value = Value::from($initial);
@@ -172,7 +157,7 @@ class ValueTest extends TestCase
         $this->assertSame($again, $value);
     }
 
-    public function getSetList(): Generator
+    public static function getSetList(): Generator
     {
         yield "Boolean" => [BooleanValue::class, true, false];
         yield "Number" => [NumberValue::class, 42, 76];
@@ -180,14 +165,9 @@ class ValueTest extends TestCase
     }
 
     /**
-     * @covers \DQ5Studios\TypeScript\Generator\Values\BooleanValue
-     * @covers \DQ5Studios\TypeScript\Generator\Values\NumberValue
-     * @covers \DQ5Studios\TypeScript\Generator\Values\StringValue
-     *
-     * @dataProvider getSetList
-     *
      * @param class-string<BooleanValue>|class-string<NumberValue>|class-string<StringValue> $class
      */
+    #[DataProvider("getSetList")]
     public function testGetSet(string $class, bool|int|string $initial, bool|int|string $expected): void
     {
         $value = new $class($initial);
@@ -199,9 +179,6 @@ class ValueTest extends TestCase
         $this->assertSame($expected, $value->getValue());
     }
 
-    /**
-     * @covers \DQ5Studios\TypeScript\Generator\Values\NullValue
-     */
     public function testNullValue(): void
     {
         $value = new NullValue();

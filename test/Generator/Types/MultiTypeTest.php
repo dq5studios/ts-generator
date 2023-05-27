@@ -16,14 +16,20 @@ use DQ5Studios\TypeScript\Generator\Types\UnionType;
 use Exception;
 use Generator;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \DQ5Studios\TypeScript\Generator\Types\MultiType
- */
+#[CoversClass(ArrayType::class)]
+#[CoversClass(IntersectionType::class)]
+#[CoversClass(MultiType::class)]
+#[CoversClass(TupleType::class)]
+#[CoversClass(Type::class)]
+#[CoversClass(Type::class)]
+#[CoversClass(UnionType::class)]
 class MultiTypeTest extends TestCase
 {
-    public function typeList(): Generator
+    public static function typeList(): Generator
     {
         yield "Array" => [ArrayType::class, Type::ARRAY, "[]"];
         yield "Intersection" => [IntersectionType::class, Type::INTERSECTION, ""];
@@ -32,16 +38,9 @@ class MultiTypeTest extends TestCase
     }
 
     /**
-     * @covers \DQ5Studios\TypeScript\Generator\Types\ArrayType
-     * @covers \DQ5Studios\TypeScript\Generator\Types\IntersectionType
-     * @covers \DQ5Studios\TypeScript\Generator\Types\TupleType
-     * @covers \DQ5Studios\TypeScript\Generator\Types\Type
-     * @covers \DQ5Studios\TypeScript\Generator\Types\UnionType
-     *
-     * @dataProvider typeList
-     *
      * @param class-string<Type> $class
      */
+    #[DataProvider(typeList::class)]
     public function testToString(string $class, string $as_string, string $expected): void
     {
         $type = new $class();
@@ -54,7 +53,7 @@ class MultiTypeTest extends TestCase
         $this->assertSame($expected, Printer::print($type));
     }
 
-    public function singleTypeList(): Generator
+    public static function singleTypeList(): Generator
     {
         $contains = [StringType::class];
         yield "Array" => [ArrayType::class, $contains, "string[]"];
@@ -64,16 +63,10 @@ class MultiTypeTest extends TestCase
     }
 
     /**
-     * @covers \DQ5Studios\TypeScript\Generator\Types\ArrayType
-     * @covers \DQ5Studios\TypeScript\Generator\Types\IntersectionType
-     * @covers \DQ5Studios\TypeScript\Generator\Types\TupleType
-     * @covers \DQ5Studios\TypeScript\Generator\Types\UnionType
-     *
-     * @dataProvider singleTypeList
-     *
      * @param class-string<Type>       $class
      * @param list<class-string<Type>> $contains
      */
+    #[DataProvider(singleTypeList::class)]
     public function testSingleTypeToString(string $class, array $contains, string $expected): void
     {
         $type = new $class();
@@ -83,7 +76,7 @@ class MultiTypeTest extends TestCase
         $this->assertSame($expected, Printer::print($type));
     }
 
-    public function multiTypeList(): Generator
+    public static function multiTypeList(): Generator
     {
         $contains = [NumberType::class, new StringType()];
         yield "Array" => [ArrayType::class, $contains, "(number|string)[]"];
@@ -93,16 +86,10 @@ class MultiTypeTest extends TestCase
     }
 
     /**
-     * @covers \DQ5Studios\TypeScript\Generator\Types\ArrayType
-     * @covers \DQ5Studios\TypeScript\Generator\Types\IntersectionType
-     * @covers \DQ5Studios\TypeScript\Generator\Types\TupleType
-     * @covers \DQ5Studios\TypeScript\Generator\Types\UnionType
-     *
-     * @dataProvider multiTypeList
-     *
      * @param class-string<Type>       $class
      * @param list<class-string<Type>> $contains
      */
+    #[DataProvider(multiTypeList::class)]
     public function testMultiTypeToString(string $class, array $contains, string $expected): void
     {
         $type = new $class();
@@ -140,9 +127,6 @@ class MultiTypeTest extends TestCase
         $this->assertSame("(number??string)", Printer::print($type));
     }
 
-    /**
-     * @covers \DQ5Studios\TypeScript\Generator\Types\Type
-     */
     public function testFrom(): void
     {
         $actual = Type::from("number|string");
